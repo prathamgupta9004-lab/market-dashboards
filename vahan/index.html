@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vahan Dashboard</title>
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--warn:#E0A64A;--exp:#8EC3A9;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:13px/1.4 Inter,Segoe UI,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;font-weight:650}
+header .asof{color:var(--muted);font-size:12px}
+header .asof b{color:var(--text)}
+.tabs{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+main{padding:14px 20px 40px;max-width:1600px;margin:0 auto}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.grp{display:flex;align-items:center;gap:4px}
+.lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+button{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:6px;padding:5px 10px;font:inherit;cursor:pointer}
+button:hover{color:var(--text)}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:6px;padding:5px 9px;font:inherit}
+input[type=search]{width:220px}
+input.num{width:80px}
+label.ck{color:var(--muted);display:flex;gap:5px;align-items:center;cursor:pointer}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.note{color:var(--muted);font-size:12px}
+.up{color:var(--up)}.dn{color:var(--dn)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;position:sticky;top:0;background:var(--panel);z-index:1}
+th.l,td.l{text-align:left}
+th.sorted{color:var(--text)}
+td.tot{font-weight:650;background:rgba(109,106,245,.06)}
+tr.sub td{border-bottom:1px solid var(--line);font-size:11px;padding-top:2px;color:var(--dim)}
+tr.main td{border-bottom:0}
+tr.main:hover,tr.main:hover+tr.sub{background:rgba(47,227,181,.06)}
+.mk{color:var(--acc2);font-weight:600;cursor:pointer}
+.mk:hover{text-decoration:underline}
+.tag{font-size:10px;color:#111;background:var(--up);border-radius:4px;padding:0 5px;margin-left:6px;font-weight:700}
+.chip{font-size:10px;color:var(--muted);border:1px solid var(--line2);border-radius:4px;padding:0 5px;margin-left:6px}
+.scr{font-size:10px;margin-left:6px;color:var(--muted)}
+.tablewrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;max-height:76vh}
+.mtd{color:var(--warn)}
+.pill{display:inline-block;min-width:58px;padding:2px 6px;border-radius:10px;font-size:11px;font-weight:600}
+.pill.up{background:rgba(47,209,122,.16)}.pill.dn{background:rgba(255,92,108,.16)}
+.modal{position:fixed;inset:0;background:rgba(3,6,14,.72);display:none;align-items:flex-start;justify-content:center;z-index:20;padding:30px 14px;overflow:auto}
+.modal.open{display:flex}
+.mbox{background:var(--panel);border:1px solid var(--line2);border-radius:12px;width:min(1250px,100%);padding:16px 18px}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.mhead h2{margin:0;font-size:19px}
+.x{font-size:18px;background:none;border:0}
+svg text{fill:var(--muted);font-size:10px}
+.empty{color:var(--muted);padding:30px;text-align:center}
+@media (max-width:760px){.tabs{margin-left:0}main{padding:12px 16px}input[type=search]{width:150px}}
+
+/* ---- shared dashboard design (tools/DESIGN.md) ---- */
+html{scroll-behavior:smooth}
+body{color:var(--text);font:13.5px/1.45 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#1c3a31;border-radius:10px}::-webkit-scrollbar-track{background:transparent}
+header{gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px;transition:all .2s}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.tabs{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}
+.tabs button{border:0;border-radius:999px;background:transparent;padding:6px 14px}
+.tabs button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 18px rgba(47,227,181,.25)}
+main{padding:22px 24px 48px}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.lbl{letter-spacing:.1em;color:var(--dim)}
+button{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font:inherit;cursor:pointer;transition:all .18s ease;white-space:nowrap}
+button:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:600;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+.x{background:none!important;border:0!important;box-shadow:none!important}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:6px 10px;font:inherit;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(47,227,181,.15)}
+input[type=checkbox]{accent-color:#2FE3B5}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(8px)}
+th,td{padding:8px 10px}
+th{background:#08130F;letter-spacing:.05em}
+tbody tr{transition:background .15s}
+tbody tr:hover,tr.main:hover,tr.main:hover+tr.sub{background:rgba(47,227,181,.06)}
+.tablewrap{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;animation:rise .5s ease both}
+.box,.kv div{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px}
+.gcard{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s;animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.gcard:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35),0 0 0 1px rgba(47,227,181,.12)}
+.modal{background:rgba(2,6,4,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.modal.open{animation:fade .2s ease both}
+.mbox{background:linear-gradient(170deg,#0E1F19,#08130F 50%);border:1px solid var(--line2);border-radius:20px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(47,227,181,.08);animation:pop .3s cubic-bezier(.2,.9,.25,1.1) both}
+.chip{border-radius:999px}
+.tip{background:rgba(8,19,15,.95);border-radius:10px}
+a{color:var(--acc2)}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:10px 16px}.tabs{margin-left:0;width:100%;justify-content:space-between;flex-wrap:wrap}.tabs button{flex:1}.back{display:none}main{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../">← All dashboards</a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Vahan Registrations</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div class="tabs"><button data-tab="company" class="on">Company view</button><button data-tab="category">Category view</button><button data-tab="group">Category group</button><button data-tab="industry">Industry view</button></div>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">All India · all RTOs · monthly registrations</div>
+  <h1>What India is <em>putting on the road.</em></h1>
+  <div class="asof" id="asof"></div></div>
+  <span class="live"><i></i>Vahan data · refreshed daily</span>
+</div>
+<div class="bar filters" id="controls">
+  <div class="grp" id="c-freq"><button data-f="M" class="on">Monthly</button><button data-f="Q">Quarterly</button><button data-f="Y">Yearly</button></div>
+  <div class="grp" id="c-year"><span class="lbl">Year</span><select id="year"></select></div>
+  <div class="grp" id="c-grp"><span class="lbl">Segment</span><select id="seg"><option value="">All vehicles</option></select></div>
+  <label class="ck" id="c-listed"><input type="checkbox" id="listed"> Listed only</label>
+  <label class="ck"><input type="checkbox" id="shownum" checked> Numbers</label>
+  <label class="ck"><input type="checkbox" id="showyoy" checked> YoY %</label>
+  <div class="grp" id="c-search"><input type="search" id="q" placeholder="Search maker (e.g. BAJAJ, TVS, HERO)…"></div>
+  <div class="grp" id="c-min"><span class="lbl">Min annual units</span><input class="num" type="number" id="minu" value="500"></div>
+  <div class="grp" id="c-top"><span class="lbl">Show</span><select id="topn"><option>25</option><option selected>50</option><option>100</option><option value="9999">All</option></select></div>
+</div>
+<div class="note" id="count" style="margin-bottom:8px"></div>
+<div class="tablewrap"><table id="tbl"></table></div>
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: Vahan dashboard, Ministry of Road Transport &amp; Highways · current month is month-to-date</span></footer>
+</main>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<script src="data.js?v=202611132141"></script>
+<script>
+"use strict";
+const D = window.VD, MO = D.months, NM = MO.length;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LS = (k, v) => { try { if (v === undefined) return JSON.parse(localStorage.getItem("vd_" + k)); localStorage.setItem("vd_" + k, JSON.stringify(v)); } catch (e) { return null; } };
+const MN = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+const fmt = v => v == null ? "–" : Math.round(v).toLocaleString("en-IN");
+const yy = (a, b) => (b > 0 && a != null) ? (a / b - 1) * 100 : null;
+const yfmt = v => v == null ? "–" : (v > 0 ? "+" : "") + v.toFixed(1) + "%";
+const ycls = v => v == null ? "" : v >= 0 ? "up" : "dn";
+const years = [...new Set(MO.map(m => +m.slice(0, 4)))];
+const lastYear = years[years.length - 1];
+const st = Object.assign({tab: "company", f: "M", year: lastYear, seg: "", listed: false, num: true, yoy: true, q: "", minu: 500, topn: "50", sort: "tot", dir: -1}, LS("st") || {});
+if (!years.includes(+st.year)) st.year = lastYear;
+$("#asof").innerHTML = `Vahan, all India, all RTOs · fetched <b>${esc(D.fetched || D.built)}</b>${D.partial ? ` · <span class="mtd">${D.partial.slice(5)}/${D.partial.slice(0, 4)} is month-to-date</span>` : ""}`;
+years.slice().reverse().forEach(y => $("#year").insertAdjacentHTML("beforeend", `<option>${y}</option>`));
+Object.entries(D.groups).forEach(([k, v]) => $("#seg").insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`));
+
+// ---- periods: list of {label, idx:[month indices], prev:[indices a year earlier], partial}
+function periods() {
+  const out = [];
+  const mi = (y, m) => MO.indexOf(`${y}-${String(m).padStart(2, "0")}`);
+  const mk = (label, ms) => { const idx = ms.map(([y, m]) => mi(y, m)).filter(i => i >= 0);
+    // YoY leaves out the month-to-date month (unless it is the whole period) so a partial month isn't compared with a full one
+    const full = idx.length > 1 ? idx.filter(i => MO[i] !== D.partial) : idx;
+    const prev = full.map(i => i - 12).filter(i => i >= 0);
+    return {label, idx, cur: full, prev: prev.length === full.length && full.length ? prev : null, partial: idx.some(i => MO[i] === D.partial), n: ms.length}; };
+  if (st.f === "M") for (let m = 1; m <= 12; m++) out.push(mk(MN[m - 1], [[+st.year, m]]));
+  else if (st.f === "Q") {   // Indian FY quarters, last 12
+    const qs = [];
+    for (const y of years) for (let q = 0; q < 4; q++) { const ms = [0, 1, 2].map(k => { const mm = 4 + q * 3 + k; return mm > 12 ? [y + 1, mm - 12] : [y, mm]; });
+      const fy = ms[0][1] >= 4 ? ms[0][0] + 1 : ms[0][0]; qs.push(mk(`Q${q + 1} FY${String(fy).slice(2)}`, ms)); }
+    out.push(...qs.filter(p => p.idx.length).slice(-12));
+  } else for (const y of years) out.push(mk(String(y) + (y === lastYear ? " YTD" : ""), Array.from({length: 12}, (_, k) => [y, k + 1])));
+  return out.filter(p => p.idx.length || st.f === "M");
+}
+const sumI = (arr, idx) => idx.reduce((a, i) => a + (arr[i] || 0), 0);
+const ser = m => st.seg ? (m.g[st.seg] || null) : m.t;
+
+function rowsFor() {
+  if (st.tab === "category") return D.cats.filter(c => !st.seg || c.grp === st.seg).map(c => ({n: c.n, chip: D.groups[c.grp], s: c.t}));
+  if (st.tab === "group") {
+    const g = {};
+    D.makers.forEach(m => Object.entries(m.g).forEach(([k, v]) => { g[k] = g[k] ? g[k].map((x, i) => x + v[i]) : v.slice(); }));
+    const all = Object.values(g).reduce((a, v) => a.map((x, i) => x + v[i]), new Array(NM).fill(0));
+    return [...Object.entries(g).map(([k, v]) => ({n: D.groups[k], key: k, s: v})), {n: "All vehicles", s: all, total: true}];
+  }
+  const minu = +st.minu || 0, q = st.q.trim().toUpperCase();
+  return D.makers.map(m => ({m, s: ser(m)})).filter(r => r.s && (!st.listed || r.m.sym) && (!q || r.m.n.includes(q) || (r.m.sym || "").includes(q) || (r.m.co || "").toUpperCase().includes(q)))
+    .filter(r => { for (const y of years) { if (sumI(r.s, MO.map((x, i) => x.startsWith(y) ? i : -1).filter(i => i >= 0)) >= minu) return true; } return false; })
+    .map(r => ({n: r.m.n, m: r.m, s: r.s}));
+}
+
+function render() {
+  LS("st", st);
+  document.querySelectorAll("[data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === st.tab));
+  document.querySelectorAll("[data-f]").forEach(b => b.classList.toggle("on", b.dataset.f === st.f));
+  if (st.tab === "industry" && st.f !== "Y") st.f = "Y";
+  const isMaker = st.tab === "company" || st.tab === "industry";
+  ["#c-listed", "#c-search", "#c-min", "#c-top"].forEach(s => $(s).style.display = isMaker ? "" : "none");
+  $("#c-year").style.display = st.f === "M" ? "" : "none";
+  $("#c-freq").style.display = st.tab === "industry" ? "none" : "";
+  const P = periods(), rows = rowsFor();
+  // market-share denominator: every maker in the segment (not just the filtered ones)
+  const denom = P.map(p => isMaker ? D.makers.reduce((a, m) => { const s = ser(m); return a + (s ? sumI(s, p.idx) : 0); }, 0) : null);
+  const totIdx = P.flatMap(p => p.idx), totCur = P.filter(p => p.prev).flatMap(p => p.cur),
+    totPrev = P.some(p => p.prev) ? P.filter(p => p.prev).flatMap(p => p.prev) : null;
+  rows.forEach(r => { r.v = P.map(p => sumI(r.s, p.idx)); r.y = P.map(p => p.prev ? yy(sumI(r.s, p.cur), sumI(r.s, p.prev)) : null);
+    r.tot = st.f === "M" ? sumI(r.s, totIdx) : r.v[r.v.length - 1]; r.toty = st.f === "M" && totPrev ? yy(sumI(r.s, totCur), sumI(r.s, totPrev)) : r.y[r.y.length - 1];
+    r.sh = P.map((p, i) => denom[i] ? r.v[i] / denom[i] * 100 : null); });
+  const k = st.sort;
+  rows.sort((a, b) => a.total ? 1 : b.total ? -1 : k === "name" ? a.n.localeCompare(b.n) * st.dir : ((k === "tot" ? a.tot - b.tot : (a.v[k] || 0) - (b.v[k] || 0)) * st.dir));
+  const shown = isMaker ? rows.slice(0, +st.topn) : rows;
+  const showShare = isMaker && (st.f !== "M" || st.tab === "industry");
+  const lastLbl = st.f === "M" ? "Total" : "Latest";
+  let h = `<thead><tr><th class="l ${k === "name" ? "sorted" : ""}" data-k="name">${st.tab === "category" ? "Vehicle category" : st.tab === "group" ? "Category group" : "Maker"}</th>${
+    P.map((p, i) => `<th data-k="${i}" class="${k === i ? "sorted" : ""} ${p.partial ? "mtd" : ""}">${p.label}${p.partial ? "*" : ""}</th>`).join("")}${st.f === "M" ? `<th data-k="tot" class="${k === "tot" ? "sorted" : ""}">Total ▾</th>` : ""}</tr></thead><tbody>`;
+  for (const r of shown) {
+    const name = r.m ? `<span class="mk" data-m="${esc(r.n)}">${esc(r.n)} →</span>${r.m.sym ? `<span class="tag">${esc(r.m.sym)}</span><a class="scr" href="https://www.screener.in/company/${encodeURIComponent(r.m.sym)}/" target="_blank" rel="noopener">Screener ↗</a>` : ""}${st.seg ? "" : `<span class="chip">${D.groups[r.m.grp] || ""}</span>`}`
+      : `<b ${r.key ? `class="mk" data-g="${r.key}"` : ""}>${esc(r.n)}</b>${r.chip ? `<span class="chip">${esc(r.chip)}</span>` : ""}`;
+    const sub = [];
+    if (showShare) sub.push(["Market share %", r.sh.map(v => v == null ? "–" : v.toFixed(1) + "%"), ""]);
+    if (st.yoy) sub.push(["YoY growth %", r.y.map(v => `<span class="${ycls(v)}">${yfmt(v)}</span>`), `<span class="${ycls(r.toty)}">${yfmt(r.toty)}</span>`]);
+    h += `<tr class="${sub.length ? "main" : ""}"><td class="l">${name}</td>${r.v.map((v, i) => `<td class="${P[i].partial ? "mtd" : ""}">${st.num ? (P[i].idx.length ? fmt(v) : "–") : ""}</td>`).join("")}${st.f === "M" ? `<td class="tot">${st.num ? fmt(r.tot) : ""}</td>` : ""}</tr>`;
+    sub.forEach(([lab, cells, tot], j) => h += `<tr class="sub ${j < sub.length - 1 ? "main" : ""}"><td class="l" style="padding-left:20px">${lab}</td>${cells.map(c => `<td>${c}</td>`).join("")}${st.f === "M" ? `<td class="tot">${tot}</td>` : ""}</tr>`);
+  }
+  $("#tbl").innerHTML = h + "</tbody>";
+  $("#count").textContent = isMaker ? `${shown.length} of ${rows.length} makers${st.seg ? " in " + D.groups[st.seg] : ""}${st.listed ? " (listed only)" : ""} · market share is of all makers in the segment · click a maker for its year × month grid${D.partial ? " · * month-to-date" : ""}`
+    : st.tab === "group" ? "Groups built from Vahan vehicle categories; tractors (registered under LMV) are split out by maker name. Click a group to see its makers." : "Vahan vehicle categories (all makers).";
+}
+
+function openMaker(n) {
+  const m = D.makers.find(x => x.n === n); if (!m) return;
+  let mode = "M", view = "table", seg = "";
+  const draw = () => {
+    const s = seg ? m.g[seg] : m.t;
+    const ys = years.slice().reverse();
+    let body;
+    if (view === "table") {
+      const cols = mode === "M" ? MN.map((x, i) => [x, [i]]) : [["Q1 (JFM)", [0, 1, 2]], ["Q2 (AMJ)", [3, 4, 5]], ["Q3 (JAS)", [6, 7, 8]], ["Q4 (OND)", [9, 10, 11]]];
+      body = `<div class="tablewrap" style="max-height:none"><table><thead><tr><th class="l">Year</th>${cols.map(c => `<th>${c[0]}</th>`).join("")}<th>Total</th></tr></thead><tbody>` + ys.map(y => {
+        const ix = c => c[1].map(mm => MO.indexOf(`${y}-${String(mm + 1).padStart(2, "0")}`));
+        const val = c => { const i = ix(c); return i.some(x => x >= 0) ? i.reduce((a, x) => a + (x >= 0 ? s[x] : 0), 0) : null; };
+        const pv = c => { const i = ix(c).map(x => x - 12); return i.every(x => x >= 0) ? i.reduce((a, x) => a + s[x], 0) : null; };
+        const all = [[0, Array.from({length: 12}, (_, k) => k)]];
+        const t = val(all[0]), tp = pv(all[0]);
+        return `<tr class="main"><td class="l"><b>${y}</b></td>${cols.map(c => `<td>${fmt(val(c))}</td>`).join("")}<td class="tot">${fmt(t)}</td></tr>
+          <tr class="sub"><td class="l" style="padding-left:20px">YoY%</td>${cols.map(c => { const v = val(c) != null && pv(c) != null ? yy(val(c), pv(c)) : null; return `<td>${v == null ? "" : `<span class="pill ${ycls(v)}">${yfmt(v)}</span>`}</td>`; }).join("")}<td class="tot">${tp ? `<span class="pill ${ycls(yy(t, tp))}">${yfmt(yy(t, tp))}</span>` : ""}</td></tr>`;
+      }).join("") + "</tbody></table></div>";
+    } else {
+      const n = Math.min(NM, 60), vals = s.slice(-n), mx = Math.max(...vals, 1), W = 1180, H = 300, bw = (W - 40) / n;
+      body = `<svg viewBox="0 0 ${W} ${H}" width="100%">${vals.map((v, i) => { const bh = v / mx * (H - 40), x = 40 + i * bw; const mo = MO[NM - n + i];
+        const yv = NM - n + i - 12 >= 0 ? yy(v, s[NM - n + i - 12]) : null;
+        return `<rect x="${x + 1}" y="${H - 20 - bh}" width="${bw - 2}" height="${bh}" fill="${mo === D.partial ? "var(--warn)" : yv == null || yv >= 0 ? "var(--up)" : "var(--dn)"}" opacity=".8"><title>${mo}: ${fmt(v)}${yv == null ? "" : " (" + yfmt(yv) + " YoY)"}</title></rect>${mo.endsWith("-01") ? `<text x="${x}" y="${H - 5}">${mo.slice(0, 4)}</text>` : ""}`; }).join("")}
+        <text x="0" y="14">${fmt(mx)}</text></svg><div class="note">Bars are green when up YoY and red when down. The amber bar is the month-to-date figure.</div>`;
+    }
+    const segs = Object.keys(m.g);
+    $("#mbox").innerHTML = `<div class="mhead"><div><h2>${esc(m.n)}${m.sym ? `<span class="tag">${esc(m.sym)}</span>` : ""}: monthly analysis</h2><div class="note">${m.co ? esc(m.co) + " · " : ""}registrations from Vahan (all India)</div></div><button class="x" id="mx">✕</button></div>
+      <div class="bar"><div class="grp"><button data-mm="M" class="${mode === "M" ? "on" : ""}">Monthly</button><button data-mm="Q" class="${mode === "Q" ? "on" : ""}">Quarterly</button></div>
+      <div class="grp"><button data-mv="table" class="${view === "table" ? "on" : ""}">Table</button><button data-mv="chart" class="${view === "chart" ? "on" : ""}">Chart</button></div>
+      ${segs.length > 1 ? `<div class="grp"><span class="lbl">Segment</span><select id="mseg"><option value="">All</option>${segs.map(k => `<option value="${k}" ${k === seg ? "selected" : ""}>${D.groups[k]}</option>`).join("")}</select></div>` : ""}</div>${body}`;
+    $("#mx").onclick = () => $("#modal").classList.remove("open");
+    document.querySelectorAll("[data-mm]").forEach(b => b.onclick = () => { mode = b.dataset.mm; draw(); });
+    document.querySelectorAll("[data-mv]").forEach(b => b.onclick = () => { view = b.dataset.mv; draw(); });
+    if ($("#mseg")) $("#mseg").onchange = e => { seg = e.target.value; draw(); };
+  };
+  draw();
+  $("#modal").classList.add("open");
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-tab]"); if (t) { st.tab = t.dataset.tab; st.sort = "tot"; if (st.tab === "industry" && !st.seg) st.seg = "2W"; return render(); }
+  const f = e.target.closest("[data-f]"); if (f) { st.f = f.dataset.f; if (typeof st.sort === "number") st.sort = "tot"; return render(); }
+  const th = e.target.closest("#tbl th"); if (th) { const k = th.dataset.k === "name" || th.dataset.k === "tot" ? th.dataset.k : +th.dataset.k; st.dir = st.sort === k ? -st.dir : (k === "name" ? 1 : -1); st.sort = k; return render(); }
+  const mk = e.target.closest("[data-m]"); if (mk) return openMaker(mk.dataset.m);
+  const g = e.target.closest("[data-g]"); if (g) { st.seg = g.dataset.g; st.tab = "company"; $("#seg").value = st.seg; return render(); }
+});
+$("#modal").onclick = e => { if (e.target.id === "modal") $("#modal").classList.remove("open"); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("#modal").classList.remove("open"); });
+const bind = (sel, key, prop = "value", ev = "input") => { const el = $(sel); el[prop] = st[key]; el.addEventListener(ev, () => { st[key] = el[prop]; render(); }); };
+bind("#year", "year", "value", "change"); bind("#seg", "seg", "value", "change"); bind("#listed", "listed", "checked", "change");
+bind("#shownum", "num", "checked", "change"); bind("#showyoy", "yoy", "checked", "change"); bind("#q", "q"); bind("#minu", "minu"); bind("#topn", "topn", "value", "change");
+render();
+</script>
+</body>
+</html>

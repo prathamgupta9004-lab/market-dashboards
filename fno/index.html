@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F&amp;O Positioning · Pratham Gupta</title>
+<meta name="description" content="Daily NSE F&O positioning: OI build-up for every F&O stock, PCR, max pain, IV percentile, FII/DII/Pro/Client positions, MWPL ban list and rollovers. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--sky:#5AA9F0;--lav:#A78BFA;--amber:#E0A64A;--slate:#8A9690;
+--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--text);font:13.5px/1.45 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#1c3a31;border-radius:10px}::-webkit-scrollbar-track{background:transparent}
+header{display:flex;align-items:center;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px;transition:all .2s;white-space:nowrap}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px;white-space:nowrap}.me .h{font-size:12px;color:var(--acc);white-space:nowrap}
+.tabs{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;overflow-x:auto}
+.tabs button{border:0;border-radius:999px;background:transparent;padding:6px 14px}
+.tabs button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 18px rgba(47,227,181,.25)}
+main{padding:22px 24px 48px;max-width:1500px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 6px;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.datebadge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#03140E;background:linear-gradient(135deg,#2FE3B5,#10B981);border-radius:999px;padding:5px 13px;box-shadow:0 4px 16px rgba(47,227,181,.22);margin-right:8px}
+.datebadge.stale{background:var(--amber);color:#1a1205}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 0 rgba(47,227,181,.6);animation:pulse 2s infinite}
+.pulse{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s ease both;min-width:0}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%);pointer-events:none}
+.pk .l{font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+.pk .v{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .names{font-size:13px;margin-top:6px;display:flex;flex-direction:column;gap:2px}
+.pk .names a{color:var(--text);text-decoration:none;display:flex;justify-content:space-between;gap:8px;cursor:pointer}
+.pk .names a:hover{color:var(--acc)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.grp{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 3px 0 2px}
+button,.btn{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font:inherit;cursor:pointer;transition:all .18s ease;white-space:nowrap}
+button:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:600;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:6px 10px;font:inherit;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(47,227,181,.15)}
+input[type=search]{width:190px}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px;backdrop-filter:blur(8px)}
+.up{color:var(--up)}.dn{color:var(--dn)}.mut{color:var(--muted)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;position:sticky;top:0;background:#08130F;z-index:1;user-select:none}
+th.s-asc::after{content:" ▲";color:var(--acc)}th.s-desc::after{content:" ▼";color:var(--acc)}
+th:first-child,td:first-child,th.l,td.l{text-align:left}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(47,227,181,.06)}
+tr.click{cursor:pointer}
+td b{font-weight:600}
+.tablewrap{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;overflow:auto;margin-top:12px;max-height:72vh;animation:rise .5s ease both}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:14px;animation:rise .55s cubic-bezier(.2,.8,.2,1) both;min-width:0;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s}
+.box.hov:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35),0 0 0 1px rgba(47,227,181,.12);cursor:pointer}
+.box h4{margin:0 0 4px;font-size:13.5px;display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.box .sub{color:var(--dim);font-size:11.5px;margin-bottom:8px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.icards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.ic .top{display:flex;justify-content:space-between;align-items:baseline}
+.ic .nm{font-weight:700;font-size:15px}.ic .px{font-size:19px;font-weight:700;letter-spacing:-.02em}
+.kv{display:grid;grid-template-columns:auto auto;gap:3px 10px;font-size:12px;margin-top:8px}
+.kv span:nth-child(odd){color:var(--muted)}.kv span:nth-child(even){text-align:right;font-weight:600}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.pill.L{background:rgba(47,227,181,.14);color:#2FE3B5}.pill.S{background:rgba(255,92,108,.14);color:#FF5C6C}
+.pill.C{background:rgba(90,169,240,.15);color:#5AA9F0}.pill.U{background:rgba(224,166,74,.15);color:#E0A64A}
+.dots{display:inline-flex;gap:3px;vertical-align:middle}.dots i{width:9px;height:9px;border-radius:3px;display:inline-block;background:var(--line2)}
+.dots i.L{background:#2FE3B5}.dots i.S{background:#FF5C6C}.dots i.C{background:#5AA9F0}.dots i.U{background:#E0A64A}
+.legend{display:flex;gap:14px;color:var(--muted);font-size:11.5px;margin:6px 0;flex-wrap:wrap;align-items:center}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+.legend i.ln{height:3px;width:14px;border-radius:2px;vertical-align:3px}
+.heat{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px;margin-top:12px}
+.hsec h4 .cnt{font-weight:500;color:var(--dim);font-size:11px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:4px}
+.tile{border-radius:8px;padding:5px 6px;cursor:pointer;min-width:0;border:1px solid transparent;transition:transform .15s,border-color .15s}
+.tile:hover{transform:translateY(-2px);border-color:rgba(238,245,242,.5)}
+.tile .s{font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .o{font-size:10.5px;opacity:.85;white-space:nowrap}
+.brk{display:flex;height:12px;border-radius:999px;overflow:hidden;margin:8px 0 6px;background:var(--line)}
+.brk div{height:100%;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--line2);background:var(--card);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--acc);color:var(--acc)}
+.chip.ban{border-color:rgba(255,92,108,.5);color:#FF8F9A;background:rgba(255,92,108,.08)}
+.mbar{display:inline-block;width:90px;height:7px;border-radius:999px;background:var(--line);overflow:hidden;vertical-align:middle;margin-left:8px}
+.mbar b{display:block;height:100%;background:linear-gradient(90deg,#10B981,#2FE3B5);border-radius:999px}
+.mbar b.hot{background:linear-gradient(90deg,#E0A64A,#FF5C6C)}
+canvas{display:block;width:100%}
+.cwrap{position:relative}
+.note{color:var(--muted);font-size:12px}
+.empty{color:var(--muted);padding:30px;text-align:center}
+.skel{height:200px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+.modal{position:fixed;inset:0;background:rgba(2,6,4,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;z-index:20;padding:30px 14px;overflow:auto}
+.modal.open{display:flex;animation:fade .2s ease both}
+.mbox{background:linear-gradient(170deg,#0E1F19,#08130F 50%);border:1px solid var(--line2);border-radius:20px;width:min(1180px,100%);padding:18px 20px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(47,227,181,.08);animation:pop .3s cubic-bezier(.2,.9,.25,1.1) both}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.mhead h2{margin:0;font-size:22px;letter-spacing:-.02em}
+.mstats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:12px 0 4px}
+.ms{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;min-width:0}
+.ms .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}.ms .v{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ms .s{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.x{font-size:18px;background:none;border:0;box-shadow:none}
+.tip{position:fixed;pointer-events:none;background:rgba(8,19,15,.95);border:1px solid var(--line2);border-radius:10px;padding:7px 10px;font-size:12px;display:none;z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.5);max-width:280px}
+.tip .r{display:flex;justify-content:space-between;gap:14px}.tip i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+.method{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px}.method b{color:var(--text)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1200px){.icards{grid-template-columns:repeat(3,minmax(0,1fr))}.mstats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1100px){.pulse{grid-template-columns:repeat(3,minmax(0,1fr))}.g3{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:10px 16px}.tabs{margin-left:0;width:100%}.back{display:none}
+ main{padding:16px}.g2,.g3{grid-template-columns:1fr}.icards{grid-template-columns:1fr}.pk:nth-child(n+4){grid-column:span 2}.tabs::-webkit-scrollbar{display:none}.pulse{grid-template-columns:repeat(2,minmax(0,1fr))}.pk .v{font-size:21px}
+ .mstats{grid-template-columns:repeat(2,minmax(0,1fr))}input[type=search]{width:150px}.heat{grid-template-columns:1fr}.mbox{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="https://prathamgupta9004-lab.github.io/market-dashboards/">← All dashboards</a>
+  <div class="me"><img src="https://prathamgupta9004-lab.github.io/market-dashboards/assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">F&amp;O Positioning</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div class="tabs"><button data-tab="overview" class="on">Overview</button><button data-tab="buildup">OI Build-up</button><button data-tab="options">Options</button><button data-tab="part">Participants</button><button data-tab="limits">MWPL &amp; Rollover</button></div>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">NSE F&amp;O · every stock and index · end of day</div>
+  <h1>Where derivatives money is <em>leaning.</em></h1>
+  <div class="asof" id="asof"></div></div>
+  <span class="live"><i></i>Refreshed every weekday at 9:30 PM IST</span>
+</div>
+<div class="pulse" id="pulse"><div class="skel" style="height:96px"></div><div class="skel" style="height:96px"></div><div class="skel" style="height:96px"></div><div class="skel" style="height:96px"></div><div class="skel" style="height:96px"></div></div>
+
+<section id="tab-overview">
+  <div class="icards" id="icards"></div>
+  <div class="g3">
+    <div class="box"><h4>Build-up breadth <span class="note" id="brk-n"></span></h4><div class="sub">Stock futures classified by price change vs OI change</div><div id="brk"></div></div>
+    <div class="box"><h4>FII index futures long %</h4><div class="sub">Share of FII index-futures OI that is long · 50% = neutral</div><div class="cwrap"><canvas id="ov-fii"></canvas></div></div>
+    <div class="box"><h4>Nifty PCR (OI)</h4><div class="sub">All expiries · above 1 = more puts written / bought than calls</div><div class="cwrap"><canvas id="ov-pcr"></canvas></div></div>
+  </div>
+  <div class="g2">
+    <div class="box"><h4>Participant net positions <span class="note" id="ov-pdate"></span></h4><div class="sub">Net contracts (long − short) · change vs previous session in brackets</div><div id="ov-part" style="overflow:auto"></div></div>
+    <div class="box"><h4>F&amp;O ban &amp; near-ban</h4><div class="sub">Futures-equivalent OI as % of market-wide position limit · ban at 95%</div><div id="ov-ban"></div></div>
+  </div>
+</section>
+
+<section id="tab-buildup" style="display:none">
+  <div class="bar filters">
+    <div class="grp"><span class="lbl">Window</span><button data-win="1" class="on">Today</button><button data-win="5">5 days</button></div>
+    <div class="grp"><span class="lbl">View</span><button data-bv="heat" class="on">Heat grid</button><button data-bv="table">Table</button></div>
+    <div class="grp"><span class="lbl">Search</span><input type="search" id="bq" placeholder="Symbol or name…"></div>
+    <div class="grp"><span class="lbl">Sector</span><select id="bsec"><option value="">All sectors</option></select></div>
+    <div class="grp"><span class="lbl">Signal</span><button data-bc="" class="on">All</button><button data-bc="L">Long build-up</button><button data-bc="S">Short build-up</button><button data-bc="C">Short covering</button><button data-bc="U">Long unwinding</button></div>
+    <div class="grp"><span class="lbl">OI vs 20D ≥</span><select id="boi"><option value="0">Any</option><option value="1.1">1.1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option></select></div>
+    <button id="bcsv">⇩ CSV</button>
+  </div>
+  <div class="legend"><span><i style="background:#2FE3B5"></i>Long build-up (price ↑ OI ↑)</span><span><i style="background:#FF5C6C"></i>Short build-up (price ↓ OI ↑)</span><span><i style="background:#5AA9F0"></i>Short covering (price ↑ OI ↓)</span><span><i style="background:#E0A64A"></i>Long unwinding (price ↓ OI ↓)</span><span class="mut">Tile brightness = size of OI change · dots = last 5 sessions</span></div>
+  <div id="bcount" class="note"></div>
+  <div id="bheat" class="heat"></div>
+  <div id="btable" class="tablewrap" style="display:none"></div>
+</section>
+
+<section id="tab-options" style="display:none">
+  <div class="bar filters">
+    <div class="grp"><span class="lbl">Universe</span><button data-ou="" class="on">All</button><button data-ou="idx">Indices</button><button data-ou="stk">Stocks</button></div>
+    <div class="grp"><span class="lbl">Search</span><input type="search" id="oq" placeholder="Symbol or name…"></div>
+    <div class="grp"><span class="lbl">Sector</span><select id="osec"><option value="">All sectors</option></select></div>
+    <div class="grp"><span class="lbl">IV percentile</span><button data-oiv="" class="on">Any</button><button data-oiv="hi">≥ 80 (rich)</button><button data-oiv="lo">≤ 20 (cheap)</button></div>
+    <div class="grp"><span class="lbl">PCR</span><button data-opc="" class="on">Any</button><button data-opc="hi">≥ 1.2</button><button data-opc="lo">≤ 0.5</button></div>
+    <button id="ocsv">⇩ CSV</button>
+  </div>
+  <div class="note">Max pain, support and resistance use the nearest expiry after today. IV is Black-76 on the nearest expiry at least 5 days out, average of the call and put at the two strikes around the forward. IV percentile = share of the past year's daily readings below today's.</div>
+  <div id="otable" class="tablewrap"></div>
+</section>
+
+<section id="tab-part" style="display:none">
+  <div class="bar filters">
+    <div class="grp"><span class="lbl">Segment</span><select id="pmet"></select></div>
+    <div class="grp" id="pranges"></div>
+    <button id="pcsv">⇩ CSV</button>
+  </div>
+  <div class="g2" style="margin-top:4px">
+    <div class="box"><h4 id="pt1">Net position by participant</h4><div class="legend" id="pleg"></div><div class="cwrap"><canvas id="pc1"></canvas></div></div>
+    <div class="box"><h4>FII index futures: long % and long/short ratio</h4><div class="legend"><span><i class="ln" style="background:#2FE3B5"></i>Long % (left)</span><span><i class="ln" style="background:#E0A64A"></i>Long ÷ short (right)</span></div><div class="cwrap"><canvas id="pc2"></canvas></div></div>
+    <div class="box"><h4>FII net buying in futures (₹ Cr)</h4><div class="legend"><span><i style="background:#2FE3B5"></i>Index futures</span><span><i style="background:#5AA9F0"></i>Stock futures</span><span class="mut">negative bars in red</span></div><div class="cwrap"><canvas id="pc3"></canvas></div></div>
+    <div class="box"><h4>Index options: net calls vs net puts</h4><div class="legend" id="pleg4"></div><div class="cwrap"><canvas id="pc4"></canvas></div></div>
+  </div>
+  <div class="box" style="margin-top:14px"><h4>Positions on <span id="pdate"></span></h4><div class="sub">Open interest in contracts. Net = long − short. Day Δ = change in net vs previous session. Vol net = today's traded long − short.</div><div id="ptable" style="overflow:auto"></div></div>
+</section>
+
+<section id="tab-limits" style="display:none">
+  <div class="g2">
+    <div class="box"><h4>Ban list</h4><div class="sub">In ban today (trade date) and no-fresh-positions for the next session</div><div id="lban"></div></div>
+    <div class="box"><h4>Stocks near the limit over time</h4><div class="legend"><span><i style="background:#E0A64A"></i>≥ 80% of MWPL</span><span><i style="background:#FF5C6C"></i>In ban</span></div><div class="cwrap"><canvas id="lc1"></canvas></div></div>
+  </div>
+  <div class="bar filters" style="margin-top:14px">
+    <div class="grp"><span class="lbl">Table</span><button data-lv="mwpl" class="on">MWPL usage</button><button data-lv="roll">Rollover &amp; carry</button></div>
+    <div class="grp"><span class="lbl">Search</span><input type="search" id="lq" placeholder="Symbol or name…"></div>
+    <div class="grp"><span class="lbl">Sector</span><select id="lsec"><option value="">All sectors</option></select></div>
+    <button id="lcsv">⇩ CSV</button>
+  </div>
+  <div class="note" id="lnote"></div>
+  <div id="ltable" class="tablewrap"></div>
+</section>
+
+<div class="method"><b>How to read it.</b> Price change uses the near-month future; OI is total futures OI across all expiries, and OI change is NSE's reported change on live contracts, so expiry roll-off does not show as unwinding. 5-day figures chain the daily changes. Rollover = OI in next and far months ÷ total futures OI; previous-series figure is taken on its expiry day. Cost of carry = annualised premium of the nearest future at least 2 days from expiry over spot. Participant data is NSE's participant-wise OI (contracts). Black-76 uses a 6.5% rate.</div>
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: NSE F&amp;O bhavcopy, participant-wise OI &amp; volume, FII derivatives statistics, combined OI / MWPL, ban list</span></footer>
+</main>
+
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div class="tip" id="tip"></div>
+
+<script src="data.js?v=202611132141"></script>
+<script>
+"use strict";
+const D = window.FNO, N = D.dates.length, LAST = N - 1;
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const REDUCED = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const LS = k => { try { return JSON.parse(localStorage.getItem("fno_" + k)); } catch (e) { return null; } };
+const SS = (k, v) => { try { localStorage.setItem("fno_" + k, JSON.stringify(v)); } catch (e) {} };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ok = v => v != null && isFinite(v);
+const fP = (v, d = 2) => !ok(v) ? "–" : (v > 0 ? "+" : "") + v.toFixed(d) + "%";
+const fN = (v, d = 0) => !ok(v) ? "–" : v.toLocaleString("en-IN", { minimumFractionDigits: d, maximumFractionDigits: d });
+const fS = (v, d = 0) => !ok(v) ? "–" : (v > 0 ? "+" : "") + fN(v, d);
+const fK = v => !ok(v) ? "–" : Math.abs(v) >= 1e7 ? (v / 1e7).toFixed(2) + " Cr" : Math.abs(v) >= 1e5 ? (v / 1e5).toFixed(2) + " L" : Math.abs(v) >= 1e3 ? (v / 1e3).toFixed(1) + "k" : fN(v);
+const fKs = v => !ok(v) ? "–" : (v > 0 ? "+" : "") + fK(v);
+const cls = v => !ok(v) ? "" : v >= 0 ? "up" : "dn";
+const CL = { L: "Long build-up", S: "Short build-up", C: "Short covering", U: "Long unwinding" };
+const CC = { L: "#2FE3B5", S: "#FF5C6C", C: "#5AA9F0", U: "#E0A64A" };
+const CRGB = { L: "47,227,181", S: "255,92,108", C: "90,169,240", U: "224,166,74" };
+const PCOL = { FII: "#2FE3B5", DII: "#5AA9F0", Pro: "#A78BFA", Client: "#E0A64A" };
+const pretty = (s, wd) => { const d = new Date(s + "T00:00:00"); return (wd ? d.toLocaleString("en-GB", { weekday: "short" }) + " " : "") + d.getDate() + " " + d.toLocaleString("en-GB", { month: "short" }) + " " + d.getFullYear(); };
+const shortD = s => { const d = new Date(s + "T00:00:00"); return d.getDate() + " " + d.toLocaleString("en-GB", { month: "short" }); };
+const pill = c => c ? `<span class="pill ${c}">${CL[c]}</span>` : "–";
+const dots = a => `<span class="dots">${(a || []).map(c => `<i class="${c || ""}" title="${c ? CL[c] : ""}"></i>`).join("")}</span>`;
+const ROWS = D.rows, BY = Object.fromEntries(ROWS.map(r => [r.s, r]));
+const STK = ROWS.filter(r => !r.idx), IDX = ["NIFTY", "BANKNIFTY", "FINNIFTY", "MIDCPNIFTY", "NIFTYNXT50"].filter(s => BY[s]);
+const st = Object.assign({ tab: "overview", win: "1", bv: "heat", bc: "", ou: "", oiv: "", opc: "", lv: "mwpl", pmet: "if", prange: "6M" }, LS("state") || {});
+const save = () => SS("state", { tab: st.tab, win: st.win, bv: st.bv, ou: st.ou, lv: st.lv, pmet: st.pmet, prange: st.prange });
+function countUp(el, to, fmt, dur = 800) {
+  if (!ok(to) || REDUCED) { el.textContent = fmt(to); return; }
+  const t0 = performance.now(); const step = now => { const k = Math.min(1, (now - t0) / dur); el.textContent = fmt(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+
+// ---------------------------------------------------------------- generic canvas chart
+// o = {labels, series:[{name,data,color,type:'line'|'bar',axis:'l'|'r',dash,fmt,neg}], h, fmtL, fmtR, zeroL, zeroR, ref:{l:value}, mark:{x,label}, xfmt}
+const tip = $("#tip");
+function chart(cv, o) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth || cv.parentNode.clientWidth, H = o.h || 220;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+  const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const n = o.labels.length; if (!n) return;
+  const ax = {};
+  for (const a of ["l", "r"]) {
+    const ss = o.series.filter(s => (s.axis || "l") === a); if (!ss.length) continue;
+    let v = ss.flatMap(s => s.data.filter(ok)); if (o.ref && ok(o.ref[a])) v.push(o.ref[a]);
+    if (ss.some(s => s.type === "bar") || o["zero" + a.toUpperCase()]) v.push(0);
+    if (!v.length) v = [0, 1];
+    let lo = Math.min(...v), hi = Math.max(...v); const pad = (hi - lo) * 0.08 || Math.abs(hi) * 0.1 || 1;
+    if (lo !== 0 || !ss.some(s => s.type === "bar")) lo -= pad; hi += pad;
+    ax[a] = { lo, hi, fmt: a === "l" ? (o.fmtL || (x => fK(x))) : (o.fmtR || (x => fK(x))) };
+  }
+  const L = ax.l ? 54 : 8, R = ax.r ? 54 : 10, Tp = 8, Bt = 22, pw = W - L - R, ph = H - Tp - Bt;
+  const X = i => L + (i + 0.5) * pw / n;
+  const Y = (a, v) => Tp + (1 - (v - ax[a].lo) / (ax[a].hi - ax[a].lo)) * ph;
+  const bars = o.series.filter(s => s.type === "bar"), nb = bars.length, slot = pw / n, bw = Math.max(1, Math.min(18, slot * 0.78 / Math.max(1, nb)));
+  const paint = (p, hov) => {
+    c.clearRect(0, 0, W, H);
+    c.font = "10.5px Inter, Segoe UI, sans-serif"; c.lineWidth = 1;
+    const ga = ax.l ? "l" : "r";
+    for (let k = 0; k <= 4; k++) {
+      const v = ax[ga].lo + (ax[ga].hi - ax[ga].lo) * k / 4, y = Y(ga, v);
+      c.strokeStyle = "rgba(47,227,181,.07)"; c.beginPath(); c.moveTo(L, y); c.lineTo(L + pw, y); c.stroke();
+      c.fillStyle = "rgba(238,245,242,.4)";
+      if (ax.l) { c.textAlign = "right"; c.fillText(ax.l.fmt(ax.l.lo + (ax.l.hi - ax.l.lo) * k / 4), L - 6, Y("l", ax.l.lo + (ax.l.hi - ax.l.lo) * k / 4) + 3); }
+      if (ax.r) { c.textAlign = "left"; c.fillText(ax.r.fmt(ax.r.lo + (ax.r.hi - ax.r.lo) * k / 4), L + pw + 6, Y("r", ax.r.lo + (ax.r.hi - ax.r.lo) * k / 4) + 3); }
+    }
+    c.textAlign = "center"; c.fillStyle = "rgba(238,245,242,.4)";
+    const nl = Math.min(n, Math.max(2, Math.floor(pw / 80)));
+    for (let k = 0; k < nl; k++) { const i = Math.round((n - 1) * k / Math.max(1, nl - 1)); c.fillText((o.xfmt || (x => x))(o.labels[i]), Math.max(L + 18, Math.min(L + pw - 18, X(i))), H - 6); }
+    c.textAlign = "left";
+    for (const a of ["l", "r"]) if (ax[a] && ax[a].lo < 0 && ax[a].hi > 0 && (o.series.some(s => s.type === "bar" && (s.axis || "l") === a) || o["zero" + a.toUpperCase()])) {
+      c.strokeStyle = "rgba(238,245,242,.25)"; c.beginPath(); c.moveTo(L, Y(a, 0)); c.lineTo(L + pw, Y(a, 0)); c.stroke(); }
+    if (o.ref) for (const a in o.ref) if (ax[a]) { c.strokeStyle = "rgba(201,214,208,.55)"; c.setLineDash([4, 3]); c.beginPath(); c.moveTo(L, Y(a, o.ref[a])); c.lineTo(L + pw, Y(a, o.ref[a])); c.stroke(); c.setLineDash([]); }
+    c.save(); c.beginPath(); c.rect(0, 0, L + pw * p + 1, H); c.clip();
+    bars.forEach((s, bi) => { const a = s.axis || "l", y0 = Y(a, Math.max(ax[a].lo, Math.min(ax[a].hi, 0)));
+      s.data.forEach((v, i) => { if (!ok(v)) return; const x = X(i) - nb * bw / 2 + bi * bw, y = Y(a, v);
+        const col = s.neg && v < 0 ? "#FF5C6C" : s.color; c.fillStyle = col; c.globalAlpha = hov != null && hov !== i ? .55 : .92;
+        c.fillRect(x, Math.min(y, y0), Math.max(1, bw - (nb > 1 ? 1 : 0.6)), Math.max(1, Math.abs(y0 - y))); });
+      c.globalAlpha = 1; });
+    o.series.forEach((s, si) => { if (s.type === "bar") return; const a = s.axis || "l";
+      if (s.area) { const g = c.createLinearGradient(0, Tp, 0, Tp + ph); g.addColorStop(0, "rgba(47,227,181,.24)"); g.addColorStop(1, "rgba(3,8,6,0)");
+        c.beginPath(); let f = -1, l = -1; s.data.forEach((v, i) => { if (!ok(v)) return; if (f < 0) { f = i; c.moveTo(X(i), Y(a, v)); } else c.lineTo(X(i), Y(a, v)); l = i; });
+        if (f >= 0) { c.lineTo(X(l), Tp + ph); c.lineTo(X(f), Tp + ph); c.closePath(); c.fillStyle = g; c.fill(); } }
+      c.beginPath(); c.strokeStyle = s.color; c.lineWidth = s.w || 1.8; c.setLineDash(s.dash || []);
+      if (si === 0 || s.glow) { c.shadowColor = s.color; c.shadowBlur = 8; }
+      let pen = false; s.data.forEach((v, i) => { if (!ok(v)) { pen = false; return; } pen ? c.lineTo(X(i), Y(a, v)) : c.moveTo(X(i), Y(a, v)); pen = true; });
+      c.stroke(); c.shadowBlur = 0; c.setLineDash([]);
+      if (p >= 1 && !s.nodot) { let li = s.data.length - 1; while (li >= 0 && !ok(s.data[li])) li--; if (li >= 0) { const x = X(li), y = Y(a, s.data[li]);
+        c.fillStyle = s.color; c.beginPath(); c.arc(x, y, 3.2, 0, 7); c.fill(); c.globalAlpha = .25; c.beginPath(); c.arc(x, y, 7, 0, 7); c.fill(); c.globalAlpha = 1; } } });
+    c.restore();
+    if (o.mark && ok(o.mark.x)) { const x = L + (o.mark.x + 0.5) * pw / n; c.strokeStyle = "rgba(238,245,242,.7)"; c.setLineDash([3, 3]); c.beginPath(); c.moveTo(x, Tp); c.lineTo(x, Tp + ph); c.stroke(); c.setLineDash([]);
+      c.fillStyle = "#EEF5F2"; c.font = "600 10.5px Inter, sans-serif"; c.textAlign = x > L + pw - 80 ? "right" : "left"; c.fillText(o.mark.label, x + (c.textAlign === "right" ? -5 : 5), Tp + 10); c.textAlign = "left"; }
+    if (hov != null) { c.strokeStyle = "rgba(238,245,242,.28)"; c.beginPath(); c.moveTo(X(hov), Tp); c.lineTo(X(hov), Tp + ph); c.stroke(); }
+  };
+  cv.onmousemove = e => { const b = cv.getBoundingClientRect(), i = Math.floor((e.clientX - b.left - L) / pw * n);
+    if (i < 0 || i >= n) { tip.style.display = "none"; paint(1); return; } paint(1, i);
+    tip.innerHTML = `<b>${esc(o.tipLabel ? o.tipLabel(i) : o.labels[i])}</b>` + o.series.map(s => `<div class="r"><span><i style="background:${s.neg && s.data[i] < 0 ? "#FF5C6C" : s.color}"></i>${esc(s.name)}</span><b>${(s.fmt || fK)(s.data[i])}</b></div>`).join("");
+    tip.style.display = "block"; const tw = tip.offsetWidth; tip.style.left = Math.min(innerWidth - tw - 8, e.clientX + 14) + "px"; tip.style.top = (e.clientY + 14) + "px"; };
+  cv.onmouseleave = () => { tip.style.display = "none"; paint(1); };
+  const tok = (cv._tok = (cv._tok || 0) + 1);
+  if (REDUCED || o.anim === false) return paint(1);
+  const t0 = performance.now(); const step = now => { if (cv._tok !== tok) return; const k = Math.min(1, (now - t0) / 750); paint(1 - Math.pow(1 - k, 3)); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+
+// ---------------------------------------------------------------- sortable table + CSV
+function table(el, rows, cols, key, onRow) {
+  const dc = cols.find(c => c.def), s = st["sort_" + key] || (dc ? { k: dc.k, d: -1 } : { k: null, d: 0 });
+  const col = cols.find(c => c.k === s.k) || cols[0];
+  const val = r => col.v ? col.v(r) : r[col.k];
+  const sorted = !s.d ? [...rows] : [...rows].sort((a, b) => { const x = val(a), y = val(b);
+    if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1;
+    return (typeof x === "string" ? x.localeCompare(y) : x - y) * s.d; });
+  el.innerHTML = `<table><thead><tr>${cols.map(c => `<th data-k="${c.k}" class="${c.l ? "l" : ""} ${c.k === s.k ? (s.d > 0 ? "s-asc" : "s-desc") : ""}" title="${esc(c.t || "")}">${c.h}</th>`).join("")}</tr></thead><tbody>${
+    sorted.map((r, i) => `<tr class="${onRow ? "click" : ""}" data-i="${i}">${cols.map(c => `<td class="${c.l ? "l" : ""}">${c.f ? c.f(r) : esc(r[c.k] ?? "–")}</td>`).join("")}</tr>`).join("") ||
+    `<tr><td colspan="${cols.length}" class="empty">Nothing matches these filters.</td></tr>`}</tbody></table>`;
+  el.querySelectorAll("th").forEach(th => th.onclick = () => { const k = th.dataset.k; st["sort_" + key] = { k, d: s.k === k && s.d ? -s.d : (typeof (rows[0] || {})[k] === "string" ? 1 : -1) }; table(el, rows, cols, key, onRow); });
+  if (onRow) el.querySelectorAll("tbody tr[data-i]").forEach(tr => tr.onclick = () => onRow(sorted[+tr.dataset.i]));
+  el._csv = () => csv(sorted, cols);
+}
+function csv(rows, cols, name) {
+  const q = v => { v = v == null ? "" : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const text = [cols.map(c => q(c.csvh || c.h.replace(/<[^>]+>/g, ""))).join(","), ...rows.map(r => cols.map(c => q(c.cv ? c.cv(r) : c.v ? c.v(r) : r[c.k])).join(","))].join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + text], { type: "text/csv" }));
+  a.download = (name || "fno") + "_" + D.latest + ".csv"; document.body.appendChild(a); a.click(); a.remove();
+}
+const symCol = { k: "s", h: "Symbol", l: 1, f: r => `<b>${esc(r.s)}</b> <span class="mut" style="font-size:11px">${esc(r.idx ? "Index" : r.nm)}</span>`, v: r => r.s };
+const secCol = { k: "sec", h: "Sector", l: 1, f: r => `<span class="mut">${esc(r.sec)}</span>` };
+
+// ---------------------------------------------------------------- hero + summary strip
+function renderHero() {
+  const days = Math.round((Date.now() - new Date(D.latest + "T16:00:00+05:30")) / 864e5);
+  $("#asof").innerHTML = `<span class="datebadge ${days > 4 ? "stale" : ""}">Latest session · ${pretty(D.latest, true)}</span>` +
+    `${N} sessions since ${pretty(D.dates[0])} · built ${esc(D.built)} IST · ${STK.length} F&amp;O stocks + ${IDX.length} indices`;
+}
+const P = D.part, PT = ["FII", "DII", "Pro", "Client"];
+const pAt = (t, k, j) => P[t][k][j];
+function renderPulse() {
+  const j = P.dates.length - 1, f = P.FII, lp = i => f.fil[i] / (f.fil[i] + f.fis[i]) * 100;
+  const nf = BY.NIFTY || {}, ni = D.idx.NIFTY || { pcr: [] };
+  const top = c => STK.filter(r => r.c1 === c).sort((a, b) => b.oc - a.oc).slice(0, 3);
+  const names = (list, c) => list.map(r => `<a data-sym="${esc(r.s)}"><span>${esc(r.s)}</span><span style="color:${CC[c]}">OI ${fP(r.oc, 1)} · ${fP(r.pc, 1)}</span></a>`).join("") || '<span class="mut">none today</span>';
+  const pp = ni.pcr[N - 2];
+  $("#pulse").innerHTML = `
+   <div class="pk"><div class="l">FII index futures long %</div><div class="v" id="k1"></div><div class="s">${fS(lp(j) - lp(j - 1), 1)} pts vs prev · L/S ${(f.fil[j] / f.fis[j]).toFixed(2)}×</div></div>
+   <div class="pk" style="animation-delay:45ms"><div class="l">Nifty PCR (OI · all expiries)</div><div class="v" id="k2"></div><div class="s">prev ${ok(pp) ? pp.toFixed(2) : "–"} · near expiry ${ok(nf.pcrn) ? nf.pcrn.toFixed(2) : "–"} · vol PCR ${ok(nf.pcrv) ? nf.pcrv.toFixed(2) : "–"}</div></div>
+   <div class="pk" style="animation-delay:90ms"><div class="l">Nifty IV · 1-year percentile</div><div class="v"><span id="k3"></span><span style="font-size:15px;color:var(--muted)"> · ${ok(nf.ivp) ? nf.ivp.toFixed(0) + "th pct" : "–"}</span></div><div class="s">Max pain ${fN(nf.mp)} · put wall ${fN(nf.sp)} · call wall ${fN(nf.cr)}</div></div>
+   <div class="pk" style="animation-delay:135ms"><div class="l">Top long build-ups <span style="color:#2FE3B5">●</span></div><div class="names">${names(top("L"), "L")}</div></div>
+   <div class="pk" style="animation-delay:180ms"><div class="l">Top short build-ups <span style="color:#FF5C6C">●</span></div><div class="names">${names(top("S"), "S")}</div></div>`;
+  countUp($("#k1"), lp(j), v => v.toFixed(1) + "%");
+  countUp($("#k2"), nf.pcr, v => ok(v) ? v.toFixed(2) : "–");
+  countUp($("#k3"), nf.iv, v => ok(v) ? v.toFixed(1) + "%" : "–");
+  $$("#pulse [data-sym]").forEach(a => a.onclick = () => openStock(a.dataset.sym));
+}
+
+// ---------------------------------------------------------------- overview
+function renderOverview() {
+  $("#icards").innerHTML = IDX.map((s, i) => { const r = BY[s];
+    return `<div class="box hov ic" data-sym="${s}" style="animation-delay:${i * 45}ms"><div class="top"><span class="nm">${s}</span><span class="${cls(r.pc)}">${fP(r.pc)}</span></div>
+     <div class="px">${fN(r.px, 1)}</div><div style="margin-top:4px">${pill(r.c1)} <span class="note">OI ${fP(r.oc, 1)}</span></div>
+     <div class="kv"><span>PCR OI / vol</span><span>${ok(r.pcr) ? r.pcr.toFixed(2) : "–"} / ${ok(r.pcrv) ? r.pcrv.toFixed(2) : "–"}</span>
+     <span>Max pain</span><span>${fN(r.mp)}</span><span>Support / resist.</span><span>${fN(r.sp)} / ${fN(r.cr)}</span>
+     <span>IV · pctile</span><span>${ok(r.iv) ? r.iv.toFixed(1) : "–"}% · ${ok(r.ivp) ? r.ivp.toFixed(0) : "–"}</span>
+     <span>Carry (ann.)</span><span class="${cls(r.coc)}">${fP(r.coc, 1)}</span><span>Rollover</span><span>${ok(r.roll) ? r.roll.toFixed(1) + "%" : "–"} <span class="mut">(${r.dte}d)</span></span></div>
+     <div class="note" style="margin-top:6px">Options expiry ${shortD(r.sexp)}</div></div>`; }).join("");
+  $$("#icards [data-sym]").forEach(b => b.onclick = () => openStock(b.dataset.sym));
+  const cnt = k => ({ L: 0, S: 0, C: 0, U: 0, ...STK.reduce((m, r) => (r[k] && (m[r[k]] = (m[r[k]] || 0) + 1), m), {}) });
+  const row = (lab, c) => { const t = c.L + c.S + c.C + c.U || 1;
+    return `<div class="note" style="margin-top:8px">${lab}</div><div class="brk">${["L", "C", "U", "S"].map(k => `<div style="background:${CC[k]}" data-w="${c[k] / t * 100}" title="${CL[k]}: ${c[k]}"></div>`).join("")}</div>
+     <div class="legend">${["L", "C", "U", "S"].map(k => `<span><i style="background:${CC[k]}"></i>${CL[k]} <b>${c[k]}</b></span>`).join("")}</div>`; };
+  $("#brk").innerHTML = row("Today", cnt("c1")) + row("Last 5 sessions", cnt("c5"));
+  $("#brk-n").textContent = STK.length + " stocks";
+  requestAnimationFrame(() => $$("#brk .brk div").forEach(d => d.style.width = d.dataset.w + "%"));
+  const k = P.dates.length, i0 = Math.max(0, k - 126), lab = P.dates.slice(i0).map(i => D.dates[i]);
+  chart($("#ov-fii"), { labels: lab, h: 190, xfmt: shortD, fmtL: v => v.toFixed(0) + "%", ref: { l: 50 },
+    series: [{ name: "FII long %", data: P.FII.fil.slice(i0).map((v, j) => v / (v + P.FII.fis[i0 + j]) * 100), color: "#2FE3B5", area: 1, fmt: v => v.toFixed(1) + "%" }] });
+  const pc = D.idx.NIFTY.pcr, j0 = Math.max(0, N - 126);
+  chart($("#ov-pcr"), { labels: D.dates.slice(j0), h: 190, xfmt: shortD, fmtL: v => v.toFixed(2), ref: { l: 1 },
+    series: [{ name: "Nifty PCR", data: pc.slice(j0), color: "#2FE3B5", area: 1, fmt: v => ok(v) ? v.toFixed(2) : "–" }] });
+  const j = P.dates.length - 1; $("#ov-pdate").textContent = pretty(D.dates[P.dates[j]]);
+  const seg = [["Index fut", "fil", "fis"], ["Stock fut", "sfl", "sfs"], ["Index calls", "icl", "ics"], ["Index puts", "ipl", "ips"]];
+  $("#ov-part").innerHTML = `<table><thead><tr><th class="l">Segment</th>${PT.map(t => `<th style="color:${PCOL[t]}">${t}</th>`).join("")}</tr></thead><tbody>${seg.map(([n, a, b]) => `<tr><td class="l">${n}</td>${PT.map(t => {
+    const v = pAt(t, a, j) - pAt(t, b, j), pv = pAt(t, a, j - 1) - pAt(t, b, j - 1); return `<td><b class="${cls(v)}">${fKs(v)}</b> <span class="mut" style="font-size:11px">(${fKs(v - pv)})</span></td>`; }).join("")}</tr>`).join("")}</tbody></table>`;
+  const near = STK.filter(r => ok(r.mwpl) && r.mwpl >= 70).sort((a, b) => b.mwpl - a.mwpl).slice(0, 10);
+  $("#ov-ban").innerHTML = `<div class="chips" style="margin-bottom:10px"><span class="note" style="align-self:center">Ban today:</span>${D.ban.map(s => `<span class="chip ban" data-sym="${esc(s)}">${esc(s)}</span>`).join("") || '<span class="note">none</span>'}</div>` +
+    `<div class="chips" style="margin-bottom:10px"><span class="note" style="align-self:center">No fresh positions next session:</span>${D.banNext.map(s => `<span class="chip ban" data-sym="${esc(s)}">${esc(s)}</span>`).join("") || '<span class="note">none</span>'}</div>` +
+    `<table><tbody>${near.map(r => `<tr class="click" data-sym="${esc(r.s)}"><td class="l"><b>${esc(r.s)}</b> ${r.nf ? '<span class="pill S">ban</span>' : ""}</td><td>${r.mwpl.toFixed(1)}%<span class="mbar"><b class="${r.mwpl >= 80 ? "hot" : ""}" style="width:${Math.min(100, r.mwpl)}%"></b></span></td></tr>`).join("") || '<tr><td class="empty">No stock above 70% of its limit.</td></tr>'}</tbody></table>`;
+  $$("#ov-ban [data-sym]").forEach(b => b.onclick = () => openStock(b.dataset.sym));
+}
+
+// ---------------------------------------------------------------- build-up
+const SECS = [...new Set(STK.map(r => r.sec))].sort();
+for (const id of ["#bsec", "#osec", "#lsec"]) $(id).innerHTML += SECS.map(s => `<option>${esc(s)}</option>`).join("");
+const match = (r, q) => !q || r.s.toLowerCase().includes(q) || (r.nm || "").toLowerCase().includes(q);
+function buildRows() {
+  const q = $("#bq").value.trim().toLowerCase(), sec = $("#bsec").value, mo = +$("#boi").value, w5 = st.win === "5";
+  return STK.filter(r => match(r, q) && (!sec || r.sec === sec) && (!st.bc || (w5 ? r.c5 : r.c1) === st.bc) && (!mo || (r.oi20 || 0) >= mo));
+}
+const buCols = () => [symCol, secCol,
+  { k: "px", h: "Spot", f: r => fN(r.px, 2) }, { k: "fut", h: "Future", f: r => fN(r.fut, 2) },
+  { k: "pc", h: "Price 1D", f: r => `<span class="${cls(r.pc)}">${fP(r.pc)}</span>`, def: st.win !== "5" },
+  { k: "oc", h: "OI 1D", f: r => `<span class="${cls(r.oc)}">${fP(r.oc)}</span>` },
+  { k: "c1", h: "Signal 1D", l: 1, f: r => pill(r.c1), cv: r => CL[r.c1] || "" },
+  { k: "pc5", h: "Price 5D", f: r => `<span class="${cls(r.pc5)}">${fP(r.pc5)}</span>` },
+  { k: "oc5", h: "OI 5D", f: r => `<span class="${cls(r.oc5)}">${fP(r.oc5)}</span>`, def: st.win === "5" },
+  { k: "c5", h: "Signal 5D", l: 1, f: r => pill(r.c5), cv: r => CL[r.c5] || "" },
+  { k: "h5", h: "Last 5", l: 1, f: r => dots(r.h5), v: r => (r.h5 || []).filter(c => c === "L").length, cv: r => (r.h5 || []).join("") },
+  { k: "oi20", h: "OI ÷ 20D avg", t: "Total futures OI vs its average over the previous 20 sessions", f: r => ok(r.oi20) ? `<span class="${r.oi20 >= 1.25 ? "up" : ""}">${r.oi20.toFixed(2)}×</span>` : "–" },
+  { k: "oi", h: "Fut OI (sh)", f: r => fK(r.oi) }, { k: "oiv", h: "OI ₹ Cr", f: r => fN(r.oiv) }];
+function renderBuildup() {
+  const rows = buildRows(), w5 = st.win === "5", ck = w5 ? "c5" : "c1", ok_ = w5 ? "oc5" : "oc", pk = w5 ? "pc5" : "pc";
+  $("#bcount").textContent = `${rows.length} stocks · ${w5 ? "5-session" : "today's"} change · click any stock for detail`;
+  $("#bheat").style.display = st.bv === "heat" ? "" : "none"; $("#btable").style.display = st.bv === "table" ? "" : "none";
+  if (st.bv === "table") return table($("#btable"), rows, buCols(), "bu", r => openStock(r.s));
+  const g = {}; rows.forEach(r => (g[r.sec] = g[r.sec] || []).push(r));
+  const secs = Object.keys(g).sort((a, b) => g[b].reduce((s, r) => s + (r.oiv || 0), 0) - g[a].reduce((s, r) => s + (r.oiv || 0), 0));
+  $("#bheat").innerHTML = secs.map((s, si) => { const list = g[s].sort((a, b) => (b[ok_] || 0) - (a[ok_] || 0));
+    const c = { L: 0, S: 0, C: 0, U: 0 }; list.forEach(r => r[ck] && c[r[ck]]++);
+    return `<div class="box hsec" style="animation-delay:${Math.min(si, 12) * 45}ms"><h4><span>${esc(s)} <span class="cnt">${list.length}</span></span><span class="cnt">${["L", "S", "C", "U"].filter(k => c[k]).map(k => `<span style="color:${CC[k]}">${c[k]} ${k === "L" ? "LB" : k === "S" ? "SB" : k === "C" ? "SC" : "LU"}</span>`).join(" · ")}</span></h4>
+    <div class="tiles">${list.map(r => { const k = r[ck], a = k ? 0.16 + 0.6 * Math.min(1, Math.abs(r[ok_] || 0) / (w5 ? 20 : 8)) : 0.05;
+      return `<div class="tile" data-sym="${esc(r.s)}" style="background:rgba(${CRGB[k] || "238,245,242"},${a.toFixed(2)})" title="${esc(r.nm)} · ${k ? CL[k] : ""}"><div class="s">${esc(r.s)}</div><div class="o">OI ${fP(r[ok_], 1)}</div><div class="o">Px ${fP(r[pk], 1)}</div><div style="margin-top:2px">${dots(r.h5)}</div></div>`; }).join("")}</div></div>`; }).join("") || '<div class="empty">Nothing matches these filters.</div>';
+  $$("#bheat [data-sym]").forEach(t => t.onclick = () => openStock(t.dataset.sym));
+}
+$("#bcsv").onclick = () => csv(buildRows(), buCols(), "fno_buildup");
+
+// ---------------------------------------------------------------- options
+function optRows() {
+  const q = $("#oq").value.trim().toLowerCase(), sec = $("#osec").value;
+  return ROWS.filter(r => match(r, q) && (!sec || r.sec === sec) && (st.ou !== "idx" || r.idx) && (st.ou !== "stk" || !r.idx) &&
+    (!st.oiv || (st.oiv === "hi" ? r.ivp >= 80 : ok(r.ivp) && r.ivp <= 20)) && (!st.opc || (st.opc === "hi" ? r.pcr >= 1.2 : ok(r.pcr) && r.pcr <= 0.5)));
+}
+const optCols = [symCol, { k: "px", h: "Spot", f: r => fN(r.px, 2) }, { k: "pc", h: "1D", f: r => `<span class="${cls(r.pc)}">${fP(r.pc)}</span>` },
+  { k: "pcr", h: "PCR OI", def: 1, f: r => ok(r.pcr) ? `<b>${r.pcr.toFixed(2)}</b>` : "–" }, { k: "pcrv", h: "PCR vol", f: r => ok(r.pcrv) ? r.pcrv.toFixed(2) : "–" },
+  { k: "pcrn", h: "PCR near", t: "Put/call OI ratio of the nearest expiry", f: r => ok(r.pcrn) ? r.pcrn.toFixed(2) : "–" },
+  { k: "mp", h: "Max pain", f: r => fN(r.mp, r.mp < 100 ? 1 : 0) }, { k: "mpd", h: "Spot vs MP", t: "Spot distance from max pain", cv: r => ok(r.mp) && r.mp ? ((r.px / r.mp - 1) * 100).toFixed(2) : "", v: r => ok(r.mp) && r.mp ? (r.px / r.mp - 1) * 100 : null, f: r => { const v = ok(r.mp) && r.mp ? (r.px / r.mp - 1) * 100 : null; return `<span class="${cls(v)}">${fP(v, 1)}</span>`; } },
+  { k: "sp", h: "Support (max PE OI)", f: r => fN(r.sp, r.sp < 100 ? 1 : 0) }, { k: "cr", h: "Resistance (max CE OI)", f: r => fN(r.cr, r.cr < 100 ? 1 : 0) },
+  { k: "iv", h: "ATM IV", f: r => ok(r.iv) ? r.iv.toFixed(1) + "%" : "–" },
+  { k: "ivp", h: "IV pctile", f: r => ok(r.ivp) ? `<b class="${r.ivp >= 80 ? "" : ""}" style="color:${r.ivp >= 80 ? "#E0A64A" : r.ivp <= 20 ? "#5AA9F0" : "inherit"}">${r.ivp.toFixed(0)}</b>` : "–" },
+  { k: "ivr", h: "IV 1Y range", v: r => r.ivhi, f: r => ok(r.ivlo) ? `<span class="mut">${r.ivlo.toFixed(0)}–${r.ivhi.toFixed(0)}%</span>` : "–", cv: r => ok(r.ivlo) ? r.ivlo + "-" + r.ivhi : "" },
+  { k: "ovol", h: "Opt vol (contracts)", f: r => fK(r.ovol) }, { k: "sexp", h: "Expiry", f: r => r.sexp ? shortD(r.sexp) : "–" }];
+function renderOptions() { table($("#otable"), optRows(), optCols, "opt", r => openStock(r.s)); }
+$("#ocsv").onclick = () => csv(optRows(), optCols, "fno_options");
+
+// ---------------------------------------------------------------- participants
+const PMET = { if: ["Index futures · net", t => j => pAt(t, "fil", j) - pAt(t, "fis", j)], ifl: ["Index futures · long %", t => j => pAt(t, "fil", j) / (pAt(t, "fil", j) + pAt(t, "fis", j)) * 100],
+  sf: ["Stock futures · net", t => j => pAt(t, "sfl", j) - pAt(t, "sfs", j)], sfl: ["Stock futures · long %", t => j => pAt(t, "sfl", j) / (pAt(t, "sfl", j) + pAt(t, "sfs", j)) * 100],
+  ic: ["Index calls · net", t => j => pAt(t, "icl", j) - pAt(t, "ics", j)], ip: ["Index puts · net", t => j => pAt(t, "ipl", j) - pAt(t, "ips", j)],
+  io: ["Index options · net bullish (calls − puts)", t => j => (pAt(t, "icl", j) - pAt(t, "ics", j)) - (pAt(t, "ipl", j) - pAt(t, "ips", j))],
+  so: ["Stock options · net bullish (calls − puts)", t => j => (pAt(t, "scl", j) - pAt(t, "scs", j)) - (pAt(t, "spl", j) - pAt(t, "sps", j))] };
+$("#pmet").innerHTML = Object.entries(PMET).map(([k, v]) => `<option value="${k}">${v[0]}</option>`).join(""); $("#pmet").value = st.pmet;
+const PR = [["1M", 21], ["3M", 63], ["6M", 126], ["1Y", 252], ["All", 1e9]];
+$("#pranges").innerHTML = '<span class="lbl">Range</span>' + PR.map(([k]) => `<button data-pr="${k}" class="${st.prange === k ? "on" : ""}">${k}</button>`).join("");
+function renderPart() {
+  const k = P.dates.length, n = PR.find(x => x[0] === st.prange)[1], j0 = Math.max(0, k - n), J = [...Array(k - j0).keys()].map(x => x + j0);
+  const lab = J.map(j => D.dates[P.dates[j]]), pct = st.pmet.endsWith("l");
+  $("#pt1").textContent = PMET[st.pmet][0] + " by participant";
+  $("#pleg").innerHTML = PT.map(t => `<span><i class="ln" style="background:${PCOL[t]}"></i>${t}</span>`).join("");
+  chart($("#pc1"), { labels: lab, xfmt: shortD, h: 250, fmtL: pct ? (v => v.toFixed(0) + "%") : fK, zeroL: !pct, ref: pct ? { l: 50 } : null,
+    series: PT.map(t => ({ name: t, data: J.map(PMET[st.pmet][1](t)), color: PCOL[t], fmt: pct ? (v => v.toFixed(1) + "%") : fKs, w: 1.8 })) });
+  const f = P.FII;
+  chart($("#pc2"), { labels: lab, xfmt: shortD, h: 250, fmtL: v => v.toFixed(0) + "%", fmtR: v => v.toFixed(2) + "×", ref: { l: 50 },
+    series: [{ name: "Long %", data: J.map(j => f.fil[j] / (f.fil[j] + f.fis[j]) * 100), color: "#2FE3B5", area: 1, fmt: v => v.toFixed(1) + "%" },
+             { name: "Long ÷ short", data: J.map(j => f.fil[j] / f.fis[j]), color: "#E0A64A", axis: "r", fmt: v => v.toFixed(2) + "×", w: 1.4 }] });
+  const F = D.fii, fi0 = F.dates.findIndex(i => i >= P.dates[j0]), FI = F.dates.slice(Math.max(0, fi0));
+  const off = F.dates.length - FI.length;
+  chart($("#pc3"), { labels: FI.map(i => D.dates[i]), xfmt: shortD, h: 250, fmtL: v => fN(v),
+    series: [{ name: "Index futures", data: F.if.slice(off), color: "#2FE3B5", type: "bar", neg: 1, fmt: v => "₹" + fS(v) + " Cr" },
+             { name: "Stock futures", data: F.sf.slice(off), color: "#5AA9F0", type: "bar", neg: 1, fmt: v => "₹" + fS(v) + " Cr" }] });
+  $("#pleg4").innerHTML = PT.map(t => `<span><i class="ln" style="background:${PCOL[t]}"></i>${t} calls</span>`).join("") + '<span class="mut">dashed = puts</span>';
+  chart($("#pc4"), { labels: lab, xfmt: shortD, h: 250, fmtL: fK, zeroL: 1,
+    series: [...PT.map(t => ({ name: t + " calls", data: J.map(PMET.ic[1](t)), color: PCOL[t], fmt: fKs, w: 1.6, nodot: 1 })),
+             ...PT.map(t => ({ name: t + " puts", data: J.map(PMET.ip[1](t)), color: PCOL[t], dash: [4, 3], fmt: fKs, w: 1.2, nodot: 1 }))] });
+  // table
+  const j = k - 1, V = P.vol, segs = [["Index futures", "fil", "fis"], ["Stock futures", "sfl", "sfs"], ["Index calls", "icl", "ics"], ["Index puts", "ipl", "ips"], ["Stock calls", "scl", "scs"], ["Stock puts", "spl", "sps"]];
+  $("#pdate").textContent = pretty(D.dates[P.dates[j]], true);
+  const rows = []; for (const t of PT) for (const [sg, a, b] of segs) { const L = pAt(t, a, j), S = pAt(t, b, j), pv = pAt(t, a, j - 1) - pAt(t, b, j - 1);
+    rows.push({ t, sg, L, S, net: L - S, lp: L / (L + S) * 100, dn: L - S - pv, vn: V[t][a][j] != null ? V[t][a][j] - V[t][b][j] : null }); }
+  const cols = [{ k: "t", h: "Participant", l: 1, f: r => `<b style="color:${PCOL[r.t]}">${r.t}</b>` }, { k: "sg", h: "Segment", l: 1 },
+    { k: "L", h: "Long", f: r => fN(r.L) }, { k: "S", h: "Short", f: r => fN(r.S) }, { k: "net", h: "Net", f: r => `<b class="${cls(r.net)}">${fS(r.net)}</b>` },
+    { k: "lp", h: "Long %", f: r => r.lp.toFixed(1) + "%" }, { k: "dn", h: "Day Δ net", f: r => `<span class="${cls(r.dn)}">${fS(r.dn)}</span>` },
+    { k: "vn", h: "Vol net today", f: r => `<span class="${cls(r.vn)}">${fS(r.vn)}</span>` }];
+  table($("#ptable"), rows, cols, "part");
+  $("#pcsv").onclick = () => { const out = []; for (const j2 of J) { const r = { date: D.dates[P.dates[j2]] }; for (const t of PT) for (const [sg, a, b] of segs) { r[t + " " + sg + " long"] = pAt(t, a, j2); r[t + " " + sg + " short"] = pAt(t, b, j2); } out.push(r); }
+    csv(out, Object.keys(out[0]).map(k2 => ({ k: k2, h: k2 })), "fno_participant_history"); };
+}
+
+// ---------------------------------------------------------------- limits & rollover
+function limRows() { const q = $("#lq").value.trim().toLowerCase(), sec = $("#lsec").value;
+  return (st.lv === "mwpl" ? STK.filter(r => ok(r.mwpl)) : ROWS).filter(r => match(r, q) && (!sec || r.sec === sec)); }
+const mwCols = [symCol, secCol, { k: "mwpl", h: "MWPL used", def: 1, f: r => `${fN(r.mwpl, 1)}%<span class="mbar"><b class="${r.mwpl >= 80 ? "hot" : ""}" style="width:${Math.min(100, r.mwpl)}%"></b></span>` },
+  { k: "nf", h: "Status", l: 1, f: r => D.ban.includes(r.s) ? '<span class="pill S">In ban</span>' : r.nf ? '<span class="pill S">No fresh positions</span>' : r.mwpl >= 80 ? '<span class="pill U">Near ban</span>' : "", v: r => r.nf * 2 + (r.mwpl >= 80), cv: r => r.nf ? "ban" : r.mwpl >= 80 ? "near" : "" },
+  { k: "pc", h: "Price 1D", f: r => `<span class="${cls(r.pc)}">${fP(r.pc)}</span>` }, { k: "oc", h: "OI 1D", f: r => `<span class="${cls(r.oc)}">${fP(r.oc)}</span>` },
+  { k: "c1", h: "Signal", l: 1, f: r => pill(r.c1), cv: r => CL[r.c1] || "" }, { k: "oiv", h: "OI ₹ Cr", f: r => fN(r.oiv) }];
+const roCols = [symCol, secCol, { k: "nexp", h: "Near expiry", f: r => r.nexp ? shortD(r.nexp) : "–" }, { k: "dte", h: "Days left" },
+  { k: "roll", h: "Rollover now", def: 1, f: r => ok(r.roll) ? `<b>${r.roll.toFixed(1)}%</b>` : "–" },
+  { k: "rollp", h: "Prev series", t: "Rollover on the previous series' expiry day", f: r => ok(r.rollp) ? r.rollp.toFixed(1) + "%" : "–" },
+  { k: "rolla", h: "3-series avg", f: r => ok(r.rolla) ? r.rolla.toFixed(1) + "%" : "–" },
+  { k: "coc", h: "Carry (ann.)", t: "Annualised premium of the nearest future (≥2 days to expiry) over spot", f: r => `<span class="${cls(r.coc)}">${fP(r.coc, 2)}</span>` },
+  { k: "fut", h: "Future", f: r => fN(r.fut, 2) }, { k: "px", h: "Spot", f: r => fN(r.px, 2) }, { k: "oiv", h: "OI ₹ Cr", f: r => fN(r.oiv) }];
+function renderLimits() {
+  $("#lban").innerHTML = `<div class="chips" style="margin:6px 0 12px"><span class="note" style="align-self:center;width:190px">In ban on ${shortD(D.latest)}:</span>${D.ban.map(s => `<span class="chip ban" data-sym="${esc(s)}">${esc(s)}</span>`).join("") || '<span class="note">none</span>'}</div>
+   <div class="chips" style="margin-bottom:12px"><span class="note" style="align-self:center;width:190px">No fresh positions next session:</span>${D.banNext.map(s => `<span class="chip ban" data-sym="${esc(s)}">${esc(s)}</span>`).join("") || '<span class="note">none</span>'}</div>
+   <div class="chips"><span class="note" style="align-self:center;width:190px">Above 80% of the limit:</span>${STK.filter(r => r.mwpl >= 80 && !r.nf).sort((a, b) => b.mwpl - a.mwpl).map(r => `<span class="chip" data-sym="${esc(r.s)}">${esc(r.s)} ${r.mwpl.toFixed(0)}%</span>`).join("") || '<span class="note">none</span>'}</div>`;
+  $$("#lban [data-sym]").forEach(b => b.onclick = () => openStock(b.dataset.sym));
+  const M = D.mwh, i0 = Math.max(0, M.dates.length - 126);
+  chart($("#lc1"), { labels: M.dates.slice(i0).map(i => D.dates[i]), xfmt: shortD, h: 200, fmtL: v => v.toFixed(0),
+    series: [{ name: "≥ 80% of MWPL", data: M.n80.slice(i0), color: "#E0A64A", type: "bar", fmt: v => v }, { name: "In ban", data: M.nban.slice(i0), color: "#FF5C6C", type: "bar", fmt: v => v }] });
+  const near = ROWS.find(r => r.s === "NIFTY");
+  $("#lnote").textContent = st.lv === "mwpl" ? "Usage = NSE futures-equivalent OI ÷ market-wide position limit. NSE stops fresh positions at 95% and lifts the ban once usage falls below 80%." :
+    `Current monthly series expires ${near ? pretty(near.nexp) : ""} (${near ? near.dte : "–"} days). Rollover is most meaningful in the last week before expiry; compare it with the previous series and the 3-series average.`;
+  table($("#ltable"), limRows(), st.lv === "mwpl" ? mwCols : roCols, "lim_" + st.lv, r => openStock(r.s));
+}
+$("#lcsv").onclick = () => csv(limRows(), st.lv === "mwpl" ? mwCols : roCols, "fno_" + st.lv);
+
+// ---------------------------------------------------------------- per-stock drawer
+const DET = {}; let cur = null, dRange = "6M";
+async function openStock(sym) {
+  const r = BY[sym]; if (!r) return; cur = sym;
+  $("#modal").classList.add("open"); document.body.style.overflow = "hidden";
+  $("#mbox").innerHTML = `<div class="mhead"><div><h2>${esc(sym)} <span class="note" style="font-size:13px;font-weight:400">${esc(r.idx ? "Index" : r.nm + " · " + r.sec + (r.sub ? " · " + r.sub : ""))}</span></h2>
+    <div class="note" style="margin-top:4px"><span class="datebadge" style="font-size:11.5px;padding:3px 10px">As of ${pretty(D.latest, true)}</span>${pill(r.c1)} today · ${pill(r.c5)} over 5 sessions ${dots(r.h5)}</div></div>
+    <div class="grp"><span id="dranges"></span><button id="dcsv">⇩ CSV</button><button class="x" onclick="closeModal()">✕</button></div></div>
+    <div class="mstats">
+     <div class="ms"><div class="l">Spot · future</div><div class="v">${fN(r.px, 2)}</div><div class="s"><span class="${cls(r.pc)}">${fP(r.pc)}</span> · fut ${fN(r.fut, 2)}</div></div>
+     <div class="ms"><div class="l">Futures OI</div><div class="v">${fK(r.oi)}</div><div class="s"><span class="${cls(r.oc)}">${fP(r.oc)}</span> 1D · ${ok(r.oi20) ? r.oi20.toFixed(2) + "× 20D" : ""}</div></div>
+     <div class="ms"><div class="l">PCR OI · vol</div><div class="v">${ok(r.pcr) ? r.pcr.toFixed(2) : "–"} · ${ok(r.pcrv) ? r.pcrv.toFixed(2) : "–"}</div><div class="s">near expiry ${ok(r.pcrn) ? r.pcrn.toFixed(2) : "–"}</div></div>
+     <div class="ms"><div class="l">Max pain · S / R</div><div class="v">${fN(r.mp)}</div><div class="s">${fN(r.sp)} / ${fN(r.cr)} · ${r.sexp ? shortD(r.sexp) : ""}</div></div>
+     <div class="ms"><div class="l">ATM IV · pctile</div><div class="v">${ok(r.iv) ? r.iv.toFixed(1) + "%" : "–"} · ${ok(r.ivp) ? r.ivp.toFixed(0) : "–"}</div><div class="s">1Y range ${ok(r.ivlo) ? r.ivlo.toFixed(0) + "–" + r.ivhi.toFixed(0) + "%" : "–"}</div></div>
+     <div class="ms"><div class="l">${r.idx ? "Rollover · carry" : "MWPL · rollover"}</div><div class="v">${r.idx ? (ok(r.roll) ? r.roll.toFixed(1) + "%" : "–") : (ok(r.mwpl) ? r.mwpl.toFixed(1) + "%" : "–")}</div><div class="s">${r.idx ? "carry " + fP(r.coc, 1) : "roll " + (ok(r.roll) ? r.roll.toFixed(1) + "%" : "–") + " · carry " + fP(r.coc, 1)}</div></div>
+    </div>
+    <div class="g2" id="dcharts"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>`;
+  $("#dranges").innerHTML = PR.map(([k]) => `<button data-dr="${k}" class="${dRange === k ? "on" : ""}">${k}</button>`).join(" ");
+  $$("#dranges [data-dr]").forEach(b => b.onclick = () => { dRange = b.dataset.dr; $$("#dranges [data-dr]").forEach(x => x.classList.toggle("on", x === b)); drawDetail(sym); });
+  try {
+    if (!DET[sym]) { const res = await fetch("stk/" + sym.replace(/[^A-Za-z0-9_-]/g, "_") + ".json?v=" + encodeURIComponent(D.built)); if (!res.ok) throw 0; DET[sym] = await res.json(); }
+  } catch (e) { if (cur === sym) $("#dcharts").innerHTML = '<div class="empty">Could not load the detail for this stock. Check your connection and try again.</div>'; return; }
+  if (cur === sym) drawDetail(sym);
+}
+function drawDetail(sym) {
+  const d = DET[sym], r = BY[sym], n = d.oi.length, k = Math.min(n, PR.find(x => x[0] === dRange)[1]), i0 = n - k;
+  const lab = d.oi.slice(i0).map((_, i) => D.dates[d.d0 + i0 + i]), sl = a => a.slice(i0);
+  $("#dcharts").innerHTML = `
+   <div class="box"><h4>Price vs futures OI</h4><div class="legend"><span><i class="ln" style="background:#2FE3B5"></i>Future close (left)</span><span><i style="background:#3E6B5E"></i>Total futures OI (right)</span><span class="mut">hover for the day's signal</span></div><div class="cwrap"><canvas id="dc1"></canvas></div></div>
+   <div class="box"><h4>OI by strike · expiry ${d.strikes ? shortD(d.strikes.exp) : "–"}</h4><div class="legend"><span><i style="background:#E0A64A"></i>Call OI (resistance)</span><span><i style="background:#2FE3B5"></i>Put OI (support)</span><span class="mut">dashed line = spot · hover for day change</span></div><div class="cwrap"><canvas id="dc2"></canvas></div></div>
+   <div class="box"><h4>Put-call ratio</h4><div class="legend"><span><i class="ln" style="background:#2FE3B5"></i>PCR OI</span><span><i class="ln" style="background:#5AA9F0"></i>PCR volume</span></div><div class="cwrap"><canvas id="dc3"></canvas></div></div>
+   <div class="box"><h4>ATM implied volatility ${r.idx ? "&amp; rollover" : "&amp; MWPL usage"}</h4><div class="legend"><span><i class="ln" style="background:#A78BFA"></i>IV % (left)</span><span><i class="ln" style="background:#E0A64A"></i>${r.idx ? "Rollover %" : "MWPL used %"} (right)</span></div><div class="cwrap"><canvas id="dc4"></canvas></div></div>`;
+  const cl = sl(d.cls);
+  chart($("#dc1"), { labels: lab, xfmt: shortD, h: 240, fmtL: v => fN(v, v < 1000 ? 1 : 0), fmtR: fK,
+    tipLabel: i => pretty(lab[i]) + (cl[i] ? " · " + CL[cl[i]] : ""),
+    series: [{ name: "Future", data: sl(d.fut), color: "#2FE3B5", fmt: v => fN(v, 2) },
+             { name: "OI", data: sl(d.oi), color: "#3E6B5E", type: "bar", axis: "r", fmt: fK }] });
+  const S = d.strikes;
+  if (S && S.K.length) {
+    const sx = S.K.findIndex(x => x >= r.px), frac = sx <= 0 ? 0 : sx - 1 + (r.px - S.K[sx - 1]) / (S.K[sx] - S.K[sx - 1]);
+    chart($("#dc2"), { labels: S.K.map(String), h: 240, fmtL: fK, xfmt: x => fN(+x, +x < 100 ? 1 : 0), mark: { x: frac, label: "Spot " + fN(r.px, 0) },
+      tipLabel: i => "Strike " + fN(S.K[i], 1) + ` · ΔCE ${fKs(S.dce[i])} · ΔPE ${fKs(S.dpe[i])}`,
+      series: [{ name: "Call OI", data: S.ce, color: "#E0A64A", type: "bar" }, { name: "Put OI", data: S.pe, color: "#2FE3B5", type: "bar" }] });
+  } else $("#dc2").outerHTML = '<div class="empty">No option OI for the nearest expiry.</div>';
+  chart($("#dc3"), { labels: lab, xfmt: shortD, h: 220, fmtL: v => v.toFixed(2), ref: { l: 1 },
+    series: [{ name: "PCR OI", data: sl(d.pcr), color: "#2FE3B5", fmt: v => ok(v) ? v.toFixed(2) : "–" }, { name: "PCR vol", data: sl(d.pcrv), color: "#5AA9F0", w: 1.1, fmt: v => ok(v) ? v.toFixed(2) : "–", nodot: 1 }] });
+  chart($("#dc4"), { labels: lab, xfmt: shortD, h: 220, fmtL: v => v.toFixed(0) + "%", fmtR: v => v.toFixed(0) + "%",
+    series: [{ name: "ATM IV", data: sl(d.iv), color: "#A78BFA", glow: 1, fmt: v => ok(v) ? v.toFixed(1) + "%" : "–" },
+             { name: r.idx ? "Rollover" : "MWPL used", data: sl(r.idx ? d.roll : d.mwpl), color: "#E0A64A", axis: "r", w: 1.2, fmt: v => ok(v) ? v.toFixed(1) + "%" : "–", nodot: 1 }] });
+  $("#dcsv").onclick = () => { const rows = d.oi.map((_, i) => ({ date: D.dates[d.d0 + i], spot: d.px[i], future: d.fut[i], fut_oi: d.oi[i], signal: CL[d.cls[i]] || "", pcr_oi: d.pcr[i], pcr_vol: d.pcrv[i], max_pain: d.mp[i], atm_iv: d.iv[i], rollover: d.roll[i], carry_ann: d.coc[i], mwpl_pct: d.mwpl[i] }));
+    csv(rows, Object.keys(rows[0]).map(k2 => ({ k: k2, h: k2 })), "fno_" + sym); };
+}
+function closeModal() { $("#modal").classList.remove("open"); document.body.style.overflow = ""; tip.style.display = "none"; cur = null; }
+$("#modal").onclick = e => { if (e.target.id === "modal") closeModal(); };
+addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+// ---------------------------------------------------------------- wiring
+const RENDER = { overview: renderOverview, buildup: renderBuildup, options: renderOptions, part: renderPart, limits: renderLimits };
+function setTab(t) { st.tab = t; save(); $$(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
+  for (const k in RENDER) $("#tab-" + k).style.display = k === t ? "" : "none"; RENDER[t](); }
+$$(".tabs button").forEach(b => b.onclick = () => setTab(b.dataset.tab));
+function bind(attr, key, fn) { $$(`[data-${attr}]`).forEach(b => { b.classList.toggle("on", (st[key] || "") === b.dataset[attr]);
+  b.onclick = () => { st[key] = b.dataset[attr]; save(); $$(`[data-${attr}]`).forEach(x => x.classList.toggle("on", x === b)); fn(); }; }); }
+bind("win", "win", renderBuildup); bind("bv", "bv", renderBuildup); bind("bc", "bc", renderBuildup);
+bind("ou", "ou", renderOptions); bind("oiv", "oiv", renderOptions); bind("opc", "opc", renderOptions);
+bind("lv", "lv", renderLimits); bind("pr", "prange", renderPart);
+["#bq", "#bsec", "#boi"].forEach(s => $(s).oninput = renderBuildup);
+["#oq", "#osec"].forEach(s => $(s).oninput = renderOptions);
+["#lq", "#lsec"].forEach(s => $(s).oninput = renderLimits);
+$("#pmet").onchange = () => { st.pmet = $("#pmet").value; save(); renderPart(); };
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { RENDER[st.tab](); if (cur && DET[cur]) drawDetail(cur); }, 200); });
+renderHero(); renderPulse(); setTab(RENDER[st.tab] ? st.tab : "overview");
+</script>
+</body>
+</html>

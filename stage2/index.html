@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stage 2 Scanner · Pratham Gupta</title>
+<meta name="description" content="Weekly Stan Weinstein stage analysis for every NSE index constituent: Stage 2 uptrends, fresh breakouts, Mansfield RS and returns. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030806;--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sky:#5AA9F0;--slate:#8A9690;
+--s1:#8A9690;--s2:#2FE3B5;--s3:#E0A64A;--s4:#FF5C6C;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);font:13.5px/1.45 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#1c3a31;border-radius:10px}::-webkit-scrollbar-track{background:transparent}
+header{display:flex;align-items:center;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px;transition:all .2s;white-space:nowrap}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.hsel{margin-left:auto;display:flex;align-items:center;gap:8px}
+main{padding:22px 24px 48px;max-width:1500px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.asof{color:var(--muted);font-size:12.5px}.asof b{color:var(--text)}
+select,input{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:7px 11px;font:inherit;transition:border-color .2s,box-shadow .2s}
+select:focus,input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(47,227,181,.15)}
+select.big{font-size:15px;font-weight:600;padding:9px 14px;border-color:rgba(47,227,181,.45);min-width:240px}
+.pulse{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 14px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s ease both;cursor:default}
+.pk.click{cursor:pointer;transition:border-color .2s,transform .2s}.pk.click:hover{border-color:rgba(47,227,181,.5);transform:translateY(-2px)}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.pk .l{font-size:11.5px;color:var(--muted)}.pk .v{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap}
+.pk .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:14px;margin-bottom:14px}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:14px 16px;animation:rise .55s ease both}
+.box h4{margin:0 0 10px;font-size:13.5px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.box h4 span{color:var(--muted);font-weight:500;font-size:12px}
+.dist{display:flex;height:34px;border-radius:10px;overflow:hidden;gap:2px}
+.dist div{display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;color:#03140E;cursor:pointer;transition:filter .2s,flex-grow .9s cubic-bezier(.2,.8,.2,1);flex-grow:0;min-width:0;overflow:hidden;white-space:nowrap}
+.dist div:hover{filter:brightness(1.15)}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.lg{border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;transition:border-color .2s}
+.lg:hover{border-color:var(--line2)}.lg.on{border-color:var(--acc)}
+.lg .k{display:flex;align-items:center;gap:6px;font-weight:600;font-size:12.5px}.lg .k i{width:9px;height:9px;border-radius:3px}
+.lg .d{font-size:11.5px;color:var(--muted);margin-top:2px}.lg .c{font-size:18px;font-weight:700;margin-top:2px}
+canvas{display:block;width:100%}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:rgba(10,23,19,.78);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:12px}
+.grp{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 3px 0 2px}
+button{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font:inherit;cursor:pointer;transition:all .18s ease;white-space:nowrap}
+button:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:600;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+button.cta{border-color:rgba(47,227,181,.5);color:var(--acc)}
+input[type=search]{width:210px}
+.note{color:var(--muted);font-size:12px}
+.tablewrap{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;overflow:auto;max-height:78vh;animation:rise .5s ease both}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;position:sticky;top:0;background:#08130F;z-index:1}
+th.l,td.l{text-align:left}
+tbody tr{cursor:pointer;transition:background .15s}tbody tr:hover{background:rgba(47,227,181,.06)}
+td .nm{font-weight:600}td .sym{color:var(--dim);font-size:11.5px;margin-left:6px}
+td .sec{color:var(--muted);font-size:12px;max-width:190px;overflow:hidden;text-overflow:ellipsis;display:inline-block;vertical-align:bottom}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;color:#03140E}
+.badge small{font-weight:600;opacity:.75}
+.pill{display:inline-block;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:999px;margin-left:3px;border:1px solid}
+.pill.I{color:#2FE3B5;border-color:rgba(47,227,181,.45);background:rgba(47,227,181,.08)}
+.pill.F{color:#5AA9F0;border-color:rgba(90,169,240,.45);background:rgba(90,169,240,.08)}
+.pill.E{color:#E0A64A;border-color:rgba(224,166,74,.45);background:rgba(224,166,74,.08)}
+.pill.V{color:#A78BFA;border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.08)}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.modal{position:fixed;inset:0;background:rgba(2,6,4,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;z-index:20;padding:30px 14px;overflow:auto}
+.modal.open{display:flex;animation:fade .2s ease both}
+.mbox{background:linear-gradient(170deg,#0E1F19,#08130F 50%);border:1px solid var(--line2);border-radius:20px;width:min(1100px,100%);padding:18px 20px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8);animation:pop .3s cubic-bezier(.2,.9,.25,1.1) both}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.mhead h2{margin:0;font-size:22px;letter-spacing:-.02em}
+.x{font-size:18px;background:none;border:0}
+.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:14px 0}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stats .k{font-size:11px;color:var(--muted)}.stats .v{font-size:18px;font-weight:700;margin-top:2px}
+.mleg{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:11.5px;margin:6px 0}
+.mleg i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.how{margin-top:18px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.how div{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:12.5px;color:var(--muted)}
+.how b{display:block;color:var(--text);font-size:13.5px;margin-bottom:4px}
+.tip{position:fixed;pointer-events:none;background:rgba(8,19,15,.95);border:1px solid var(--line2);border-radius:10px;padding:7px 10px;font-size:12px;display:none;z-index:30}
+.empty{color:var(--muted);padding:30px;text-align:center}
+.skel{height:160px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+footer.ft{margin-top:30px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.pulse{grid-template-columns:repeat(3,minmax(0,1fr))}.pk:last-child{grid-column:span 2}.row2{grid-template-columns:1fr}.how{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:10px 16px}.back{display:none}.hsel{margin-left:0;width:100%}select.big{flex:1;min-width:0}
+ main{padding:16px}.pulse{grid-template-columns:repeat(2,minmax(0,1fr))}.pk .v{font-size:21px}.legend{grid-template-columns:repeat(2,minmax(0,1fr))}.how{grid-template-columns:1fr}input[type=search]{width:150px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../">← All dashboards</a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Stage 2 Scanner</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div class="hsel"><span class="lbl">Index</span><select class="big" id="idx"></select></div>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">Weekly · Stan Weinstein stage analysis</div>
+  <h1>Which stocks are in a <em>Stage 2 uptrend</em> this week.</h1>
+  <div class="asof" id="asof"></div></div>
+</div>
+<div class="pulse" id="pulse"><div class="skel" style="height:86px"></div><div class="skel" style="height:86px"></div><div class="skel" style="height:86px"></div></div>
+<div class="row2">
+  <div class="box"><h4 id="disth">Stage mix</h4><div class="dist" id="dist"></div><div class="legend" id="legend"></div></div>
+  <div class="box"><h4>Stage 2 breadth over 2 years <span>% of members in Stage 2 (mint) and Stage 4 (red)</span></h4><canvas id="breadth"></canvas></div>
+</div>
+<div class="bar">
+  <div class="grp"><span class="lbl">Show</span>
+    <button data-f="all">All</button><button data-f="2" class="on">Stage 2</button><button data-f="I">Ideal setups</button><button data-f="F">Fresh breakouts</button><button data-f="V">Volume surge</button><button data-f="E">Extended</button><button data-f="1">Stage 1</button><button data-f="3">Stage 3</button><button data-f="4">Stage 4</button></div>
+  <div class="grp"><span class="lbl">Market cap</span><button data-cap="" class="on">All</button><button data-cap="L">Large</button><button data-cap="M">Mid</button><button data-cap="S">Small</button><button data-cap="X">Micro</button></div>
+  <div class="grp"><span class="lbl">Sector</span><select id="sec"><option value="">All sectors</option></select></div>
+  <div class="grp"><input type="search" id="q" placeholder="Stock name / symbol…"></div>
+  <div class="grp" style="margin-left:auto"><button class="cta" id="csv">⇩ Export CSV</button></div>
+</div>
+<div class="note" id="count" style="margin:0 2px 8px"></div>
+<div class="tablewrap" id="tw"><div class="skel"></div></div>
+<div class="how">
+  <div><b><span style="color:var(--s1)">●</span> Stage 1 · Basing</b>The 30-week average has gone flat after a decline. Sellers are exhausted, but buyers are not in control yet.</div>
+  <div><b><span style="color:var(--s2)">●</span> Stage 2 · Advancing</b>Price is above a rising 30-week average. This is the only stage Weinstein buys. Ideal setups are not too extended, near highs, and beating NIFTY 500.</div>
+  <div><b><span style="color:var(--s3)">●</span> Stage 3 · Topping</b>The 30-week average flattens after an advance. Price chops around it as stronger hands distribute.</div>
+  <div><b><span style="color:var(--s4)">●</span> Stage 4 · Declining</b>Price is below a falling 30-week average. Weinstein's rule: never own a stock here.</div>
+</div>
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span>
+<span>Source: NSE end-of-day prices (adjusted for splits and bonuses) and NSE index constituent lists · weekly bars include the current week to date</span></footer>
+</main>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div class="tip" id="tip"></div>
+<script src="data.js?v=202611132141"></script>
+<script>
+"use strict";
+const D = window.S2, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const LS = k => { try { return JSON.parse(localStorage.getItem("s2_" + k)); } catch (e) { return null; } };
+const SS = (k, v) => { try { localStorage.setItem("s2_" + k, JSON.stringify(v)); } catch (e) {} };
+const st = Object.assign({ idx: "nifty500", f: "2", cap: "", sec: "", q: "", sort: "mrs", dir: -1 }, LS("state") || {});
+const save = () => SS("state", { idx: st.idx, f: st.f, cap: st.cap, sort: st.sort, dir: st.dir });
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmtP = (v, d = 1) => v == null || !isFinite(v) ? "–" : (v > 0 ? "+" : "") + v.toFixed(d) + "%";
+const cls = v => v == null ? "" : v >= 0 ? "up" : "dn";
+const SC = { 1: "#8A9690", 2: "#2FE3B5", 3: "#E0A64A", 4: "#FF5C6C" };
+const SN = { 1: "Basing", 2: "Advancing", 3: "Topping", 4: "Declining" };
+const FL = { I: "Ideal", F: "Fresh breakout", E: "Extended", V: "Vol surge" };
+const REDUCED = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const prettyDate = s => { const d = new Date(s + "T00:00:00"); return d.getDate() + " " + d.toLocaleString("en-GB", { month: "short" }) + " " + d.getFullYear(); };
+function undelta(a, scale) { const o = []; let p = null; for (const v of a || []) { if (v == null) { o.push(null); continue; } p = p == null ? v : p + v; o.push(p / scale); } return o; }
+function countUp(el, to, fmt, dur = 900) { if (to == null || !isFinite(to) || REDUCED) { el.textContent = fmt(to); return; }
+  const t0 = performance.now(); const step = now => { const k = Math.min(1, (now - t0) / dur); el.textContent = fmt(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
+const badge = (s, wk) => `<span class="badge" style="background:${SC[s]}">S${s}${wk ? ` <small>${wk}w</small>` : ""}</span>`;
+
+// market-cap buckets by rank within the scanned universe (top 100 / 101-250 / 251-500 / rest)
+{ const r = Object.entries(D.stocks).filter(([, s]) => s.mc != null).sort((a, b) => b[1].mc - a[1].mc);
+  r.forEach(([k], i) => D.stocks[k].cap = i < 100 ? "L" : i < 250 ? "M" : i < 500 ? "S" : "X");
+  for (const s of Object.values(D.stocks)) if (!s.cap) s.cap = "X"; }
+
+const IDX = Object.fromEntries(D.indices.map(i => [i.key, i]));
+if (!IDX[st.idx]) st.idx = "nifty500";
+{ const groups = {}; for (const i of D.indices) (groups[i.group] = groups[i.group] || []).push(i);
+  $("#idx").innerHTML = Object.entries(groups).map(([g, list]) => `<optgroup label="${g} indices">${list.map(i => `<option value="${i.key}">${esc(i.name)} (${i.members.length})</option>`).join("")}</optgroup>`).join(""); }
+$("#asof").innerHTML = `Weekly bars as of <b>${prettyDate(D.asof)}</b> (current week: ${D.sessions_this_week} session${D.sessions_this_week > 1 ? "s" : ""} so far) · ${Object.keys(D.stocks).length} stocks scanned · RS vs NIFTY 500`;
+
+function members() { return IDX[st.idx].members.map(k => [k, D.stocks[k]]).filter(x => x[1]); }
+function pass(s) { const f = st.f; return f === "all" ? true : /[1-4]/.test(f) ? s.st === +f : s.fl.includes(f); }
+function rows() {
+  const q = st.q.trim().toLowerCase();
+  return members().filter(([k, s]) => pass(s) && (!st.cap || s.cap === st.cap) && (!st.sec || s.sec === st.sec) && (!q || k.toLowerCase().includes(q) || s.n.toLowerCase().includes(q)));
+}
+
+function renderTop() {
+  const ix = IDX[st.idx], m = members(), n = m.length, c = ix.cnt;
+  const cntF = k => m.filter(([, s]) => s.fl.includes(k)).length;
+  const tiles = [
+    ["Index stage", ix.stage, v => ix.stage ? "S" + Math.round(v) + " · " + SN[ix.stage] : "–", ix.d30 == null ? "" : `${fmtP(ix.d30)} vs 30W · 30W slope ${fmtP(ix.slope)} (4w)`, ix.stage ? `color:${SC[ix.stage]}` : "", null],
+    ["Members in Stage 2", c[2] / n * 100, v => v.toFixed(0) + "%", `${c[2]} of ${n} stocks`, `color:${SC[2]}`, "2"],
+    ["Ideal setups", cntF("I"), v => Math.round(v), "Stage 2 · ≤25% extended · near highs · beating NIFTY 500", "", "I"],
+    ["Fresh breakouts", cntF("F"), v => Math.round(v), "Entered Stage 2 in the last 4 weeks", `color:${"#5AA9F0"}`, "F"],
+    ["Members in Stage 4", c[4] / n * 100, v => v.toFixed(0) + "%", `${c[4]} of ${n} stocks · avoid`, `color:${SC[4]}`, "4"],
+  ];
+  $("#pulse").innerHTML = tiles.map((t, i) => `<div class="pk${t[5] ? " click" : ""}" ${t[5] ? `data-go="${t[5]}"` : ""} style="animation-delay:${i * 60}ms"><div class="l">${t[0]}</div><div class="v" style="${t[4]}">–</div><div class="s" title="${esc(t[3])}">${esc(t[3])}</div></div>`).join("");
+  $$("#pulse .v").forEach((el, i) => i === 0 ? (el.textContent = tiles[0][2](ix.stage)) : countUp(el, tiles[i][1], tiles[i][2]));
+  $$("#pulse [data-go]").forEach(el => el.onclick = () => setF(el.dataset.go));
+  // stage mix
+  $("#disth").innerHTML = `Stage mix · ${esc(ix.name)} <span>${n} stocks${ix.n > n ? ` (${ix.n - n} without enough history)` : ""}</span>`;
+  $("#dist").innerHTML = [2, 1, 3, 4].map(k => `<div data-s="${k}" style="background:${SC[k]}" title="Stage ${k}: ${c[k]} stocks">${c[k] / n > .07 ? Math.round(c[k] / n * 100) + "%" : ""}</div>`).join("");
+  requestAnimationFrame(() => requestAnimationFrame(() => $$("#dist div").forEach(d => d.style.flexGrow = c[d.dataset.s] || 0.0001)));
+  $$("#dist div").forEach(d => d.onclick = () => setF(d.dataset.s));
+  $("#legend").innerHTML = [2, 1, 3, 4].map(k => `<div class="lg ${st.f === String(k) ? "on" : ""}" data-s="${k}"><div class="k"><i style="background:${SC[k]}"></i>Stage ${k}</div><div class="c">${c[k]}</div><div class="d">${SN[k]}</div></div>`).join("");
+  $$("#legend .lg").forEach(d => d.onclick = () => setF(d.dataset.s));
+  // sectors in this index
+  const secs = [...new Set(m.map(([, s]) => s.sec).filter(Boolean))].sort();
+  if (!secs.includes(st.sec)) st.sec = "";
+  $("#sec").innerHTML = '<option value="">All sectors</option>' + secs.map(s => `<option ${s === st.sec ? "selected" : ""}>${esc(s)}</option>`).join("");
+  drawBreadth();
+}
+
+function drawBreadth() {
+  const ix = IDX[st.idx], cv = $("#breadth"), dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = 170;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+  const c = cv.getContext("2d"), L = 4, R = 36, T = 8, B = 20, pw = W - L - R, ph = H - T - B, n = ix.b2.length;
+  const X = i => L + i / (n - 1) * pw, Y = v => T + (1 - v / 100) * ph;
+  const tok = (cv._t = (cv._t || 0) + 1);
+  const paint = p => {
+    c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+    c.font = "10px Inter, sans-serif"; c.fillStyle = "rgba(238,245,242,.38)"; c.strokeStyle = "rgba(47,227,181,.07)";
+    for (const v of [0, 25, 50, 75, 100]) { c.beginPath(); c.moveTo(L, Y(v)); c.lineTo(L + pw, Y(v)); c.stroke(); c.fillText(v + "%", L + pw + 6, Y(v) + 3); }
+    for (let k = 0; k <= 4; k++) { const i = Math.round((n - 1) * k / 4), d = D.weeks[i]; c.fillText(d.slice(2, 7).replace("-", "/"), Math.min(X(i) - 12, L + pw - 28), H - 5); }
+    c.save(); c.beginPath(); c.rect(0, 0, L + pw * p + 1, H); c.clip();
+    const line = (a, col, fill) => { c.beginPath(); let f = -1, l = -1; a.forEach((v, i) => { if (v == null) return; if (f < 0) { f = i; c.moveTo(X(i), Y(v)); } else c.lineTo(X(i), Y(v)); l = i; });
+      if (fill && f >= 0) { c.save(); c.lineTo(X(l), Y(0)); c.lineTo(X(f), Y(0)); c.closePath(); const g = c.createLinearGradient(0, T, 0, T + ph); g.addColorStop(0, fill); g.addColorStop(1, "rgba(3,8,6,0)"); c.fillStyle = g; c.fill(); c.restore();
+        c.beginPath(); a.forEach((v, i) => { if (v == null) return; i === f ? c.moveTo(X(i), Y(v)) : c.lineTo(X(i), Y(v)); }); }
+      c.strokeStyle = col; c.lineWidth = 1.8; c.shadowColor = col; c.shadowBlur = 6; c.stroke(); c.shadowBlur = 0; };
+    line(ix.b4, "#FF5C6C"); line(ix.b2, "#2FE3B5", "rgba(47,227,181,.22)");
+    c.restore();
+  };
+  cv._geo = { X, n, L, pw, ix };
+  if (REDUCED) return paint(1);
+  const t0 = performance.now(); const step = now => { if (cv._t !== tok) return; const k = Math.min(1, (now - t0) / 800); paint(1 - Math.pow(1 - k, 3)); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step);
+}
+$("#breadth").onmousemove = e => { const g = $("#breadth")._geo; if (!g) return; const r = e.target.getBoundingClientRect(), i = Math.round((e.clientX - r.left - g.L) / g.pw * (g.n - 1));
+  if (i < 0 || i >= g.n) return ($("#tip").style.display = "none");
+  $("#tip").innerHTML = `<div class="note">Week of ${prettyDate(D.weeks[i])}</div><div>Stage 2: <b class="up">${g.ix.b2[i] ?? "–"}%</b> · Stage 4: <b class="dn">${g.ix.b4[i] ?? "–"}%</b></div>`;
+  Object.assign($("#tip").style, { display: "block", left: e.clientX + 14 + "px", top: e.clientY + 10 + "px" }); };
+$("#breadth").onmouseleave = () => $("#tip").style.display = "none";
+
+function spark(cv, a) {
+  const dpr = window.devicePixelRatio || 1, W = 90, H = 24; cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + "px"; cv.style.height = H + "px";
+  const c = cv.getContext("2d"); c.scale(dpr, dpr); const v = a.filter(x => x != null); if (v.length < 2) return;
+  const lo = Math.min(...v), hi = Math.max(...v); c.beginPath(); c.strokeStyle = v[v.length - 1] >= v[0] ? "#2FE3B5" : "#FF5C6C"; c.lineWidth = 1.3;
+  let p = false; a.forEach((x, i) => { if (x == null) return; const X = i / (a.length - 1) * (W - 2) + 1, Y = H - 2 - (x - lo) / ((hi - lo) || 1) * (H - 4); p ? c.lineTo(X, Y) : c.moveTo(X, Y); p = true; }); c.stroke();
+}
+const COLS = [
+  ["#", null, "l"], ["Stock", "n", "l"], ["Sector", "sec", "l"], ["Stage", "st", "l"], ["Price", "p"], ["vs 30W", "d30"], ["From 52wH", "h52"],
+  ["Vol ×", "vr"], ["Mansfield RS", "mrs"], ["13W vs N500", "rs13"], ["1M", "r0"], ["3M", "r1"], ["6M", "r2"], ["12M", "r3"], ["26W trend", null]];
+const val = (s, k) => k[0] === "r" && k.length === 2 ? s.r[+k[1]] : s[k];
+let lastRows = [];
+function renderTable() {
+  const list = rows();
+  const k = st.sort; list.sort((a, b) => { const va = val(a[1], k), vb = val(b[1], k);
+    if (typeof va === "string" || typeof vb === "string") return st.dir * String(va ?? "").localeCompare(String(vb ?? ""));
+    return st.dir * ((va ?? -1e9) - (vb ?? -1e9)); });
+  lastRows = list;
+  $("#count").textContent = `${list.length} of ${members().length} ${IDX[st.idx].name} stocks · ${st.f === "all" ? "all stages" : /[1-4]/.test(st.f) ? "Stage " + st.f : FL[st.f]}${st.cap ? " · " + { L: "large", M: "mid", S: "small", X: "micro" }[st.cap] + " caps" : ""}${st.sec ? " · " + st.sec : ""} · sorted by ${COLS.find(c => c[1] === st.sort)?.[0] || st.sort}`;
+  if (!list.length) { $("#tw").innerHTML = '<div class="empty">No stocks match these filters.</div>'; return; }
+  const th = c => `<th class="${c[2] || ""}" ${c[1] ? `data-k="${c[1]}"` : ""}>${c[0]}${st.sort === c[1] ? (st.dir < 0 ? " ↓" : " ↑") : ""}</th>`;
+  $("#tw").innerHTML = `<table><thead><tr>${COLS.map(th).join("")}</tr></thead><tbody>${list.slice(0, 600).map(([k, s], i) => `<tr data-k="${k}">
+    <td class="l note">${i + 1}</td><td class="l"><span class="nm">${esc(s.n.replace(/ Ltd\.?$| Limited$/i, ""))}</span><span class="sym">${k}</span></td>
+    <td class="l"><span class="sec" title="${esc(s.sec)}">${esc(s.sec)}</span></td>
+    <td class="l">${badge(s.st, s.wk)}${[...s.fl].map(f => `<span class="pill ${f}">${FL[f]}</span>`).join("")}</td>
+    <td>₹${(s.p ?? 0).toLocaleString("en-IN")}</td><td class="${cls(s.d30)}">${fmtP(s.d30)}</td><td class="${s.h52 >= -15 ? "up" : ""}">${fmtP(s.h52)}</td>
+    <td style="${s.vr >= 1.5 ? "color:#A78BFA;font-weight:700" : ""}">${s.vr == null ? "–" : s.vr.toFixed(2) + "×"}</td>
+    <td class="${cls(s.mrs)}" style="font-weight:600">${s.mrs == null ? "–" : (s.mrs > 0 ? "+" : "") + s.mrs.toFixed(1)}</td><td class="${cls(s.rs13)}">${fmtP(s.rs13)}</td>
+    ${s.r.map(v => `<td class="${cls(v)}">${fmtP(v)}</td>`).join("")}<td><canvas data-sp="${k}"></canvas></td></tr>`).join("")}</tbody></table>`;
+  $$("#tw canvas[data-sp]").forEach(c => { const s = D.stocks[c.dataset.sp]; spark(c, undelta(s.sp, 1000).map(v => v == null ? null : v * (s.p || 1))); });
+  $$("#tw th[data-k]").forEach(t => t.onclick = () => { const kk = t.dataset.k; st.dir = st.sort === kk ? -st.dir : (["n", "sec"].includes(kk) ? 1 : -1); st.sort = kk; save(); renderTable(); });
+  $$("#tw tbody tr").forEach(r => r.onclick = () => openStock(r.dataset.k));
+}
+
+// ---------- stock modal: weekly chart with 10W / 30W averages, stage shading, turnover bars
+let CH = null;
+function loadCharts() { return CH ? Promise.resolve() : new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = "charts.js?v=" + encodeURIComponent(D.built); sc.onload = () => { CH = window.S2C; ok(); }; sc.onerror = no; document.body.appendChild(sc); }); }
+const sma = (a, n) => a.map((_, i) => { if (i < n - 1) return null; let s = 0, c = 0; for (let j = i - n + 1; j <= i; j++) if (a[j] != null) { s += a[j]; c++; } return c >= n * .85 ? s / c : null; });
+async function openStock(k) {
+  const s = D.stocks[k];
+  $("#mbox").innerHTML = `<div class="mhead"><div><h2>${esc(s.n)} <span class="note" style="font-size:14px">${k}</span></h2>
+    <div class="note">${esc(s.sec)} · ${badge(s.st, s.wk)} ${SN[s.st]} for ${s.wk} week${s.wk > 1 ? "s" : ""} ${[...s.fl].map(f => `<span class="pill ${f}">${FL[f]}</span>`).join("")}</div></div><button class="x" onclick="closeModal()">✕</button></div>
+    <div class="stats">${[["Price", "₹" + (s.p ?? 0).toLocaleString("en-IN")], ["vs 30-week avg", fmtP(s.d30)], ["From 52-week high", fmtP(s.h52)], ["Mansfield RS", s.mrs == null ? "–" : (s.mrs > 0 ? "+" : "") + s.mrs.toFixed(1)], ["Volume vs normal", s.vr == null ? "–" : s.vr.toFixed(2) + "×"], ["12M return", fmtP(s.r[3])]]
+      .map(([a, b]) => `<div><div class="k">${a}</div><div class="v">${b}</div></div>`).join("")}</div>
+    <div class="mleg"><span><i style="background:#2FE3B5"></i>Weekly close</span><span><i style="background:#E0A64A"></i>10-week avg</span><span><i style="background:#5AA9F0"></i>30-week avg</span><span>Background = stage each week (${[1, 2, 3, 4].map(n => `<b style="color:${SC[n]}">S${n}</b>`).join(" ")})</span></div>
+    <canvas id="mchart"><div class="skel"></div></canvas>
+    <div class="note" style="margin-top:8px">Returns: 1M ${fmtP(s.r[0])} · 3M ${fmtP(s.r[1])} · 6M ${fmtP(s.r[2])} · 12M ${fmtP(s.r[3])} · 13 weeks vs NIFTY 500 ${fmtP(s.rs13)}</div>`;
+  $("#modal").classList.add("open");
+  try { await loadCharts(); } catch (e) { return; }
+  drawStock(k);
+}
+function drawStock(k) {
+  const s = D.stocks[k], d = CH.d[k], cv = $("#mchart"); if (!d || !cv) return;
+  const all = undelta(d.c, 1000).map(v => v == null ? null : v * (s.p || 1)), m10 = sma(all, 10), m30 = sma(all, 30);
+  const off = all.length - d.s.length, C = all.slice(off), A10 = m10.slice(off), A30 = m30.slice(off), wk = CH.weeks.slice(off), n = C.length;
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = 380; cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+  const c = cv.getContext("2d"), L = 4, R = 60, T = 8, VB = 60, B = 22, pw = W - L - R, ph = H - T - VB - B - 8;
+  const vals = [...C, ...A10, ...A30].filter(v => v != null); let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * .06; lo -= pad; hi += pad;
+  const X = i => L + (i + .5) / n * pw, Y = v => T + (1 - (v - lo) / (hi - lo)) * ph, bw = pw / n;
+  const tmax = Math.max(...d.t.filter(v => v != null), 1);
+  const tok = (cv._t = (cv._t || 0) + 1);
+  const paint = p => {
+    c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+    for (let i = 0; i < n; i++) { const sg = +d.s[i]; if (!sg) continue; c.fillStyle = SC[sg] + (sg === 2 ? "1c" : "14"); c.fillRect(L + i * bw, T, bw + .5, ph); }
+    c.font = "10.5px Inter, sans-serif"; c.fillStyle = "rgba(238,245,242,.4)"; c.strokeStyle = "rgba(47,227,181,.07)";
+    for (let k2 = 0; k2 <= 5; k2++) { const v = lo + (hi - lo) * k2 / 5, y = Y(v); c.beginPath(); c.moveTo(L, y); c.lineTo(L + pw, y); c.stroke(); c.fillText(v.toFixed(v >= 1000 ? 0 : 1), L + pw + 6, y + 3); }
+    for (let k2 = 0; k2 <= 6; k2++) { const i = Math.round((n - 1) * k2 / 6); c.fillText(wk[i].slice(2, 7).replace("-", "/"), Math.min(X(i) - 12, L + pw - 28), H - 6); }
+    c.save(); c.beginPath(); c.rect(0, 0, L + pw * p + 1, H); c.clip();
+    const vy = T + ph + 8;
+    d.t.forEach((v, i) => { if (v == null) return; const h = v / tmax * VB; c.fillStyle = +d.s[i] === 2 ? "rgba(47,227,181,.45)" : "rgba(138,150,144,.4)"; c.fillRect(L + i * bw + bw * .15, vy + VB - h, bw * .7, h); });
+    const line = (a, col, w, glow) => { c.beginPath(); let pen = false; a.forEach((v, i) => { if (v == null) { pen = false; return; } pen ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)); pen = true; });
+      c.strokeStyle = col; c.lineWidth = w; if (glow) { c.shadowColor = col; c.shadowBlur = 8; } c.stroke(); c.shadowBlur = 0; };
+    line(A30, "#5AA9F0", 2); line(A10, "#E0A64A", 1.4); line(C, "#2FE3B5", 2, true);
+    c.restore();
+    c.fillStyle = "rgba(238,245,242,.4)"; c.fillText("Weekly turnover (₹ Cr)", L + 4, vy + 10);
+  };
+  cv._geo = { X, n, L, pw, bw, C, A10, A30, wk, d };
+  cv.onmousemove = e => { const g = cv._geo, r = cv.getBoundingClientRect(), i = Math.floor((e.clientX - r.left - g.L) / g.bw); if (i < 0 || i >= g.n) return ($("#tip").style.display = "none");
+    const f2 = v => v == null ? "–" : "₹" + v.toFixed(v >= 1000 ? 0 : 1);
+    $("#tip").innerHTML = `<div class="note">Week of ${prettyDate(g.wk[i])}</div><div>Close <b class="up">${f2(g.C[i])}</b> · 10W ${f2(g.A10[i])} · 30W ${f2(g.A30[i])}</div><div>${+g.d.s[i] ? badge(+g.d.s[i]) + " " + SN[+g.d.s[i]] : ""} · turnover ₹${(g.d.t[i] ?? 0).toLocaleString("en-IN")} Cr</div>`;
+    Object.assign($("#tip").style, { display: "block", left: e.clientX + 14 + "px", top: e.clientY + 10 + "px" }); };
+  cv.onmouseleave = () => $("#tip").style.display = "none";
+  if (REDUCED) return paint(1);
+  const t0 = performance.now(); const step = now => { if (cv._t !== tok) return; const k2 = Math.min(1, (now - t0) / 900); paint(1 - Math.pow(1 - k2, 3)); if (k2 < 1) requestAnimationFrame(step); }; requestAnimationFrame(step);
+}
+function closeModal() { $("#modal").classList.remove("open"); $("#tip").style.display = "none"; }
+$("#modal").onclick = e => { if (e.target.id === "modal") closeModal(); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+// ---------- CSV export of the current view
+$("#csv").onclick = () => {
+  const head = ["Symbol", "Company", "Sector", "Stage", "Weeks_in_stage", "Flags", "Close", "Pct_vs_30W", "Pct_from_52wH", "Vol_ratio", "Mansfield_RS", "RS_13W_vs_N500", "Ret_1M", "Ret_3M", "Ret_6M", "Ret_12M"];
+  const q = v => /[",]/.test(String(v ?? "")) ? `"${String(v).replace(/"/g, '""')}"` : (v ?? "");
+  const body = lastRows.map(([k, s]) => [k, s.n, s.sec, s.st, s.wk, [...s.fl].map(f => FL[f]).join("; "), s.p, s.d30, s.h52, s.vr, s.mrs, s.rs13, ...s.r].map(q).join(","));
+  const blob = new Blob([[head.join(","), ...body].join("\n")], { type: "text/csv" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `stage2_${st.idx}_${D.asof}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+
+// ---------- wiring
+function setF(f) { st.f = f; $$("[data-f]").forEach(b => b.classList.toggle("on", b.dataset.f === f)); $$("#legend .lg").forEach(d => d.classList.toggle("on", d.dataset.s === f)); save(); renderTable(); }
+$$("[data-f]").forEach(b => b.onclick = () => setF(b.dataset.f));
+$$("[data-cap]").forEach(b => b.onclick = () => { st.cap = b.dataset.cap; $$("[data-cap]").forEach(x => x.classList.toggle("on", x === b)); save(); renderTable(); });
+$("#idx").onchange = () => { st.idx = $("#idx").value; save(); renderTop(); renderTable(); };
+$("#sec").onchange = () => { st.sec = $("#sec").value; renderTable(); };
+$("#q").oninput = () => { st.q = $("#q").value; renderTable(); };
+let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(drawBreadth, 200); });
+$("#idx").value = st.idx;
+$$("[data-f]").forEach(b => b.classList.toggle("on", b.dataset.f === st.f));
+$$("[data-cap]").forEach(b => b.classList.toggle("on", b.dataset.cap === st.cap));
+renderTop(); renderTable();
+setTimeout(() => loadCharts().catch(() => {}), 400);
+</script>
+</body>
+</html>

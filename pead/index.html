@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PEAD Candidates</title>
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--warn:#E0A64A;--exp:#8EC3A9;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:13px/1.4 Inter,Segoe UI,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;font-weight:650}
+header .asof{color:var(--muted);font-size:12px}
+header .asof b{color:var(--text)}
+.tabs{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+main{padding:14px 20px 40px;max-width:1600px;margin:0 auto}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.grp{display:flex;align-items:center;gap:4px}
+.lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+button{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:6px;padding:5px 10px;font:inherit;cursor:pointer}
+button:hover{color:var(--text)}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:6px;padding:5px 9px;font:inherit}
+input[type=search]{width:200px}
+input.num{width:80px}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.filters.hide{display:none}
+.note{color:var(--muted);font-size:12px}
+.up{color:var(--up)}.dn{color:var(--dn)}.mid{color:var(--warn)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;position:sticky;top:0;background:var(--panel);z-index:1}
+th.l,td.l{text-align:left}
+th.sorted{color:var(--text)}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:rgba(47,227,181,.06)}
+td .sub{color:var(--dim);font-size:11px}
+.co{color:var(--acc2);font-weight:600}
+.tablewrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;max-height:74vh}
+.cols{display:none;gap:12px;flex-wrap:wrap;padding:10px 12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+.cols.open{display:flex}
+.cols label{color:var(--muted);font-size:12px}
+.modal{position:fixed;inset:0;background:rgba(3,6,14,.72);display:none;align-items:flex-start;justify-content:center;z-index:20;padding:30px 14px;overflow:auto}
+.modal.open{display:flex}
+.mbox{background:var(--panel);border:1px solid var(--line2);border-radius:12px;width:min(900px,100%);padding:16px 18px}
+.mhead{display:flex;justify-content:space-between;gap:10px}
+.mhead h2{margin:0;font-size:19px}
+.x{font-size:18px;background:none;border:0}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:12px 0}
+.kv div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.kv .k{color:var(--dim);font-size:11px}.kv .v{font-size:16px;font-weight:650}
+.bars .r{display:grid;grid-template-columns:170px 1fr 60px;gap:8px;align-items:center;margin:5px 0}
+.bars .t{background:rgba(47,227,181,.07);height:14px;border-radius:3px;position:relative}
+.bars .t i{position:absolute;top:0;bottom:0;border-radius:3px}
+.bars .t::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;border-left:1px solid var(--line2)}
+a{color:var(--acc2)}
+@media (max-width:760px){.tabs{margin-left:0}main{padding:12px 16px}}
+
+/* ---- shared dashboard design (tools/DESIGN.md) ---- */
+html{scroll-behavior:smooth}
+body{color:var(--text);font:13.5px/1.45 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#1c3a31;border-radius:10px}::-webkit-scrollbar-track{background:transparent}
+header{gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px;transition:all .2s}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.tabs{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}
+.tabs button{border:0;border-radius:999px;background:transparent;padding:6px 14px}
+.tabs button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 18px rgba(47,227,181,.25)}
+main{padding:22px 24px 48px}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.lbl{letter-spacing:.1em;color:var(--dim)}
+button{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font:inherit;cursor:pointer;transition:all .18s ease;white-space:nowrap}
+button:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:600;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+.x{background:none!important;border:0!important;box-shadow:none!important}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:6px 10px;font:inherit;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(47,227,181,.15)}
+input[type=checkbox]{accent-color:#2FE3B5}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(8px)}
+th,td{padding:8px 10px}
+th{background:#08130F;letter-spacing:.05em}
+tbody tr{transition:background .15s}
+tbody tr:hover,tr.main:hover,tr.main:hover+tr.sub{background:rgba(47,227,181,.06)}
+.tablewrap{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;animation:rise .5s ease both}
+.box,.kv div{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px}
+.gcard{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s;animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.gcard:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35),0 0 0 1px rgba(47,227,181,.12)}
+.modal{background:rgba(2,6,4,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.modal.open{animation:fade .2s ease both}
+.mbox{background:linear-gradient(170deg,#0E1F19,#08130F 50%);border:1px solid var(--line2);border-radius:20px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(47,227,181,.08);animation:pop .3s cubic-bezier(.2,.9,.25,1.1) both}
+.chip{border-radius:999px}
+.tip{background:rgba(8,19,15,.95);border-radius:10px}
+a{color:var(--acc2)}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:10px 16px}.tabs{margin-left:0;width:100%;justify-content:space-between;flex-wrap:wrap}.tabs button{flex:1}.back{display:none}main{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../">← All dashboards</a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">PEAD Candidates</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div class="tabs"><button data-q="current" class="on" id="bq-cur">Current quarter</button><button data-q="previous" id="bq-prev">Previous quarter</button><button id="howbtn">How to use</button></div>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">Post-earnings announcement drift · NSE results</div>
+  <h1>Results the market is <em>still pricing in.</em></h1>
+  <div class="asof" id="asof"></div></div>
+  <span class="live"><i></i>End-of-day data · refreshed every weekday evening</span>
+</div>
+<div class="bar">
+  <button id="fbtn">Show filters</button><button id="cbtn">Columns</button>
+  <input type="search" id="q" placeholder="Search company…">
+  <span class="note" id="count"></span>
+</div>
+<div class="bar filters hide" id="filters">
+  <div class="grp"><span class="lbl">Min score</span><input class="num" type="number" id="minsc" value=""></div>
+  <div class="grp"><span class="lbl">Max score</span><input class="num" type="number" id="maxsc" value=""></div>
+  <div class="grp"><span class="lbl">Min market cap</span><input class="num" type="number" id="minmc" value="500"><span class="note">₹ cr</span></div>
+  <div class="grp"><span class="lbl">Result within</span><select id="days"><option value="">Any time</option><option value="7">7 days</option><option value="14">14 days</option><option value="30">30 days</option><option value="60">60 days</option></select></div>
+  <div class="grp"><span class="lbl">Sector</span><select id="sec"><option value="">All</option></select></div>
+  <label class="note"><input type="checkbox" id="pos"> Profitable only (PE &gt; 0)</label>
+  <label class="note"><input type="checkbox" id="nopend" checked> Hide companies still awaiting their price reaction</label>
+</div>
+<div class="cols" id="cols"></div>
+<div class="tablewrap"><table id="tbl"></table></div>
+<p class="note">Score = 45% earnings surprise (rank of sales &amp; profit growth, YoY and QoQ) + 40% price reaction (2-day return over NIFTY 500 after the result) + 15% volume confirmation. Range −100 to +100. Formula in README.md. Results are read from NSE XBRL filings, and prices are adjusted for splits and bonuses.</p>
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: NSE Integrated Filing XBRL results, NSE end-of-day prices · score formula in README</span></footer>
+</main>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<script src="data.js?v=202611132141"></script>
+<script>
+"use strict";
+const D = window.PD;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LS = (k, v) => { try { if (v === undefined) return JSON.parse(localStorage.getItem("pd_" + k)); localStorage.setItem("pd_" + k, JSON.stringify(v)); } catch (e) { return null; } };
+const pct = (v, d = 1) => v == null ? "–" : (v > 0 ? "+" : "") + v.toFixed(d) + "%";
+const cls = v => v == null ? "" : v >= 0 ? "up" : "dn";
+const scls = v => v >= 25 ? "up" : v <= -25 ? "dn" : "mid";
+const pecls = v => v == null ? "" : v > 60 ? "dn" : v > 30 ? "mid" : "up";
+const cr = v => v == null ? "–" : "₹" + Math.round(v).toLocaleString("en-IN");
+const qlab = qe => { const d = new Date(qe + "T00:00"), m = d.getMonth() + 1, fy = m >= 4 ? d.getFullYear() + 1 : d.getFullYear(); return `Q${Math.floor(((m - 4 + 12) % 12) / 3) + 1}FY${String(fy).slice(2)}`; };
+const pdate = s => { const [d, m, y] = s.slice(0, 11).split("-"); return new Date(`${m} ${d} ${y}`); };
+const dfmt = d => d.toLocaleDateString("en-GB");
+const COLS = [
+  ["n", "Company", 1], ["score", "PEAD score", 1], ["date", "Result date", 1], ["pe", "Current PE", 1], ["fpe", "Forward PE", 1], ["ret", "Returns", 1], ["d1", "Daily ret", 1],
+  ["ar", "2-day abnormal ret", 0], ["vr", "Volume × normal", 0], ["sy", "Sales YoY", 0], ["sq", "Sales QoQ", 0], ["py", "Profit YoY", 0], ["pq", "Profit QoQ", 0],
+  ["E", "Earnings score", 0], ["P", "Reaction score", 0], ["mc", "Market cap", 0], ["sec", "Sector", 0], ["px", "Price", 0], ["basis", "Basis", 0]];
+const st = Object.assign({q: "current", sort: "date", dir: -1, show: COLS.filter(c => c[2]).map(c => c[0]), minmc: "500", nopend: true}, LS("st") || {});
+$("#asof").innerHTML = `Prices to <b>${D.priceDay}</b> · built ${D.built}`;
+$("#bq-cur").textContent = `Current · ${qlab(D.current.qe)}`; $("#bq-prev").textContent = `Previous · ${qlab(D.previous.qe)}`;
+[...new Set([...D.current.rows, ...D.previous.rows].map(r => r.sec).filter(Boolean))].sort().forEach(s => $("#sec").insertAdjacentHTML("beforeend", `<option>${esc(s)}</option>`));
+[D.current, D.previous].forEach(Q => Q.rows.forEach(r => { r.date = pdate(r.filed); }));
+$("#minmc").value = st.minmc; $("#nopend").checked = st.nopend;
+
+function cell(r, k) {
+  switch (k) {
+    case "n": return `<td class="l"><span class="co">${esc(r.n)}</span><div class="sub">${esc(r.s)}</div></td>`;
+    case "score": return `<td class="${r.pending ? "" : scls(r.score)}"><b>${r.pending ? "…" : r.score}</b></td>`;
+    case "date": return `<td>${dfmt(r.date)}</td>`;
+    case "pe": case "fpe": return `<td class="${pecls(r[k])}">${r[k] == null ? "–" : r[k] > 999 ? "999+" : r[k].toFixed(1)}</td>`;
+    case "ret": case "d1": case "ar": return `<td class="${cls(r[k])}">${pct(r[k], 2)}</td>`;
+    case "sy": case "sq": case "py": case "pq": return `<td class="${cls(r[k])}">${pct(r[k], 0)}</td>`;
+    case "vr": return `<td>${r.vr == null ? "–" : r.vr.toFixed(1) + "×"}</td>`;
+    case "E": case "P": return `<td class="${cls(r[k])}">${r[k]}</td>`;
+    case "mc": return `<td>${cr(r.mc)}</td>`;
+    case "px": return `<td>${r.px == null ? "–" : r.px.toLocaleString("en-IN")}</td>`;
+    case "sec": return `<td class="l">${esc(r.sec || "–")}</td>`;
+    case "basis": return `<td class="l">${esc(r.basis)}</td>`;
+  }
+}
+
+function render() {
+  LS("st", st);
+  document.querySelectorAll("[data-q]").forEach(b => b.classList.toggle("on", b.dataset.q === st.q));
+  const Q = D[st.q], q = $("#q").value.trim().toLowerCase();
+  const minsc = $("#minsc").value === "" ? -1e9 : +$("#minsc").value, maxsc = $("#maxsc").value === "" ? 1e9 : +$("#maxsc").value;
+  const minmc = +$("#minmc").value || 0, days = +$("#days").value || 0, sec = $("#sec").value, pos = $("#pos").checked, nop = $("#nopend").checked;
+  const now = new Date(D.priceDay + "T00:00");
+  let rows = Q.rows.filter(r => (!q || (r.n + " " + r.s).toLowerCase().includes(q)) && r.score >= minsc && r.score <= maxsc && (r.mc ?? 0) >= minmc &&
+    (!days || (now - r.date) / 864e5 <= days) && (!sec || r.sec === sec) && (!pos || r.pe != null) && (!nop || !r.pending));
+  const k = st.sort;
+  rows.sort((a, b) => { const x = a[k], y = b[k]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * st.dir; });
+  const cols = COLS.filter(c => c[0] === "n" || st.show.includes(c[0]));
+  $("#tbl").innerHTML = `<thead><tr>${cols.map(([c, l]) => `<th class="${c === "n" || c === "sec" || c === "basis" ? "l" : ""} ${c === k ? "sorted" : ""}" data-k="${c}">${l} ${c === k ? (st.dir > 0 ? "↑" : "↓") : "⇅"}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(r => `<tr data-s="${r.s}">${cols.map(([c]) => cell(r, c)).join("")}</tr>`).join("")}</tbody>`;
+  $("#count").textContent = `${rows.length} of ${Q.n} companies that reported ${qlab(Q.qe)}`;
+  $("#cols").innerHTML = COLS.filter(c => c[0] !== "n").map(([c, l]) => `<label><input type="checkbox" data-c="${c}" ${st.show.includes(c) ? "checked" : ""}> ${l}</label>`).join("");
+  $("#cbtn").textContent = `Columns (${st.show.length + 1}/${COLS.length})`;
+}
+
+function openRow(s) {
+  const r = D[st.q].rows.find(x => x.s === s); if (!r) return;
+  const bar = (lab, v, scale = 100) => { const w = Math.min(Math.abs(v ?? 0) / scale, 1) * 50;
+    return `<div class="r"><span class="note" style="text-align:right">${lab}</span><div class="t"><i style="left:${v >= 0 ? 50 : 50 - w}%;width:${w}%;background:${v >= 0 ? "var(--up)" : "var(--dn)"}"></i></div><span class="${cls(v)}">${v == null ? "–" : v}</span></div>`; };
+  $("#mbox").innerHTML = `<div class="mhead"><div><h2>${esc(r.n)}</h2><div class="note">${esc(r.s)} · ${esc(r.sec || "")} · ${qlab(r.qe)} · ${esc(r.basis)} · filed ${esc(r.filed)}</div></div><button class="x" id="mx">✕</button></div>
+  <div class="kv"><div><div class="k">PEAD score</div><div class="v ${scls(r.score)}">${r.pending ? "pending" : r.score}</div></div>
+  <div><div class="k">Sales (quarter)</div><div class="v">${cr(r.sales)} cr</div></div><div><div class="k">Net profit (quarter)</div><div class="v">${cr(r.pat)} cr</div></div>
+  <div><div class="k">EPS (quarter / TTM)</div><div class="v">${r.eps ?? "–"} / ${r.eps_ttm == null ? "–" : r.eps_ttm.toFixed(2)}</div></div>
+  <div><div class="k">Sales YoY / QoQ</div><div class="v"><span class="${cls(r.sy)}">${pct(r.sy, 0)}</span> / <span class="${cls(r.sq)}">${pct(r.sq, 0)}</span></div></div>
+  <div><div class="k">Profit YoY / QoQ</div><div class="v"><span class="${cls(r.py)}">${pct(r.py, 0)}</span> / <span class="${cls(r.pq)}">${pct(r.pq, 0)}</span></div></div>
+  <div><div class="k">2-day return vs NIFTY 500</div><div class="v ${cls(r.ar)}">${pct(r.ar, 2)}</div></div><div><div class="k">Volume vs 50-day avg</div><div class="v">${r.vr == null ? "–" : r.vr.toFixed(1) + "×"}</div></div>
+  <div><div class="k">Return since result</div><div class="v ${cls(r.ret)}">${pct(r.ret, 2)}</div></div><div><div class="k">PE (TTM) / forward</div><div class="v">${r.pe ?? "–"} / ${r.fpe ?? "–"}</div></div></div>
+  <div class="bars"><h4 style="margin:6px 0">Score components (−100 to +100, centred percentile within the quarter's reporters)</h4>
+  ${bar("Earnings surprise (45%)", r.E)}${bar("Price reaction (40%)", r.P)}</div>
+  <p class="note">Reaction window starts ${esc(r.d0 || "–")} (the first session after the filing). Forward PE = price ÷ (latest quarter EPS × 4).
+  Source: <a href="${esc(r.xbrl)}" target="_blank" rel="noopener">NSE XBRL ↗</a> · <a href="https://www.screener.in/company/${encodeURIComponent(r.s)}/" target="_blank" rel="noopener">Screener ↗</a></p>`;
+  $("#mx").onclick = () => $("#modal").classList.remove("open");
+  $("#modal").classList.add("open");
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-q]"); if (b) { st.q = b.dataset.q; return render(); }
+  const th = e.target.closest("#tbl th"); if (th) { const k = th.dataset.k; st.dir = st.sort === k ? -st.dir : (k === "n" ? 1 : -1); st.sort = k; return render(); }
+  const tr = e.target.closest("tr[data-s]"); if (tr) return openRow(tr.dataset.s);
+});
+$("#cols").onchange = e => { const c = e.target.dataset.c; st.show = e.target.checked ? [...st.show, c] : st.show.filter(x => x !== c); render(); };
+$("#fbtn").onclick = () => { const f = $("#filters"); f.classList.toggle("hide"); $("#fbtn").textContent = f.classList.contains("hide") ? "Show filters" : "Hide filters"; };
+$("#cbtn").onclick = () => $("#cols").classList.toggle("open");
+$("#howbtn").onclick = () => { $("#mbox").innerHTML = `<div class="mhead"><h2>How to use</h2><button class="x" id="mx">✕</button></div>
+  <p>Post-earnings announcement drift (PEAD): stocks with a strong positive surprise and a strong price/volume reaction tend to keep drifting in that direction for weeks.</p>
+  <ul class="note"><li>Sort by <b>PEAD score</b>. High positive scores pair strong growth with a strong reaction; large negatives are the short-side mirror image.</li>
+  <li>The score ranks each company against everyone who reported the same quarter, so it shifts as more results come in.</li>
+  <li>“…” means the result came out after the last price day, so there is no reaction yet.</li>
+  <li><b>Returns</b> runs from the close before the result to the latest close. <b>Daily ret</b> is the latest session.</li>
+  <li>There's no analyst consensus here: the “surprise” is growth versus the same quarter last year and the previous quarter.</li></ul>`;
+  $("#mx").onclick = () => $("#modal").classList.remove("open"); $("#modal").classList.add("open"); };
+$("#modal").onclick = e => { if (e.target.id === "modal") $("#modal").classList.remove("open"); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("#modal").classList.remove("open"); });
+["#q", "#minsc", "#maxsc", "#minmc", "#days", "#sec", "#pos", "#nopend"].forEach(s => $(s).addEventListener("input", () => { st.minmc = $("#minmc").value; st.nopend = $("#nopend").checked; render(); }));
+render();
+</script>
+</body>
+</html>

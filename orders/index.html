@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order Tracker Dashboard</title>
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--warn:#E0A64A;--exp:#5AA9F0;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:13px/1.4 Inter,Segoe UI,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;font-weight:650}
+header .asof{color:var(--muted);font-size:12px}
+header .asof b{color:var(--text)}
+.tabs{margin-left:auto;display:flex;gap:4px}
+main{padding:14px 20px 40px;max-width:1500px;margin:0 auto}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.grp{display:flex;align-items:center;gap:4px}
+.lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+button{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:6px;padding:5px 10px;font:inherit;cursor:pointer}
+button:hover{color:var(--text)}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:6px;padding:5px 9px;font:inherit}
+input[type=search]{width:200px}
+input.num{width:80px}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.warn{margin-left:auto;color:var(--warn);font-size:12px}
+.note{color:var(--muted);font-size:12px}
+h3.sec{font-size:14px;margin:16px 0 8px}
+.gainers{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.gcard{flex:0 0 190px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;cursor:pointer}
+.gcard:hover{border-color:var(--acc)}
+.gcard .rk{display:flex;justify-content:space-between;color:var(--dim);font-size:11px}
+.gcard .rk b{color:var(--up);font-size:16px}
+.gcard .nm{font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gcard .cd{color:var(--dim);font-size:11px}
+.gcard .ob{color:var(--muted);font-size:11px;margin-top:2px}
+.up{color:var(--up)}.dn{color:var(--dn)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;position:sticky;top:0;background:var(--panel);z-index:1}
+th.l,td.l{text-align:left}
+th.sorted{color:var(--text)}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:rgba(47,227,181,.06)}
+td .sub{color:var(--dim);font-size:11px}
+td .obv{color:var(--up);font-weight:600}
+.tablewrap{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto;max-height:72vh}
+.cols{display:none;gap:10px;flex-wrap:wrap;padding:8px 0}
+.cols.open{display:flex}
+.cols label{color:var(--muted);font-size:12px}
+.modal{position:fixed;inset:0;background:rgba(3,6,14,.72);display:none;align-items:flex-start;justify-content:center;z-index:20;padding:30px 14px;overflow:auto}
+.modal.open{display:flex}
+.mbox{background:var(--panel);border:1px solid var(--line2);border-radius:12px;width:min(980px,100%);padding:16px 18px}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.mhead h2{margin:0;font-size:19px}
+.x{font-size:18px;background:none;border:0}
+.stats{display:flex;gap:26px;flex-wrap:wrap;margin:12px 0}
+.stats .k{color:var(--dim);font-size:11px}
+.stats .v{font-size:18px;font-weight:650}
+.stats .v.big{color:var(--up)}
+.gro span{margin-right:12px;font-weight:600}
+.quote{border-left:3px solid var(--up);background:#0d1a1f;padding:8px 12px;border-radius:0 8px 8px 0;margin:10px 0;font-style:italic;color:#cfe}
+.quote .k{font-style:normal;color:var(--dim);font-size:11px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.box h4{margin:0 0 8px;font-size:13px}
+a{color:var(--acc2)}
+svg text{fill:var(--muted);font-size:10px}
+.tip{position:fixed;pointer-events:none;background:#0b1020;border:1px solid var(--line2);border-radius:6px;padding:6px 9px;font-size:12px;display:none;z-index:30;max-width:340px;white-space:normal}
+.chip{font-size:11px;padding:1px 6px;border-radius:4px;background:#1a2138;color:var(--muted)}
+.empty{color:var(--muted);padding:30px;text-align:center}
+.feed .it{padding:8px 10px;border-bottom:1px solid var(--line);display:flex;gap:12px}
+.feed .it .d{color:var(--dim);width:90px;flex:none}
+@media (max-width:760px){.tabs{margin-left:0}.two{grid-template-columns:1fr}main{padding:12px 16px}input[type=search]{width:150px}.warn{margin-left:0}}
+
+/* ---- shared dashboard design (tools/DESIGN.md) ---- */
+html{scroll-behavior:smooth}
+body{color:var(--text);font:13.5px/1.45 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#1c3a31;border-radius:10px}::-webkit-scrollbar-track{background:transparent}
+header{gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px;transition:all .2s}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.tabs{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}
+.tabs button{border:0;border-radius:999px;background:transparent;padding:6px 14px}
+.tabs button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 18px rgba(47,227,181,.25)}
+main{padding:22px 24px 48px}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.lbl{letter-spacing:.1em;color:var(--dim)}
+button{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font:inherit;cursor:pointer;transition:all .18s ease;white-space:nowrap}
+button:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:600;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+.x{background:none!important;border:0!important;box-shadow:none!important}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:6px 10px;font:inherit;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(47,227,181,.15)}
+input[type=checkbox]{accent-color:#2FE3B5}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(8px)}
+th,td{padding:8px 10px}
+th{background:#08130F;letter-spacing:.05em}
+tbody tr{transition:background .15s}
+tbody tr:hover,tr.main:hover,tr.main:hover+tr.sub{background:rgba(47,227,181,.06)}
+.tablewrap{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;animation:rise .5s ease both}
+.box,.kv div{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px}
+.gcard{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s;animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.gcard:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35),0 0 0 1px rgba(47,227,181,.12)}
+.modal{background:rgba(2,6,4,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.modal.open{animation:fade .2s ease both}
+.mbox{background:linear-gradient(170deg,#0E1F19,#08130F 50%);border:1px solid var(--line2);border-radius:20px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(47,227,181,.08);animation:pop .3s cubic-bezier(.2,.9,.25,1.1) both}
+.chip{border-radius:999px}
+.tip{background:rgba(8,19,15,.95);border-radius:10px}
+a{color:var(--acc2)}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:10px 16px}.tabs{margin-left:0;width:100%;justify-content:space-between;flex-wrap:wrap}.tabs button{flex:1}.back{display:none}main{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../">← All dashboards</a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Order Book Tracker</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div class="tabs"><button data-tab="book" class="on">Orderbook view</button><button data-tab="sector">Sector view</button><button data-tab="wins">Order wins</button></div>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">Order-book-heavy companies · from NSE filings</div>
+  <h1>Who is filling the order book <em>fastest.</em></h1>
+  <div class="asof" id="asof"></div></div>
+  <span class="live"><i></i>Refreshed every weekday evening</span>
+</div>
+<div class="bar filters">
+  <div class="grp"><span class="lbl">Growth window</span><button data-g="g3">3M</button><button data-g="g6">6M</button><button data-g="g12" class="on">1Y</button></div>
+  <div class="grp"><span class="lbl">Min order book</span><input class="num" type="number" id="minob" value="500"><span class="note">₹ cr</span></div>
+  <div class="grp"><span class="lbl">Min market cap</span><input class="num" type="number" id="minmc" value="1000"><span class="note">₹ cr</span></div>
+  <div class="grp"><span class="lbl">Sector</span><select id="sector"><option value="">All sectors</option></select></div>
+  <div class="grp"><input type="search" id="q" placeholder="Search company…"></div>
+  <span class="warn">⚠ Figures are machine-extracted from filings and may contain errors. Check them against the source PDF.</span>
+</div>
+
+<section id="tab-book">
+  <h3 class="sec" id="gtitle"></h3>
+  <div class="gainers" id="gainers"></div>
+  <div class="bar" style="margin-top:12px"><button id="colbtn">▥ Columns</button><span class="note" id="count"></span></div>
+  <div class="cols" id="cols"></div>
+  <div class="tablewrap"><table id="tbl"></table></div>
+</section>
+<section id="tab-sector" style="display:none"><div class="tablewrap"><table id="stbl"></table></div></section>
+<section id="tab-wins" style="display:none"><div class="box feed" id="feed"></div></section>
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: NSE corporate filings (investor presentations, press releases, results, concall transcripts) · figures machine-extracted, verify against the source PDF</span></footer>
+</main>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div class="tip" id="tip"></div>
+<script src="data.js?v=202611132141"></script>
+<script>
+"use strict";
+const D = window.OT, C = D.companies;
+const $ = s => document.querySelector(s);
+const LS = (k, v) => { try { if (v === undefined) return JSON.parse(localStorage.getItem("ot_" + k)); localStorage.setItem("ot_" + k, JSON.stringify(v)); } catch (e) { return null; } };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmtCr = v => v == null ? "–" : "₹" + Math.round(v).toLocaleString("en-IN") + " Cr";
+const kfmt = v => v >= 1000 ? (v / 1000).toFixed(v >= 10000 ? 0 : 1) + "K" : Math.round(v);
+const pct = v => v == null ? "–" : (v > 0 ? "+" : "") + v.toFixed(0) + "%";
+const cls = v => v == null ? "" : v >= 0 ? "up" : "dn";
+const dfmt = s => s ? new Date(s + "T00:00").toLocaleDateString("en-GB", {day:"2-digit", month:"short", year:"numeric"}) : "–";
+const st = Object.assign({g: "g12", sort: "upd", dir: -1, tab: "book", hide: ["sec"]}, LS("st") || {});
+const GL = {g3: "3 months", g6: "6 months", g12: "1 year"};
+$("#asof").innerHTML = `Built <b>${D.built}</b> · ${C.length} companies with an order book`;
+[...new Set(C.map(c => c.sec))].sort().forEach(s => $("#sector").insertAdjacentHTML("beforeend", `<option>${esc(s)}</option>`));
+C.forEach(c => c.br = c.rev ? c.ob / c.rev : null);
+
+const COLS = [
+  ["n", "Company", "l"], ["sec", "Sector", "l"], ["gr", "Growth", ""], ["ob", "Order book", ""], ["rev", "Revenue (TTM)", ""],
+  ["br", "Book / revenue", ""], ["mc", "Market cap", ""], ["asof", "As of", ""], ["upd", "Last updated", ""], ["hist", "Order book history", "l"]];
+
+function filtered() {
+  const minob = +$("#minob").value || 0, minmc = +$("#minmc").value || 0, sec = $("#sector").value, q = $("#q").value.trim().toLowerCase();
+  return C.filter(c => c.ob >= minob && (c.mc == null ? minmc <= 0 : c.mc >= minmc) && (!sec || c.sec === sec) &&
+    (!q || (c.n + " " + c.s + " " + c.bse).toLowerCase().includes(q)));
+}
+
+function spark(c, w = 110, h = 30) {
+  const hs = c.h.slice(-12), mx = Math.max(...hs.map(p => p.v)), bw = w / Math.max(hs.length, 6);
+  const col = (c[st.g] ?? 0) >= 0 ? "var(--up)" : "var(--dn)";
+  return `<svg width="${w}" height="${h}">${hs.map((p, i) => { const bh = Math.max(2, p.v / mx * (h - 2));
+    return `<rect x="${i * bw + 1}" y="${h - bh}" width="${bw - 2}" height="${bh}" fill="${col}" opacity="${.45 + .55 * (i + 1) / hs.length}"/>`; }).join("")}</svg>`;
+}
+
+function render() {
+  LS("st", st);
+  document.querySelectorAll("[data-g]").forEach(b => b.classList.toggle("on", b.dataset.g === st.g));
+  const F = filtered();
+  // gainers
+  $("#gtitle").textContent = `Top order-book gainers: last ${GL[st.g]}`;
+  const top = F.filter(c => c[st.g] != null).sort((a, b) => b[st.g] - a[st.g]).slice(0, 12);
+  $("#gainers").innerHTML = top.map((c, i) => `<div class="gcard" data-s="${c.s}"><div class="rk">#${i + 1}<b>${pct(c[st.g])}</b></div>
+    <div class="nm">${esc(c.n)}</div><div class="cd">NSE: ${c.s}</div>${spark(c, 168, 34)}<div class="ob">${fmtCr(c.ob)}</div></div>`).join("") || `<div class="empty">No company has enough history for this window.</div>`;
+  // table
+  const key = st.sort, dir = st.dir;
+  const val = c => key === "gr" ? c[st.g] : key === "hist" ? c.h.length : c[key];
+  F.sort((a, b) => { const x = val(a), y = val(b); if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * dir; });
+  const cols = COLS.filter(([k]) => !st.hide.includes(k));
+  $("#tbl").innerHTML = `<thead><tr>${cols.map(([k, l, a]) => `<th class="${a} ${k === key ? "sorted" : ""}" data-k="${k}">${k === "gr" ? `Growth (${st.g.slice(1)}${st.g === "g12" ? "Y" : "M"})`.replace("12Y", "1Y") : l}${k === key ? (dir > 0 ? " ↑" : " ↓") : ""}</th>`).join("")}</tr></thead>
+  <tbody>${F.map(c => `<tr data-s="${c.s}">${cols.map(([k]) => cell(c, k)).join("")}</tr>`).join("")}</tbody>`;
+  $("#count").textContent = `${F.length} companies · sorted by ${COLS.find(x => x[0] === key)[1].toLowerCase()} · click a row for history and source`;
+  $("#cols").innerHTML = COLS.filter(([k]) => k !== "n").map(([k, l]) => `<label><input type="checkbox" data-col="${k}" ${st.hide.includes(k) ? "" : "checked"}> ${l}</label>`).join("");
+  renderSector(F); renderWins(F);
+}
+
+function cell(c, k) {
+  switch (k) {
+    case "n": return `<td class="l"><b>${esc(c.n)}</b><div class="sub">NSE: ${c.s}${c.bse ? " · BSE: " + c.bse : ""}</div></td>`;
+    case "sec": return `<td class="l"><span class="chip">${esc(c.sec)}</span></td>`;
+    case "gr": return `<td class="${cls(c[st.g])}"><b>${pct(c[st.g])}</b></td>`;
+    case "ob": return `<td><span class="obv">${fmtCr(c.ob)}</span></td>`;
+    case "rev": return `<td>${fmtCr(c.rev)}<div class="sub">${esc(c.revsrc || "")}</div></td>`;
+    case "br": return `<td>${c.br == null ? "–" : c.br.toFixed(2) + "x"}</td>`;
+    case "mc": return `<td>${fmtCr(c.mc)}</td>`;
+    case "asof": return `<td>${dfmt(c.asof)}</td>`;
+    case "upd": return `<td>${dfmt(c.upd)}</td>`;
+    case "hist": { const v = c[st.g]; return `<td class="l"><div style="display:flex;gap:8px;align-items:center">${spark(c)}<div><b>${kfmt(c.ob)} cr</b><div class="sub ${cls(v)}">${v == null ? "" : (v >= 0 ? "▲ " : "▼ ") + Math.abs(v).toFixed(0) + "%"}</div></div></div></td>`; }
+  }
+}
+
+function renderSector(F) {
+  const by = {};
+  F.forEach(c => (by[c.sec] = by[c.sec] || []).push(c));
+  const rows = Object.entries(by).map(([s, cs]) => {
+    const ob = cs.reduce((a, c) => a + c.ob, 0);
+    const prev = cs.filter(c => c[st.g] != null);
+    const now = prev.reduce((a, c) => a + c.ob, 0), then = prev.reduce((a, c) => a + c.ob / (1 + c[st.g] / 100), 0);
+    const rev = cs.filter(c => c.rev).reduce((a, c) => a + c.rev, 0), obr = cs.filter(c => c.rev).reduce((a, c) => a + c.ob, 0);
+    return {s, n: cs.length, ob, g: then ? (now / then - 1) * 100 : null, br: rev ? obr / rev : null,
+      lead: cs.filter(c => c[st.g] != null).sort((a, b) => b[st.g] - a[st.g]).slice(0, 3)};
+  }).sort((a, b) => (b.g ?? -1e9) - (a.g ?? -1e9));
+  $("#stbl").innerHTML = `<thead><tr><th class="l">Sector</th><th>Companies</th><th>Total order book</th><th>Growth (${GL[st.g]})</th><th>Book / revenue</th><th class="l">Fastest growing</th></tr></thead><tbody>` +
+    rows.map(r => `<tr data-sec="${esc(r.s)}"><td class="l"><b>${esc(r.s)}</b></td><td>${r.n}</td><td>${fmtCr(r.ob)}</td><td class="${cls(r.g)}"><b>${r.g == null ? "–" : pct(r.g)}</b></td><td>${r.br ? r.br.toFixed(2) + "x" : "–"}</td>
+    <td class="l">${r.lead.map(c => `<span class="chip">${c.s} <span class="${cls(c[st.g])}">${pct(c[st.g])}</span></span>`).join(" ")}</td></tr>`).join("") + "</tbody>";
+}
+
+function renderWins(F) {
+  const all = [];
+  F.forEach(c => (c.orders || []).forEach(o => all.push({...o, c})));
+  all.sort((a, b) => new Date(b.d) - new Date(a.d));
+  $("#feed").innerHTML = `<h4>Recent order-win filings (last 12 months, ${all.length})</h4>` + (all.slice(0, 300).map(o =>
+    `<div class="it"><span class="d">${esc(o.d)}</span><span><b data-s="${o.c.s}" style="cursor:pointer">${esc(o.c.n)}</b> <span class="note">${esc(o.t)}</span> · <a href="${esc(o.url)}" target="_blank" rel="noopener">PDF</a></span></div>`).join("") || `<div class="empty">No order-win filings.</div>`);
+}
+
+function openCo(s) {
+  const c = C.find(x => x.s === s); if (!c) return;
+  const last = c.h[c.h.length - 1];
+  const W = 900, H = 260, pad = 26, n = c.h.length, mx = Math.max(...c.h.map(p => p.v)) * 1.12, bw = (W - pad) / Math.max(n, 4);
+  const yt = [0, .25, .5, .75, 1].map(f => mx * f);
+  const bars = c.h.map((p, i) => { const bh = p.v / mx * (H - 40), x = pad + i * bw + bw * .15, y = H - 20 - bh;
+    return `<g class="b" data-i="${i}" style="cursor:pointer"><rect x="${x}" y="${y}" width="${bw * .7}" height="${bh}" rx="3" fill="var(--up)" opacity="${.55 + .45 * (i + 1) / n}"/>
+    <text x="${x + bw * .35}" y="${y - 4}" text-anchor="middle" style="fill:var(--text);font-size:11px">${kfmt(p.v)}</text>
+    <text x="${x + bw * .35}" y="${H - 6}" text-anchor="middle">${esc(p.q)}</text></g>`; }).join("");
+  const grid = yt.map(v => { const y = H - 20 - v / mx * (H - 40); return `<line x1="${pad}" x2="${W}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="0" y="${y + 3}">${kfmt(v)}</text>`; }).join("");
+  const segs = c.seg && c.seg.length ? (() => { const m = Math.max(...c.seg.map(x => x.value));
+    return `<div class="box"><h4>Order book by segment</h4>${c.seg.map(x => `<div style="display:grid;grid-template-columns:150px 1fr 90px;gap:8px;align-items:center;margin:4px 0"><span class="note" style="text-align:right">${esc(x.name)}</span><div style="background:rgba(47,227,181,.07);height:14px;border-radius:3px"><div style="width:${x.value / m * 100}%;height:100%;background:var(--up);border-radius:3px"></div></div><span>${fmtCr(x.value)}</span></div>`).join("")}<div class="note">Segment figures stated alongside the total. They may not add up to it.</div></div>`; })() : "";
+  const split = c.split ? (() => { const d = c.split.Domestic, e = c.split.Export, r = 46, L = 2 * Math.PI * r;
+    return `<div class="box"><h4>Domestic vs export</h4><div style="display:flex;align-items:center;gap:18px"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--exp)" stroke-width="16"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--up)" stroke-width="16" stroke-dasharray="${L * d / 100} ${L}" transform="rotate(-90 60 60)"/></svg>
+    <div><div><span class="up">■</span> Domestic ${d}%</div><div><span style="color:var(--exp)">■</span> Export ${e}%</div></div></div></div>`; })() : "";
+  const orders = (c.orders || []).length ? `<div class="box" style="margin-top:14px"><h4>Recent order-win filings</h4>${c.orders.map(o => `<div class="note" style="margin:3px 0">${esc(o.d)} · ${esc(o.t)} · <a href="${esc(o.url)}" target="_blank" rel="noopener">PDF</a></div>`).join("")}</div>` : "";
+  $("#mbox").innerHTML = `<div class="mhead"><div><h2>Order Book History: ${esc(c.n)}</h2><div class="note">NSE: ${c.s}${c.bse ? " · BSE: " + c.bse : ""} · ${esc(c.sec)} · all values in ₹ crore</div></div><button class="x" onclick="closeM()">✕</button></div>
+  <div class="stats"><div><div class="k">Latest order book</div><div class="v big">${fmtCr(c.ob)}</div></div><div><div class="k">As of</div><div class="v">${dfmt(c.asof)}</div></div>
+  <div><div class="k">Data points</div><div class="v">${n}</div></div><div><div class="k">Book / revenue</div><div class="v">${c.br ? c.br.toFixed(2) + "x" : "–"}</div></div>
+  <div><div class="k">Order-book growth</div><div class="gro"><span class="${cls(c.g3)}">3M ${pct(c.g3)}</span><span class="${cls(c.g6)}">6M ${pct(c.g6)}</span><span class="${cls(c.g12)}">1Y ${pct(c.g12)}</span></div></div></div>
+  <svg viewBox="0 0 ${W} ${H}" width="100%" id="hchart">${grid}${bars}</svg>
+  <div class="quote" id="mq"></div>
+  <div class="note">Click a bar to see the sentence it came from and open its filing.</div>
+  ${segs || split ? `<div class="two">${split}${segs}</div>` : ""}${orders}`;
+  const showQ = i => { const p = c.h[i]; $("#mq").innerHTML = `<div class="k">From the filing: ${esc(p.src)}, filed ${dfmt(p.filed)} · ${esc(p.q)} · ${fmtCr(p.v)} · confidence ${p.conf}</div>“${esc(p.quote)}”<div class="k" style="margin-top:4px"><a href="${esc(p.url)}" target="_blank" rel="noopener">Source PDF ↗</a></div>`; };
+  showQ(n - 1);
+  document.querySelectorAll("#hchart .b").forEach(g => g.onclick = () => showQ(+g.dataset.i));
+  $("#modal").classList.add("open");
+}
+function closeM() { $("#modal").classList.remove("open"); }
+$("#modal").onclick = e => { if (e.target.id === "modal") closeM(); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeM(); });
+document.addEventListener("click", e => {
+  const s = e.target.closest("[data-s]"); if (s && !e.target.closest("a")) return openCo(s.dataset.s);
+  const sec = e.target.closest("[data-sec]"); if (sec) { $("#sector").value = sec.dataset.sec; setTab("book"); render(); return; }
+  const th = e.target.closest("#tbl th"); if (th) { const k = th.dataset.k; st.dir = st.sort === k ? -st.dir : (["n", "sec"].includes(k) ? 1 : -1); st.sort = k; render(); }
+  const g = e.target.closest("[data-g]"); if (g) { st.g = g.dataset.g; render(); }
+  const t = e.target.closest("[data-tab]"); if (t) setTab(t.dataset.tab);
+});
+$("#cols").onchange = e => { const k = e.target.dataset.col; st.hide = e.target.checked ? st.hide.filter(x => x !== k) : [...st.hide, k]; render(); };
+$("#colbtn").onclick = () => $("#cols").classList.toggle("open");
+["#minob", "#minmc", "#sector", "#q"].forEach(s => $(s).addEventListener("input", render));
+function setTab(t) { st.tab = t; document.querySelectorAll("[data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
+  ["book", "sector", "wins"].forEach(x => $("#tab-" + x).style.display = x === t ? "" : "none"); LS("st", st); }
+setTab(st.tab); render();
+</script>
+</body>
+</html>

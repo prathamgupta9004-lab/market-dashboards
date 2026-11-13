@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Money · Pratham Gupta</title>
+<meta name="description" content="What Indian mutual funds bought and sold last month: stock-level flows, new entries, exits, star-manager moves and sector shifts from AMC monthly portfolio disclosures. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<link rel="icon" href="https://prathamgupta9004-lab.github.io/market-dashboards/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sky:#5AA9F0;--lav:#A78BFA;--slate:#8A9690;
+--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--text);font:13.5px/1.45 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#1c3a31;border-radius:10px}::-webkit-scrollbar-track{background:transparent}
+header{display:flex;align-items:center;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px;transition:all .2s}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.tabs{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}
+.tabs button{border:0;border-radius:999px;background:transparent;padding:6px 14px}
+.tabs button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 18px rgba(47,227,181,.25)}
+main{padding:22px 24px 48px;max-width:1500px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.pulse{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s ease both}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.pk .l{font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+.pk .v{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.grp{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 3px 0 2px}
+button{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font:inherit;cursor:pointer;transition:all .18s ease;white-space:nowrap}
+button:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:600;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+button.sm{padding:3px 9px;font-size:12px}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:6px 10px;font:inherit;transition:border-color .2s,box-shadow .2s;max-width:100%}
+input:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(47,227,181,.15)}
+input[type=search]{width:190px}
+.filters{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px;backdrop-filter:blur(8px);margin-bottom:14px;position:sticky;top:62px;z-index:5}
+.up{color:var(--up)}.dn{color:var(--dn)}.am{color:var(--amber)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:14px}
+.split3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0;animation:rise .5s ease both;
+ transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s}
+.box.hov:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35),0 0 0 1px rgba(47,227,181,.12)}
+.box h4{margin:0 0 4px;font-size:14px;font-weight:600;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.box h4 small{font-weight:400;color:var(--dim);font-size:11.5px}
+.sub{color:var(--dim);font-size:11.5px;margin-bottom:8px}
+.hbar{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 96px;gap:10px;align-items:center;padding:4px 6px;border-radius:8px;cursor:pointer;transition:background .15s}
+.hbar:hover{background:rgba(47,227,181,.07)}
+.hbar .nm{color:var(--text);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar .nm small{color:var(--dim);font-size:10.5px;display:block;overflow:hidden;text-overflow:ellipsis}
+.hbar .tr{background:rgba(47,227,181,.06);height:14px;border-radius:999px;overflow:hidden}
+.hbar .fl{background:linear-gradient(90deg,#10B981,#2FE3B5);height:100%;border-radius:999px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px rgba(47,227,181,.35)}
+.hbar .fl.neg{background:linear-gradient(90deg,#B63A48,#FF5C6C);box-shadow:0 0 12px rgba(255,92,108,.3)}
+.hbar .v{font-weight:700;text-align:right;font-size:12.5px}
+.hbar .v small{display:block;font-weight:400;color:var(--dim);font-size:10.5px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;position:sticky;top:0;background:#08130F;z-index:1;user-select:none}
+th.s::after{content:" ▾";color:var(--acc)}th.s.asc::after{content:" ▴"}
+th:first-child,td:first-child,th.l,td.l{text-align:left}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(47,227,181,.06)}
+tr.click{cursor:pointer}
+td .nm{font-weight:600}td .sy{color:var(--dim);font-size:11px;margin-left:6px}
+.tablewrap{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;overflow:auto;margin-top:14px;max-height:78vh;animation:rise .5s ease both}
+.chip{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:999px;margin:1px 2px 1px 0;white-space:nowrap}
+.chip.up{background:rgba(47,227,181,.12);color:var(--up)}.chip.dn{background:rgba(255,92,108,.12);color:var(--dn)}
+.chip.am{background:rgba(224,166,74,.13);color:var(--amber)}.chip.sl{background:rgba(138,150,144,.15);color:#C3CCC8}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips .chip{cursor:pointer;font-size:11.5px;padding:3px 9px}
+.chips .chip:hover{filter:brightness(1.3)}
+.li{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;font-size:12.5px}
+.li:hover{background:rgba(47,227,181,.06)}
+.li span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list{max-height:360px;overflow:auto}
+.note{color:var(--muted);font-size:12px}
+.empty{color:var(--muted);padding:24px;text-align:center}
+.skel{height:220px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+.modal{position:fixed;inset:0;background:rgba(2,6,4,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;z-index:20;padding:30px 14px;overflow:auto}
+.modal.open{display:flex;animation:fade .2s ease both}
+.mbox{background:linear-gradient(170deg,#0E1F19,#08130F 50%);border:1px solid var(--line2);border-radius:20px;width:min(1100px,100%);padding:18px 20px;box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(47,227,181,.08);animation:pop .3s cubic-bezier(.2,.9,.25,1.1) both}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.mhead h2{margin:0;font-size:22px;letter-spacing:-.02em}
+.x{font-size:18px;background:none;border:0;box-shadow:none}
+.mstats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0}
+.mstats div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.mstats .l{font-size:11px;color:var(--muted)}.mstats .v{font-size:17px;font-weight:700}
+canvas{display:block;width:100%}
+.legend{display:flex;gap:14px;color:var(--muted);font-size:11px;margin:4px 0;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+.tip{position:fixed;pointer-events:none;background:rgba(8,19,15,.95);border:1px solid var(--line2);border-radius:10px;padding:7px 10px;font-size:12px;display:none;z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.spark{display:inline-flex;gap:2px;align-items:flex-end;height:18px;vertical-align:middle}
+.spark i{display:block;width:5px;background:var(--acc);border-radius:1px;opacity:.85}
+.spark i.z{background:var(--line2);height:2px!important}
+.heat td{font-size:12px}
+.more{display:block;margin:10px auto}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+.tabpane{display:none}.tabpane.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.pulse{grid-template-columns:repeat(3,minmax(0,1fr))}.split3{grid-template-columns:1fr 1fr}.mstats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:10px 16px}.tabs{margin-left:0;width:100%;justify-content:space-between}.tabs button{flex:1;padding:6px 6px}.back{display:none}
+ .split,.split3{grid-template-columns:1fr}.hbar{grid-template-columns:minmax(0,110px) minmax(0,1fr) 66px}main{padding:16px}
+ .pulse{grid-template-columns:repeat(2,minmax(0,1fr))}.pk .v{font-size:21px}.filters{position:static}.mstats{grid-template-columns:repeat(2,minmax(0,1fr))}input[type=search]{width:140px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="https://prathamgupta9004-lab.github.io/market-dashboards/">← All dashboards</a>
+  <div class="me"><img src="https://prathamgupta9004-lab.github.io/market-dashboards/assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Smart Money</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div class="tabs"><button data-tab="flows" class="on">Flows</button><button data-tab="stars">Star managers</button><button data-tab="sectors">Sectors</button><button data-tab="coverage">Coverage</button></div>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">Mutual fund monthly portfolios · stock-level flows</div>
+  <h1>What India's fund managers <em>bought and sold.</em></h1>
+  <div class="asof" id="asof">Loading portfolios…</div></div>
+  <div class="live"><i></i><span id="livetxt">Refreshed daily</span></div>
+</div>
+<div class="pulse" id="kpis"><div class="skel" style="height:86px"></div><div class="skel" style="height:86px"></div><div class="skel" style="height:86px"></div><div class="skel" style="height:86px"></div><div class="skel" style="height:86px"></div></div>
+
+<div class="filters" id="filters">
+  <div class="bar">
+    <div class="grp"><span class="lbl">Month</span><select id="fmonth"></select></div>
+    <div class="grp"><span class="lbl">AMC</span><select id="famc"><option value="">All AMCs</option></select><span id="amctag"></span></div>
+    <div class="grp"><span class="lbl">Sector</span><select id="fsec"><option value="">All sectors</option></select></div>
+    <div class="grp"><span class="lbl">Funds</span><span id="fcats"></span></div>
+    <div class="grp"><button class="sm" id="pActive" title="Large, Large & Mid, Mid, Small, Flexi/Multi, Thematic, Other">Active equity</button><button class="sm" id="pAll" title="Everything except arbitrage funds">All ex-arbitrage</button></div>
+  </div>
+</div>
+
+<section class="tabpane on" id="t-flows">
+  <div class="bar" style="justify-content:space-between">
+    <div class="grp"><span class="lbl">Rank by</span><span id="rankby"></span></div>
+    <div class="grp"><span class="lbl">Min MF stake</span><select id="fmin"><option value="0">Any</option><option value="10">₹10 cr+</option><option value="50" selected>₹50 cr+</option><option value="250">₹250 cr+</option></select></div>
+  </div>
+  <div class="split">
+    <div class="box" id="boughtBox"><h4><span id="btitle">Most bought</span> <small id="bhint"></small></h4><div class="sub" id="bsub"></div><div id="bought"></div></div>
+    <div class="box" id="soldBox"><h4><span id="stitle">Most sold</span> <small id="shint"></small></h4><div class="sub" id="ssub"></div><div id="sold"></div></div>
+  </div>
+  <div class="split">
+    <div class="box"><h4>New entries <small>stocks no fund in the filter held last month</small></h4><div class="list" id="newin"></div></div>
+    <div class="box"><h4>Complete exits <small>every fund in the filter sold out</small></h4><div class="list" id="exits"></div></div>
+  </div>
+  <div class="bar" style="margin-top:18px"><input type="search" id="q" placeholder="Search stock…"><span class="note" id="tnote"></span></div>
+  <div class="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  <button class="more" id="more">Show more</button>
+</section>
+
+<section class="tabpane" id="t-stars">
+  <div class="note" style="margin-bottom:6px">Closely watched schemes and what they did in the selected month. Click any stock for its full MF holder list.</div>
+  <div class="split" id="starGrid"></div>
+</section>
+
+<section class="tabpane" id="t-sectors">
+  <div class="split">
+    <div class="box"><h4>Net buying by sector <small id="secHint"></small></h4><div class="sub">₹ crore, flows at month-end prices (share changes × price). AMC and fund filters apply.</div><div id="secFlow"></div></div>
+    <div class="box"><h4>Allocation trend <small>% of equity holdings · fund filter applies, all AMCs</small></h4><div class="legend" id="allocLeg"></div><canvas id="allocCv"></canvas></div>
+  </div>
+  <div class="tablewrap"><table class="heat" id="allocTbl"><thead></thead><tbody></tbody></table></div>
+</section>
+
+<section class="tabpane" id="t-coverage">
+  <div class="box" style="margin-top:4px"><h4>Data coverage <small id="covHint"></small></h4>
+  <div class="sub">Schemes with equity holdings parsed per month from each AMC's official monthly portfolio disclosure. Equity value counts NSE-listed shares only. AUM is each scheme's total net assets, estimated from the disclosed % of NAV.</div></div>
+  <div class="tablewrap"><table id="covTbl"><thead></thead><tbody></tbody></table></div>
+  <div class="box" style="margin-top:14px"><h4>Method</h4><div class="note" style="line-height:1.7">
+  • <b>Flows</b> = change in shares held × month-end price, adjusted for splits and bonuses (share-count jumps between months). A scheme that didn't file in either month is left out of that month's change, so missing files never show up as exits.<br>
+  • <b>% of market cap</b> = MF shares ÷ shares outstanding (NSE). <b>Buyers / sellers</b> count schemes that raised or cut their share count by more than 0.5%.<br>
+  • <b>Fund types</b> come from AMFI scheme categories. Arbitrage funds are hedged, and passive funds track indices, so neither reflects a manager's view; both are excluded from "Active equity".<br>
+  • <b>Factsheet AMCs</b> (tagged in the table above) don't publish their full monthly portfolio in a form that can be downloaded automatically, so they're built from each scheme's top holdings in the public factsheet. Their value = scheme AUM × % of NAV, and their share counts = value ÷ month-end price. A stock moving into or out of a top list isn't treated as a buy, sell, entry or exit; only stocks listed in both months add to flows.<br>
+  • Portfolios are as of each month-end and are published by about the 10th of the following month. The page checks daily and picks up a new month automatically.</div></div>
+</section>
+
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: AMC monthly portfolio disclosures (SEBI-mandated), AMFI scheme categories, NSE prices & shares outstanding</span></footer>
+</main>
+
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div class="tip" id="tip"></div>
+
+<script>document.write('<script src="ver.js?t=' + Date.now() + '"><\/script>');</script>
+<script>document.write('<script src="data.js?v=' + encodeURIComponent(window.SM_VER || "") + '"><\/script>');</script>
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const D = window.SM;
+const REDUCED = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const CATCOL = ["#2FE3B5", "#5AA9F0", "#A78BFA", "#E0A64A", "#8A9690", "#3E6B5E"];
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const ml = m => MON[+m.slice(5) - 1] + " " + m.slice(2, 4);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const inr = (v, d = 0) => v == null || !isFinite(v) ? "–" : v.toLocaleString("en-IN", { maximumFractionDigits: d, minimumFractionDigits: d });
+const cr = v => v == null || !isFinite(v) ? "–" : (Math.abs(v) >= 1e5 ? inr(v / 1e5, 2) + " L cr" : inr(v, Math.abs(v) < 10 ? 1 : 0) + " cr");
+const sgn = (v, f) => (v > 0 ? "+" : v < 0 ? "−" : "") + f(Math.abs(v));
+const pctf = (v, d = 2) => v == null || !isFinite(v) ? "–" : v.toFixed(d) + "%";
+const cls = v => v > 0 ? "up" : v < 0 ? "dn" : "";
+function countUp(el, to, fmt, dur = 800) {
+  if (to == null || !isFinite(to) || REDUCED) { el.textContent = fmt(to); return; }
+  const t0 = performance.now();
+  const step = now => { const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(to * e); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src + "?v=" + encodeURIComponent(D.built); s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+
+const M = D.months, NM = M.length, ACTIVE = [0, 1, 2, 3, 4, 5, 9];
+const st = { mi: NM - 1, amc: "", sec: "", cats: new Set(ACTIVE), rank: "val", min: 50, sort: "fl", asc: false, q: "", limit: 150 };
+window.SM_M = window.SM_M || {}; SM_M[M[NM - 1]] = D.flows;
+
+// ---------- filters UI
+function initFilters() {
+  fillMonths(M.slice(1).map((_, i) => i + 1));
+  $("#famc").innerHTML += D.amcs.map((a, i) => `<option value="${i}">${esc(a)}</option>`).join("");
+  $("#fsec").innerHTML += D.parents.map(p => `<option>${esc(p)}</option>`).join("");
+  $("#fcats").innerHTML = D.cats.map((c, i) => `<button class="sm" data-c="${i}">${c}</button>`).join("");
+  $("#rankby").innerHTML = [["val", "Value ₹"], ["funds", "# of funds"], ["mcap", "% of mkt cap"]].map(([k, l]) => `<button class="sm" data-r="${k}">${l}</button>`).join("");
+  const sync = () => { $$("#fcats button").forEach(b => b.classList.toggle("on", st.cats.has(+b.dataset.c))); $$("#rankby button").forEach(b => b.classList.toggle("on", b.dataset.r === st.rank)); };
+  $("#fcats").onclick = e => { const b = e.target.closest("button"); if (!b) return; const c = +b.dataset.c; st.cats.has(c) ? st.cats.delete(c) : st.cats.add(c); if (!st.cats.size) st.cats.add(c); sync(); render(); };
+  $("#rankby").onclick = e => { const b = e.target.closest("button"); if (!b) return; st.rank = b.dataset.r; sync(); renderFlows(); };
+  $("#pActive").onclick = () => { st.cats = new Set(ACTIVE); sync(); render(); };
+  $("#pAll").onclick = () => { st.cats = new Set(D.cats.map((_, i) => i).filter(i => D.cats[i] !== "Arbitrage")); sync(); render(); };
+  $("#fmonth").onchange = async e => { st.mi = +e.target.value; await ensureMonth(st.mi); render(); };
+  $("#famc").onchange = async e => { st.amc = e.target.value; await syncMonths(); render(); };
+  $("#fsec").onchange = e => { st.sec = e.target.value; render(); };
+  $("#fmin").onchange = e => { st.min = +e.target.value; renderFlows(); };
+  $("#q").oninput = e => { st.q = e.target.value.trim().toLowerCase(); st.limit = 150; renderTable(); };
+  $("#more").onclick = () => { st.limit += 300; renderTable(); };
+  sync();
+}
+// month pairs an AMC actually has (both months filed); factsheet AMCs may cover only part of the window
+function covRow(ai) { return D.coverage.find(r => r.amc === D.amcs[ai]); }
+function amcPairs(ai) { const c = covRow(ai); if (!c) return []; const out = []; for (let i = 1; i < NM; i++) if (c.months[i] > 0 && c.months[i - 1] > 0) out.push(i); return out; }
+function fillMonths(pairs, single) {
+  $("#fmonth").innerHTML = single ? `<option>${ml(single)} only</option>` : pairs.map(i => `<option value="${i}">${ml(M[i])} vs ${ml(M[i - 1])}</option>`).reverse().join("");
+  $("#fmonth").disabled = !!single; if (!single) $("#fmonth").value = st.mi;
+}
+async function syncMonths() {
+  const ai = st.amc === "" ? -1 : +st.amc, c = ai >= 0 ? covRow(ai) : null;
+  const pairs = ai < 0 ? M.slice(1).map((_, i) => i + 1) : amcPairs(ai);
+  st.single = ai >= 0 && !pairs.length && D.single && D.single[ai] ? D.single[ai] : null;
+  $("#amctag").innerHTML = c && c.partial ? ' <span class="chip am" title="Built from the public monthly factsheet: listed holdings only, not the full portfolio">factsheet · top holdings only</span>' : "";
+  if (st.single) { fillMonths([], st.single.m); return; }
+  if (pairs.length) st.mi = pairs[pairs.length - 1];  // jump to the latest pair this AMC has
+  fillMonths(pairs);
+  await ensureMonth(st.mi);
+}
+// AMC with one month of data: show what it holds instead of empty flows
+function renderSingle() {
+  const S = st.single, rows = S.rows.filter(r => st.cats.has(r[1]) && (!st.sec || D.stocks[r[0]][3] === st.sec));
+  const by = new Map(); for (const [si, , v, n] of rows) { const a = by.get(si) || { si, v: 0, n: 0 }; a.v += v; a.n += n; by.set(si, a); }
+  const list = [...by.values()].sort((a, z) => z.v - a.v), tot = list.reduce((t, r) => t + r.v, 0), mx = list.length ? list[0].v : 1;
+  const msg = "Only one month of factsheet data, so no month-on-month change yet.";
+  const k = [["MF equity held", "₹" + cr(tot), ml(S.m) + " · listed holdings"], ["Stocks held", inr(list.length), "in the fund filter"], ["Month-on-month change", "–", msg]];
+  $("#kpis").innerHTML = k.map(([l, v, s], i) => `<div class="pk" style="animation-delay:${i * 45}ms"><div class="l">${l}</div><div class="v">${v}</div><div class="s" title="${esc(s)}">${esc(s)}</div></div>`).join("");
+  $("#btitle").textContent = "Top holdings"; $("#bhint").textContent = "₹ crore · " + ml(S.m);
+  $("#bsub").textContent = msg;
+  $("#bought").innerHTML = list.slice(0, 25).map((r, i) => barRow({ si: r.si }, r.v, mx, "₹" + cr(r.v), `${r.n} scheme${r.n > 1 ? "s" : ""}`, false, i)).join("") || '<div class="empty">Nothing in this filter</div>';
+  animBars($("#bought"));
+  $("#soldBox").style.display = "none";
+  $("#newin").innerHTML = $("#exits").innerHTML = `<div class="empty">${msg}</div>`;
+  $(".tablewrap").style.display = "none"; $("#more").style.display = "none"; $("#tnote").textContent = "";
+}
+async function ensureMonth(mi) {
+  const m = M[mi]; if (SM_M[m]) return;
+  $("#bought").innerHTML = $("#sold").innerHTML = '<div class="skel"></div>';
+  await loadScript("m/" + m + ".js");
+  if (window.SM_V && SM_V !== D.built) staleNotice();
+}
+function staleNotice() { $("#livetxt").innerHTML = 'Data updated · <a href="" style="color:var(--acc)">reload</a>'; }
+
+// ---------- aggregation over (stock, amc, cat) cells
+// cell: [si, ai, ci, v1 (Rs cr), fl (net flow Rs cr), nh, nh0, nb, ns, nn, nx]; share counts derive from value / price
+function agg() {
+  const cells = SM_M[M[st.mi]] || [], amc = st.amc === "" ? -1 : +st.amc, out = new Map();
+  for (const c of cells) {
+    if (amc >= 0 && c[1] !== amc) continue;
+    if (!st.cats.has(c[2])) continue;
+    const s = D.stocks[c[0]]; if (st.sec && s[3] !== st.sec) continue;
+    let a = out.get(c[0]);
+    if (!a) out.set(c[0], a = { si: c[0], q1: 0, dq: 0, v1: 0, fl: 0, nh: 0, nh0: 0, nb: 0, ns: 0, nn: 0, nx: 0 });
+    a.v1 += c[3]; a.fl += c[4]; a.nh += c[5]; a.nh0 += c[6]; a.nb += c[7]; a.ns += c[8]; a.nn += c[9]; a.nx += c[10];
+  }
+  const rows = [...out.values()];
+  for (const a of rows) {
+    const s = D.stocks[a.si], sh = s[5], px = s[6];
+    a.q1 = px ? a.v1 * 1e7 / px : 0; a.dq = px ? a.fl * 1e7 / px : 0;
+    a.own = sh ? a.q1 / sh * 100 : null; a.down = sh ? a.dq / sh * 100 : null;
+    a.q0 = a.q1 - a.dq; a.chg = a.q0 > 0 ? a.dq / a.q0 * 100 : null; a.nf = a.nb - a.ns;
+    a.v0 = a.v1 - a.fl; a.big = Math.max(a.v1, a.v0);
+  }
+  return rows;
+}
+
+// ---------- KPIs + hero
+function renderKpis(rows) {
+  const net = rows.reduce((t, r) => t + r.fl, 0), buy = rows.filter(r => r.fl > 0).reduce((t, r) => t + r.fl, 0), sell = rows.filter(r => r.fl < 0).reduce((t, r) => t + r.fl, 0);
+  const nNew = rows.filter(r => r.nh0 === 0 && r.nh > 0).length, nExit = rows.filter(r => r.nh === 0 && r.nh0 > 0).length;
+  const nB = rows.filter(r => r.fl > 0).length, nS = rows.filter(r => r.fl < 0).length, hold = rows.reduce((t, r) => t + r.v1, 0);
+  const sc = new Set(); const amc = st.amc === "" ? -1 : +st.amc;
+  D.schemes.forEach((s, i) => { if ((amc < 0 || s[0] === amc) && st.cats.has(s[2]) && s[3][st.mi] != null) sc.add(i); });
+  const k = [
+    ["Net buying", net, v => sgn(v, x => "₹" + cr(x)), `₹${cr(buy)} bought · ₹${cr(-sell)} sold`, cls(net)],
+    ["Stocks bought / sold", nB, v => inr(v) + " / " + inr(nS), `by net value, ${ml(M[st.mi])}`, ""],
+    ["New entries", nNew, v => inr(v), "stocks new to the filtered funds", "up"],
+    ["Complete exits", nExit, v => inr(v), "stocks fully sold out", nExit ? "dn" : ""],
+    ["MF equity held", hold, v => "₹" + cr(v), `${inr(sc.size)} schemes in filter`, ""],
+  ];
+  $("#kpis").innerHTML = k.map(([l, , , s, c], i) => `<div class="pk" style="animation-delay:${i * 45}ms"><div class="l">${l}</div><div class="v ${c}" id="kv${i}">–</div><div class="s">${s}</div></div>`).join("");
+  k.forEach(([, v, f], i) => countUp($("#kv" + i), v, f));
+}
+
+// ---------- flows tab
+const stockName = si => D.stocks[si][1] || D.stocks[si][0];
+function barRow(r, val, max, txt, sub, neg, i) {
+  const w = max ? Math.max(2, Math.abs(val) / max * 100) : 0, s = D.stocks[r.si];
+  return `<div class="hbar" data-si="${r.si}" style="animation:rise .45s ease both;animation-delay:${i * 30}ms"><div class="nm">${esc(stockName(r.si))}<small>${esc(s[0])} · ${esc(s[2])}</small></div>
+  <div class="tr"><div class="fl ${neg ? "neg" : ""}" data-w="${w}"></div></div><div class="v ${neg ? "dn" : "up"}">${txt}<small>${sub}</small></div></div>`;
+}
+function animBars(el) { requestAnimationFrame(() => el.querySelectorAll(".fl").forEach((f, i) => setTimeout(() => f.style.width = f.dataset.w + "%", REDUCED ? 0 : i * 25))); }
+function renderFlows(rows) {
+  rows = rows || agg();
+  $("#soldBox").style.display = ""; $(".tablewrap").style.display = ""; $("#btitle").textContent = "Most bought";
+  const pool = rows.filter(r => r.big >= st.min);
+  let key, fmt, subf, hint;
+  if (st.rank === "val") { key = r => r.fl; fmt = v => sgn(v, x => "₹" + cr(x)); subf = r => `${r.nb}↑ ${r.ns}↓ funds`; hint = "net ₹ crore"; }
+  else if (st.rank === "funds") { key = r => r.nf; fmt = v => sgn(v, x => inr(x) + " funds"); subf = r => sgn(r.fl, x => "₹" + cr(x)); hint = "buyers minus sellers"; }
+  else { key = r => r.down; fmt = v => sgn(v, x => x.toFixed(2) + "pp"); subf = r => "own " + pctf(r.own); hint = "change in MF stake, % of shares"; }
+  const b = pool.filter(r => key(r) > 0).sort((a, z) => key(z) - key(a) || z.fl - a.fl).slice(0, 15);
+  const s = pool.filter(r => key(r) < 0).sort((a, z) => key(a) - key(z) || a.fl - z.fl).slice(0, 15);
+  const mx = Math.max(...b.map(key), ...s.map(r => -key(r)), 1e-9);
+  $("#bhint").textContent = $("#shint").textContent = hint;
+  $("#bsub").textContent = `${ml(M[st.mi])} vs ${ml(M[st.mi - 1])} · stocks with ₹${st.min}+ cr MF stake`;
+  $("#ssub").textContent = $("#bsub").textContent;
+  $("#bought").innerHTML = b.map((r, i) => barRow(r, key(r), mx, fmt(key(r)), subf(r), false, i)).join("") || '<div class="empty">Nothing in this filter</div>';
+  $("#sold").innerHTML = s.map((r, i) => barRow(r, key(r), mx, fmt(key(r)), subf(r), true, i)).join("") || '<div class="empty">Nothing in this filter</div>';
+  animBars($("#bought")); animBars($("#sold"));
+  const nw = rows.filter(r => r.nh0 === 0 && r.nh > 0).sort((a, z) => z.v1 - a.v1);
+  const ex = rows.filter(r => r.nh === 0 && r.nh0 > 0).sort((a, z) => z.v0 - a.v0);
+  const li = (r, v, c, x) => `<div class="li" data-si="${r.si}"><span><b>${esc(stockName(r.si))}</b> <span class="note">${esc(D.stocks[r.si][0])} · ${esc(D.stocks[r.si][2])}</span></span><span class="${c}">${v} <span class="note">${x}</span></span></div>`;
+  $("#newin").innerHTML = nw.map(r => li(r, "₹" + cr(r.v1), "up", `${r.nh} fund${r.nh > 1 ? "s" : ""}`)).join("") || '<div class="empty">None</div>';
+  $("#exits").innerHTML = ex.map(r => li(r, "−₹" + cr(r.v0), "dn", `${r.nh0} fund${r.nh0 > 1 ? "s" : ""}`)).join("") || '<div class="empty">None</div>';
+  renderTable(rows);
+}
+const COLS = [
+  ["name", "Stock", "l"], ["sec", "Sector", "l"], ["v1", "MF value ₹cr"], ["own", "MF own %"], ["down", "Δ own pp"],
+  ["fl", "Net flow ₹cr"], ["chg", "Δ shares %"], ["nh", "Schemes"], ["nf", "Buyers−sellers"], ["nn", "New / exit"], ["mc", "Mkt cap ₹cr"],
+];
+let lastRows = [];
+function renderTable(rows) {
+  if (rows) lastRows = rows;
+  let r = lastRows;
+  if (st.q) r = r.filter(x => (D.stocks[x.si][0] + " " + D.stocks[x.si][1]).toLowerCase().includes(st.q));
+  const v = x => ({ name: stockName(x.si), sec: D.stocks[x.si][2], mc: D.stocks[x.si][4], nn: x.nn - x.nx }[st.sort] ?? x[st.sort]);
+  r = [...r].sort((a, z) => { const p = v(a), q = v(z); if (p == null) return 1; if (q == null) return -1; return (typeof p === "string" ? p.localeCompare(q) : p - q) * (st.asc ? 1 : -1); });
+  $("#tbl thead").innerHTML = "<tr>" + COLS.map(([k, l, c]) => `<th class="${c || ""} ${st.sort === k ? "s" + (st.asc ? " asc" : "") : ""}" data-k="${k}">${l}</th>`).join("") + "</tr>";
+  $("#tbl tbody").innerHTML = r.slice(0, st.limit).map(x => { const s = D.stocks[x.si];
+    return `<tr class="click" data-si="${x.si}"><td><span class="nm">${esc(s[1] || s[0])}</span><span class="sy">${esc(s[0])}</span></td><td class="l note">${esc(s[2])}</td>
+    <td>${inr(x.v1)}</td><td>${pctf(x.own)}</td><td class="${cls(x.down)}">${x.down == null ? "–" : sgn(x.down, y => y.toFixed(2))}</td>
+    <td class="${cls(x.fl)}">${sgn(x.fl, y => inr(y, y < 10 ? 1 : 0))}</td><td class="${cls(x.chg)}">${x.chg == null ? (x.q1 > 0 ? '<span class="chip up">new</span>' : "–") : sgn(x.chg, y => y.toFixed(1))}</td>
+    <td>${x.nh} <span class="note">(${x.nh - x.nh0 >= 0 ? "+" : ""}${x.nh - x.nh0})</span></td><td class="${cls(x.nf)}">${x.nb}↑ ${x.ns}↓</td>
+    <td>${x.nn ? `<span class="chip up">+${x.nn}</span>` : ""}${x.nx ? `<span class="chip dn">−${x.nx}</span>` : ""}</td><td class="note">${inr(s[4])}</td></tr>`; }).join("");
+  $("#tnote").textContent = `${inr(r.length)} stocks · click a row for every scheme holding it`;
+  $("#more").style.display = r.length > st.limit ? "" : "none";
+}
+$("#tbl").addEventListener("click", e => {
+  const th = e.target.closest("th"); if (th) { const k = th.dataset.k; st.asc = st.sort === k ? !st.asc : (k === "name" || k === "sec"); st.sort = k; renderTable(); return; }
+});
+document.addEventListener("click", e => { const t = e.target.closest("[data-si]"); if (t && !e.target.closest("th")) openStock(+t.dataset.si); });
+
+// ---------- stars
+function renderStars() {
+  const mi = st.mi, out = [];
+  for (const sd of D.stars) {
+    const sm = D.schemes[sd.sc], aum = sm[3][mi];
+    const pres = sd.h.some(h => h[1][mi] > 0);
+    const rows = sd.h.map(([si, q, p]) => { const px = D.stocks[si][6] || 0; return { si, q1: q[mi], q0: q[mi - 1], p1: p[mi], p0: p[mi - 1], fl: (q[mi] - q[mi - 1]) * px / 1e7 }; });
+    const prevOk = sd.h.some(h => h[1][mi - 1] > 0);
+    const nw = prevOk ? rows.filter(r => r.q1 > 0 && r.q0 <= 0).sort((a, z) => z.p1 - a.p1) : [];
+    const ex = prevOk ? rows.filter(r => r.q0 > 0 && r.q1 <= 0).sort((a, z) => z.p0 - a.p0) : [];
+    const cont = rows.filter(r => r.q1 > 0 && r.q0 > 0);
+    const adds = cont.filter(r => r.fl > 0).sort((a, z) => z.fl - a.fl).slice(0, 5), trims = cont.filter(r => r.fl < 0).sort((a, z) => a.fl - z.fl).slice(0, 5);
+    const top = rows.filter(r => r.q1 > 0).sort((a, z) => z.p1 - a.p1).slice(0, 8);
+    const nh = rows.filter(r => r.q1 > 0).length;
+    const chip = (r, c, t) => `<span class="chip ${c}" data-si="${r.si}">${esc(D.stocks[r.si][0])}${t ? " " + t : ""}</span>`;
+    out.push(`<div class="box hov" style="animation-delay:${out.length * 45}ms">
+      <h4><span>${esc(sm[1])}</span><small>${esc(D.amcs[sm[0]])} · ${D.cats[sm[2]]}</small></h4>
+      <div class="sub">AUM ₹${cr(aum)} · ${sm[4] ? `top ${nh} holdings (factsheet)` : nh + " stocks"} · ${ml(M[mi])} vs ${ml(M[mi - 1])}</div>
+      ${!pres ? '<div class="empty">No portfolio filed for this month</div>' : `
+      <div class="lbl" style="margin:6px 0 4px">${sm[4] ? "Entered top holdings" : "New buys"} (${nw.length})</div><div class="chips">${nw.map(r => chip(r, "up", r.p1 ? r.p1.toFixed(1) + "%" : "")).join("") || '<span class="note">none</span>'}</div>
+      <div class="lbl" style="margin:8px 0 4px">${sm[4] ? "Left top holdings" : "Exits"} (${ex.length})</div><div class="chips">${ex.map(r => chip(r, "dn", r.p0 ? r.p0.toFixed(1) + "%" : "")).join("") || '<span class="note">none</span>'}</div>
+      <div class="split" style="margin-top:8px;gap:10px"><div><div class="lbl" style="margin-bottom:4px">Biggest adds</div>${adds.map(r => `<div class="li" data-si="${r.si}"><span>${esc(D.stocks[r.si][0])}</span><span class="up">+₹${cr(r.fl)}</span></div>`).join("") || '<div class="note">none</div>'}</div>
+      <div><div class="lbl" style="margin-bottom:4px">Biggest trims</div>${trims.map(r => `<div class="li" data-si="${r.si}"><span>${esc(D.stocks[r.si][0])}</span><span class="dn">−₹${cr(-r.fl)}</span></div>`).join("") || '<div class="note">none</div>'}</div></div>
+      <div class="lbl" style="margin:10px 0 4px">Top holdings · % of NAV (change)</div>
+      ${top.map(r => `<div class="li" data-si="${r.si}"><span>${esc(stockName(r.si))}</span><span>${pctf(r.p1)} <span class="${cls(r.p1 - r.p0)} note">${r.q0 > 0 ? sgn(r.p1 - r.p0, x => x.toFixed(2)) : "new"}</span></span></div>`).join("")}`}
+    </div>`);
+  }
+  $("#starGrid").innerHTML = out.join("") || '<div class="empty">No star schemes in the data yet</div>';
+}
+
+// ---------- sectors
+function renderSectors(rows) {
+  rows = rows || agg();
+  const bySec = new Map();
+  for (const r of rows) { const p = D.stocks[r.si][3]; bySec.set(p, (bySec.get(p) || 0) + r.fl); }
+  const arr = [...bySec].sort((a, z) => z[1] - a[1]), mx = Math.max(...arr.map(x => Math.abs(x[1])), 1e-9);
+  $("#secHint").textContent = `${ml(M[st.mi])} vs ${ml(M[st.mi - 1])}`;
+  $("#secFlow").innerHTML = arr.map(([p, v], i) => `<div class="hbar" style="grid-template-columns:minmax(0,170px) minmax(0,1fr) 96px;cursor:default;animation:rise .45s ease both;animation-delay:${i * 25}ms"><div class="nm">${esc(p)}</div>
+    <div class="tr"><div class="fl ${v < 0 ? "neg" : ""}" data-w="${Math.abs(v) / mx * 100}"></div></div><div class="v ${cls(v)}">${sgn(v, x => cr(x))}</div></div>`).join("");
+  animBars($("#secFlow"));
+  // allocation (% of filtered-category equity) per parent sector per month
+  const tot = Array(NM).fill(0), sec = {};
+  for (const c of st.cats) { const S = D.sect[c]; if (!S) continue; for (const p in S) { sec[p] = sec[p] || Array(NM).fill(0); S[p].forEach((v, k) => { sec[p][k] += v || 0; tot[k] += v || 0; }); } }
+  const share = Object.entries(sec).map(([p, a]) => [p, a.map((v, k) => tot[k] ? v / tot[k] * 100 : 0)]);
+  share.sort((a, z) => z[1][NM - 1] - a[1][NM - 1]);
+  $("#allocTbl thead").innerHTML = `<tr><th class="l">Sector</th>${M.map(m => `<th>${ml(m)}</th>`).join("")}<th>Δ ${ml(M[0])}→${ml(M[NM - 1])}</th><th>Δ last month</th></tr>`;
+  $("#allocTbl tbody").innerHTML = share.map(([p, a]) => { const d = a[NM - 1] - a[0], d1 = a[NM - 1] - a[NM - 2];
+    return `<tr><td class="l">${esc(p)}</td>${a.map(v => `<td style="background:rgba(47,227,181,${Math.min(.35, v / 60)})">${v.toFixed(1)}</td>`).join("")}
+    <td class="${cls(d)}">${sgn(d, x => x.toFixed(2))}</td><td class="${cls(d1)}">${sgn(d1, x => x.toFixed(2))}</td></tr>`; }).join("");
+  // movers chart: top 3 gainers + top 3 losers in allocation over the window
+  const mv = [...share].sort((a, z) => (z[1][NM - 1] - z[1][0]) - (a[1][NM - 1] - a[1][0]));
+  const pick = [...mv.slice(0, 3), ...mv.slice(-3)];
+  $("#allocLeg").innerHTML = pick.map(([p, a], i) => `<span><i style="background:${CATCOL[i]}"></i>${esc(p)} ${sgn(a[NM - 1] - a[0], x => x.toFixed(1))}pp</span>`).join("");
+  drawLines($("#allocCv"), pick.map(([, a], i) => ({ v: a, c: CATCOL[i] })), M.map(ml), 240, v => v.toFixed(1) + "%");
+}
+
+// ---------- generic charts
+function drawLines(cv, series, labels, H, fmt, opts = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth || 600;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+  const c = cv.getContext("2d"); c.scale(dpr, dpr);
+  const all = series.flatMap(s => s.v).filter(v => v != null && isFinite(v));
+  if (!all.length) return;
+  let lo = Math.min(...all), hi = Math.max(...all); const pad = (hi - lo) * .08 || 1; lo -= pad; hi += pad;
+  const L = 4, R = 54, T = 8, B = 22, pw = W - L - R, ph = H - T - B, n = Math.max(...series.map(s => s.v.length));
+  const X = i => L + (n < 2 ? 0 : i / (n - 1) * pw), Y = v => T + (1 - (v - lo) / (hi - lo)) * ph;
+  const paint = p => {
+    c.clearRect(0, 0, W, H); c.font = "10.5px Inter, Segoe UI, sans-serif"; c.fillStyle = "rgba(238,245,242,.4)"; c.strokeStyle = "rgba(47,227,181,.07)"; c.lineWidth = 1;
+    for (let k = 0; k <= 4; k++) { const v = lo + (hi - lo) * k / 4, y = Y(v); c.beginPath(); c.moveTo(L, y); c.lineTo(L + pw, y); c.stroke(); c.fillText(fmt(v), L + pw + 6, y + 3); }
+    const nl = Math.min(labels.length - 1, opts.xt || 6); for (let k = 0; k <= nl; k++) { const i = Math.round((labels.length - 1) * k / nl); c.fillText(labels[i], Math.max(L, Math.min(X(i) - 14, L + pw - 34)), H - 6); }
+    c.save(); c.beginPath(); c.rect(0, 0, L + pw * p + 1, H); c.clip();
+    series.forEach((s, si) => {
+      if (opts.area && si === 0) { const g = c.createLinearGradient(0, T, 0, T + ph); g.addColorStop(0, "rgba(47,227,181,.26)"); g.addColorStop(1, "rgba(3,8,6,0)");
+        c.beginPath(); let f = -1, l = -1; s.v.forEach((v, i) => { if (v == null) return; if (f < 0) { f = i; c.moveTo(X(i), Y(v)); } else c.lineTo(X(i), Y(v)); l = i; });
+        if (f >= 0) { c.lineTo(X(l), T + ph); c.lineTo(X(f), T + ph); c.closePath(); c.fillStyle = g; c.fill(); } }
+      c.beginPath(); c.strokeStyle = s.c; c.lineWidth = s.w || 2; c.shadowColor = s.c; c.shadowBlur = 8; let pen = false;
+      s.v.forEach((v, i) => { if (v == null) { pen = false; return; } pen ? c.lineTo(X(i), Y(v)) : c.moveTo(X(i), Y(v)); pen = true; }); c.stroke(); c.shadowBlur = 0;
+      if (s.dots) s.v.forEach((v, i) => { if (v == null) return; c.fillStyle = s.c; c.beginPath(); c.arc(X(i), Y(v), 3, 0, 7); c.fill(); });
+      if (p >= 1) { let li = s.v.length - 1; while (li >= 0 && s.v[li] == null) li--; if (li >= 0) { c.fillStyle = s.c; c.beginPath(); c.arc(X(li), Y(s.v[li]), 3.5, 0, 7); c.fill(); c.globalAlpha = .25; c.beginPath(); c.arc(X(li), Y(s.v[li]), 8, 0, 7); c.fill(); c.globalAlpha = 1; } }
+    });
+    (opts.marks || []).forEach(i => { c.strokeStyle = "rgba(224,166,74,.35)"; c.setLineDash([3, 3]); c.beginPath(); c.moveTo(X(i), T); c.lineTo(X(i), T + ph); c.stroke(); c.setLineDash([]); });
+    c.restore();
+  };
+  cv._g = { X, Y, series, labels, L, pw, n, fmt };
+  if (!cv._tipBound) { cv._tipBound = 1; cv.addEventListener("mousemove", e => { const g = cv._g; if (!g) return; const r = cv.getBoundingClientRect(); const i = Math.round((e.clientX - r.left - g.L) / g.pw * (g.n - 1));
+      if (i < 0 || i >= g.n) return hideTip(); showTip(e, `<b>${g.labels[i]}</b><br>` + g.series.map(s => s.v[i] == null ? "" : `<span style="color:${s.c}">●</span> ${g.fmt(s.v[i])}`).filter(Boolean).join("<br>")); });
+    cv.addEventListener("mouseleave", hideTip); }
+  if (REDUCED) return paint(1);
+  const t0 = performance.now(); const step = now => { const k = Math.min(1, (now - t0) / 750); paint(1 - Math.pow(1 - k, 3)); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step);
+}
+function showTip(e, h) { const t = $("#tip"); t.innerHTML = h; t.style.display = "block"; const x = Math.min(e.clientX + 14, innerWidth - t.offsetWidth - 8); t.style.left = x + "px"; t.style.top = (e.clientY + 14) + "px"; }
+function hideTip() { $("#tip").style.display = "none"; }
+
+// ---------- stock drawer
+async function openStock(si) {
+  const s = D.stocks[si], k = si % D.nshard;
+  $("#mbox").innerHTML = `<div class="mhead"><div><h2>${esc(s[1] || s[0])}</h2><div class="note">${esc(s[0])} · ${esc(s[2])} · ${esc(s[3])}</div></div><button class="x" onclick="closeM()">✕</button></div><div class="skel" style="margin-top:14px"></div>`;
+  $("#modal").classList.add("open");
+  if (!window.SM_S || !SM_S[si]) { try { await loadScript("s/" + k + ".js"); } catch (e) { } }
+  if (window.SM_V && SM_V !== D.built) { staleNotice(); $("#mbox").querySelector(".skel").outerHTML = '<div class="empty">Data was refreshed since this page loaded. <a href="" style="color:var(--acc)">Reload</a> to see holders.</div>'; return; }
+  const d = (window.SM_S || {})[si] || { h: [] };
+  const own = M.map((_, m) => { let t = 0, any = false; for (const h of d.h) if (h[1][m] > 0 && !D.schemes[h[0]][4] && h[1].every(v => v >= 0)) { t += h[1][m]; any = true; } return any && s[5] ? t / s[5] * 100 : (any ? null : 0); });
+  const rows = d.h.map(([sc, q, p]) => { const qm = q[st.mi], q0 = q[st.mi - 1]; return { sc, q, p, qm, q0, d: qm >= 0 && q0 >= 0 ? qm - q0 : null }; })
+    .filter(r => r.qm > 0 || r.q0 > 0).sort((a, z) => (z.qm || 0) - (a.qm || 0));
+  const holders = rows.filter(r => r.qm > 0).length, nb = rows.filter(r => r.d > 0 && r.q0 > 0).length, nn = rows.filter(r => r.q0 === 0 && r.qm > 0).length;
+  const ns = rows.filter(r => r.d < 0 && r.qm > 0).length, nx = rows.filter(r => r.qm === 0 && r.q0 > 0).length;
+  const mfv = rows.reduce((t, r) => t + Math.max(0, r.qm), 0) * (s[6] || 0) / 1e7;
+  const spark = q => { const mx = Math.max(...q, 1); return `<span class="spark">${q.map((v, i) => v > 0 ? `<i style="height:${Math.max(2, v / mx * 18)}px" title="${ml(M[i])}: ${inr(v)}"></i>` : `<i class="z" title="${ml(M[i])}: ${v < 0 ? "no filing" : "0"}"></i>`).join("")}</span>`; };
+  const ftag = r => r.q0 === 0 && r.qm > 0 ? '<span class="chip sl">into top list</span>' : r.qm === 0 && r.q0 > 0 ? '<span class="chip sl">out of top list</span>' : r.d > 0 ? '<span class="chip up">ADD</span>' : r.d < 0 ? '<span class="chip am">TRIM</span>' : '<span class="chip sl">HOLD</span>';
+  const tag = r => r.q0 === 0 && r.qm > 0 ? '<span class="chip up">NEW</span>' : r.qm === 0 && r.q0 > 0 ? '<span class="chip dn">EXIT</span>' : r.d > 0 ? '<span class="chip up">ADD</span>' : r.d < 0 ? '<span class="chip am">TRIM</span>' : r.q0 < 0 ? '<span class="chip sl">n/a</span>' : '<span class="chip sl">HOLD</span>';
+  $("#mbox").innerHTML = `<div class="mhead"><div><h2>${esc(s[1] || s[0])}</h2><div class="note">${esc(s[0])} · ${esc(s[2])} · ${esc(s[3])} · Mkt cap ₹${cr(s[4])}</div></div><button class="x" onclick="closeM()">✕</button></div>
+  <div class="mstats"><div><div class="l">MF holding (${ml(M[st.mi])})</div><div class="v">₹${cr(mfv)}</div></div><div><div class="l">MF own % of shares</div><div class="v">${pctf(own[st.mi])}</div></div>
+  <div><div class="l">Schemes holding</div><div class="v">${holders}</div></div><div><div class="l">Added / new</div><div class="v up">${nb} / ${nn}</div></div><div><div class="l">Trimmed / exited</div><div class="v dn">${ns} / ${nx}</div></div></div>
+  <div class="split" style="margin-top:0"><div class="box"><h4>Price <small>split-adjusted, NSE close · amber lines = month-ends</small></h4><canvas id="pxCv"></canvas><div class="note" id="pxNote"></div></div>
+  <div class="box"><h4>MF ownership <small>% of shares · full-portfolio schemes that filed every month</small></h4><canvas id="ownCv"></canvas></div></div>
+  <div class="tablewrap" style="max-height:52vh"><table><thead><tr><th class="l">Scheme</th><th class="l">AMC</th><th class="l">Type</th><th>% NAV</th><th>Shares ${ml(M[st.mi])}</th><th>Δ shares</th><th class="l">Trend ${ml(M[0])}–${ml(M[NM - 1])}</th><th class="l">Move</th></tr></thead>
+  <tbody>${rows.map(r => { const sm = D.schemes[r.sc]; return `<tr><td>${esc(sm[1])}${sm[4] ? ' <span class="chip am" title="Factsheet top holdings only">factsheet</span>' : ""}</td><td class="l note">${esc(D.amcs[sm[0]])}</td><td class="l note">${D.cats[sm[2]]}</td><td>${r.p ? r.p.toFixed(2) : "–"}</td>
+    <td>${r.qm >= 0 ? inr(r.qm) : "–"}</td><td class="${cls(r.d)}">${r.d == null ? "–" : sgn(r.d, inr)}</td><td class="l">${spark(r.q)}</td><td class="l">${D.schemes[r.sc][4] ? ftag(r) : tag(r)}</td></tr>`; }).join("") || '<tr><td colspan="8" class="empty">No holders</td></tr>'}</tbody></table></div>
+  <div class="note" style="margin-top:6px">Schemes tagged "factsheet" come from public factsheets that list top holdings only, so "into / out of top list" is not a full entry or exit. % NAV is the latest month's weight. Shares are adjusted for splits and bonuses to today's share count.</div>`;
+  drawLines($("#ownCv"), [{ v: own, c: "#2FE3B5", dots: 1 }], M.map(ml), 200, v => v.toFixed(2) + "%", { area: 1 });
+  if (d.p) { const [start, arr] = d.p, dates = D.pdates.slice(start, start + arr.length);
+    const marks = M.map(m => { let i = -1; for (let j = 0; j < dates.length; j++) if (dates[j].slice(0, 7) <= m) i = j; return i; }).filter(i => i >= 0);
+    drawLines($("#pxCv"), [{ v: arr, c: arr[arr.length - 1] >= arr[0] ? "#2FE3B5" : "#FF5C6C", w: 1.8 }], dates.map(x => x.slice(2, 7).replace("-", "/")), 200, v => "₹" + inr(v, v < 100 ? 1 : 0), { area: 1, marks });
+    const r = (arr[arr.length - 1] / arr[0] - 1) * 100; $("#pxNote").innerHTML = `${dates[0]} → ${dates[dates.length - 1]}: <span class="${cls(r)}">${sgn(r, x => x.toFixed(1))}%</span>`;
+  } else { $("#pxCv").replaceWith(Object.assign(document.createElement("div"), { className: "empty", textContent: "No NSE price history" })); }
+}
+function closeM() { $("#modal").classList.remove("open"); }
+$("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeM(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeM(); });
+
+// ---------- coverage
+function renderCoverage() {
+  const c = D.coverage.slice().sort((a, z) => z.eq - a.eq);
+  const T = { s: 0, e: 0, a: 0, m: Array(NM).fill(0) }; c.forEach(r => { T.s += r.schemes; T.e += r.eq; T.a += r.aum; r.months.forEach((v, i) => T.m[i] += v); });
+  $("#covHint").textContent = `${D.amcs.length} AMCs · ${inr(T.s)} schemes · ₹${cr(T.e)} equity · ${NM} months`;
+  $("#covTbl thead").innerHTML = `<tr><th class="l">AMC</th>${M.map(m => `<th>${ml(m)}</th>`).join("")}<th>Schemes (latest)</th><th>Equity held ₹cr</th><th>Scheme AUM ₹cr</th></tr>`;
+  $("#covTbl tbody").innerHTML = c.map(r => `<tr><td>${esc(r.amc)}${r.partial ? ' <span class="chip am" title="Built from the public monthly factsheet: top holdings per scheme only, not the full portfolio">factsheet · top holdings</span>' : ""}</td>${r.months.map(v => `<td class="${v ? "" : "dn"}">${v || "–"}</td>`).join("")}<td>${r.schemes}</td><td>${inr(r.eq)}</td><td>${inr(r.aum)}</td></tr>`).join("")
+    + `<tr style="font-weight:700"><td>Total</td>${T.m.map(v => `<td>${inr(v)}</td>`).join("")}<td>${inr(T.s)}</td><td>${inr(T.e)}</td><td>${inr(T.a)}</td></tr>`;
+}
+
+// ---------- tabs + render
+let tab = "flows";
+$$(".tabs button").forEach(b => b.onclick = () => { tab = b.dataset.tab; $$(".tabs button").forEach(x => x.classList.toggle("on", x === b)); $$(".tabpane").forEach(p => p.classList.toggle("on", p.id === "t-" + tab));
+  $("#filters").style.display = tab === "coverage" ? "none" : ""; render(); });
+function render() {
+  if (st.single && tab === "flows") return renderSingle();
+  const rows = agg(); renderKpis(rows);
+  if (tab === "flows") renderFlows(rows); else if (tab === "stars") renderStars(); else if (tab === "sectors") renderSectors(rows); else renderCoverage();
+}
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (tab === "sectors") renderSectors(); }, 200); });
+
+if (!D) { $("#asof").textContent = "Data failed to load."; }
+else if (D.fmt !== 2) { $("#asof").innerHTML = 'This page was updated. <a href="" onclick="location.reload(true)" style="color:var(--acc)">Reload</a> to see the latest data.'; $("#kpis").innerHTML = ""; }
+else {
+  const latest = M[NM - 1];
+  $("#asof").innerHTML = `Portfolios as of <b>${ml(latest)}</b> month-end · ${D.amcs.length} AMCs · ${inr(D.schemes.length)} schemes · ${NM} months from ${ml(M[0])}`;
+  $("#livetxt").textContent = "Built " + D.built;
+  initFilters(); render();
+}
+</script>
+</body>
+</html>
