@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI Kit Demo · Pratham Gupta</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+:root{--bg:#030806;--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--dn:#FF5C6C;--amber:#E0A64A;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);font:13.5px/1.45 var(--font);font-feature-settings:"tnum" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+header{display:flex;align-items:center;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px}
+.me{display:flex;align-items:center;gap:10px}.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover}
+.me .t{font-weight:700;font-size:16px}.me .h{font-size:12px;color:var(--acc)}
+header .pk-tabs{margin-left:auto}
+main{padding:22px 24px 48px;max-width:1300px;margin:0 auto}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}
+.kpi{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.kpi .l{font-size:11.5px;color:var(--muted)}.kpi .v{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.box{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:14px;min-width:0}
+.box h4{margin:0 0 10px;font-size:13.5px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chart{height:340px}
+footer{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim)}
+@media (max-width:760px){header{flex-wrap:wrap;padding:10px 16px}header .pk-tabs{margin-left:0;width:100%}header .pk-tabs button{flex:1}.back{display:none}
+ main{padding:16px}.split{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.chart{height:280px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../">← All dashboards</a>
+  <div class="me"><img src="pratham.webp" alt="" onerror="this.remove()"><div><div class="t">UI Kit Demo</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <span id="capf"></span>
+  <div class="pk-tabs" id="tabs"><button data-tab="charts" class="on">Charts</button><button data-tab="table">Table</button><button data-tab="bars">Bars</button><button data-tab="badges">Badges</button></div>
+</header>
+<main>
+  <div class="hero">
+    <div class="eb">Shared components · local test page</div>
+    <h1>Every kit component, <em>with fake data.</em></h1>
+    <div class="row" style="color:var(--muted);font-size:12.5px">
+      <span id="asof"></span>
+      <label class="pk-chip pk-press" style="gap:8px"><input type="checkbox" id="hap" style="accent-color:#2FE3B5;margin:0"> Haptics</label>
+      <button class="pk-btn" id="hsuccess">success</button><button class="pk-btn" id="hwarn">warn</button><button class="pk-btn" id="herror">error</button>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="l">Market cap</div><div class="v" id="k1">–</div></div>
+    <div class="kpi"><div class="l">Stocks tracked</div><div class="v" id="k2">–</div></div>
+    <div class="kpi"><div class="l">1Y return</div><div class="v" id="k3">–</div></div>
+    <div class="kpi"><div class="l">Turnover</div><div class="v" id="k4">–</div></div>
+  </div>
+
+  <section data-panel="charts">
+    <div class="box">
+      <h4><span>Index vs benchmark · Lightweight Charts</span><span class="pk-range" id="ranges"></span></h4>
+      <div class="chart pk-skel" id="c1"></div>
+    </div>
+    <div class="box">
+      <h4><span>Price + net flow histogram (second pane)</span></h4>
+      <div class="chart" id="c2" style="height:380px"></div>
+    </div>
+  </section>
+
+  <section data-panel="table" hidden>
+    <div class="box"><h4>300 real symbols (NSE + BSE-only, real mcap; other columns fake) · global market-cap filter, sort, search, presets, CSV, TradingView</h4><div id="tbl"></div></div>
+  </section>
+
+  <section data-panel="bars" hidden>
+    <div class="split">
+      <div class="box"><h4>Horizontal, diverging (sector 1M returns)</h4><div id="b1"></div></div>
+      <div class="box"><h4>Vertical (monthly net flows)</h4><div id="b2"></div></div>
+    </div>
+    <div class="box"><h4>Sparklines</h4><div class="row" id="sp"></div></div>
+    <div class="box"><h4>Skeleton</h4><div class="pk-skel" style="height:80px"></div><div class="pk-skel line" style="width:60%"></div><div class="pk-skel line" style="width:40%"></div></div>
+  </section>
+
+  <section data-panel="badges" hidden>
+    <div class="box"><h4>Badge legend (real data from badges.js)</h4><div id="legend"></div></div>
+    <div class="box"><h4>Real flagged symbols (first 40)</h4><div id="real" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 14px"></div></div>
+  </section>
+  <footer>Pratham Gupta · Finance enthusiast &amp; creator | For educational purposes only · Not investment advice<br>Fake data except the badges.</footer>
+</main>
+<script src="universe.js"></script>
+<script src="badges.js"></script>
+<script src="kit.js"></script>
+<script>
+(function () {
+  var rnd = (function (s) { return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; })(42);
+  PK.press(document);
+  window._tabs = PK.tabs('#tabs', { storeKey: 'pk_demo_tab', onChange: function (t) { window._lastTab = t; } });
+  var hap = document.getElementById('hap'); hap.checked = PK.hapticsOn;
+  hap.addEventListener('change', function () { PK.setHaptics(hap.checked); });
+  ['success', 'warn', 'error'].forEach(function (k) { document.getElementById('h' + k).onclick = function () { PK.haptic(k); }; });
+  document.getElementById('asof').textContent = 'Badges as of ' + ((window.PK_BADGES && PK_BADGES.asof) || 'n/a');
+  PK.countUp(document.getElementById("k1"), 452318, { fmt: function (v) { return PK.fmt.cr(v); } });
+  PK.countUp(document.getElementById('k2'), 2512, { fmt: function (v) { return PK.fmt.num(v, 0); } });
+  PK.countUp(document.getElementById('k3'), 14.37, { fmt: function (v) { return PK.fmt.pct(v); } });
+  PK.countUp(document.getElementById('k4'), 1234567.8, { dur: 1200, fmt: function (v) { return PK.fmt.inr(v, 0); } });
+
+  // ---- fake daily series (business days, 5y)
+  function series(n, start, drift, vol) {
+    var out = [], d = new Date(Date.UTC(2021, 10, 22)), v = start;
+    while (out.length < n) {
+      d = new Date(d.getTime() + 864e5);
+      if (d.getUTCDay() === 0 || d.getUTCDay() === 6) continue;
+      v = v * (1 + drift + (rnd() - 0.5) * vol);
+      out.push({ time: d.toISOString().slice(0, 10), value: +v.toFixed(2) });
+    }
+    return out;
+  }
+  var idx = series(1250, 15000, 0.0006, 0.022), bench = series(1250, 15000, 0.0004, 0.016);
+  PK.chart('#c1', { height: 340 }).then(function (ch) {
+    document.getElementById('c1').classList.remove('pk-skel');
+    window._c1 = ch;
+    var a = PK.lineSeries(ch, idx, { color: '#2FE3B5', title: 'Index', area: true });
+    var b = PK.lineSeries(ch, bench, { color: '#C9D6D0', title: 'NIFTY 500', width: 1, dashed: true });
+    PK.legend('#c1', ch, [{ series: a, label: 'Index', color: '#2FE3B5' }, { series: b, label: 'NIFTY 500', color: '#C9D6D0' }]);
+    window._rc = PK.rangeChips('#ranges', ch, ['1M', '3M', '6M', '1Y', '3Y', 'Max'], { active: '1Y' });
+  }).catch(function (e) { document.getElementById('c1').textContent = e.message; });
+  PK.chart('#c2', { height: 380 }).then(function (ch) {
+    window._c2 = ch;
+    var p = PK.lineSeries(ch, series(400, 820, 0.0008, 0.03), { color: '#5AA9F0', title: 'Price' });
+    var flows = idx.slice(-400).map(function (d) { return { time: d.time, value: Math.round((rnd() - 0.45) * 2000) }; });
+    var h = PK.histSeries(ch, flows, { pane: 1, title: 'Net flow ₹ Cr' });
+    PK.legend('#c2', ch, [{ series: p, label: 'Price', color: '#5AA9F0' }, { series: h, label: 'Net flow', color: '#2FE3B5' }],
+      function (v, it) { return it.label === 'Net flow' ? PK.fmt.cr(v) : PK.fmt.inr(v, 2); });
+  });
+
+  // ---- table with 300 rows; mixes real flagged symbols so badges show
+  PK.capFilter('#capf', { onChange: function (c) { window._capChanges = (window._capChanges || 0) + 1; } });
+  var U = (window.PK_UNIVERSE && PK_UNIVERSE.s) || {}, ukeys = Object.keys(U), flagged = Object.keys((window.PK_BADGES && PK_BADGES.s) || {});
+  var real = [];  // every 18th universe key (spread over NSE + BSE-only) plus the 20 biggest, plus some badge symbols
+  ukeys.slice().sort(function (a, b) { return U[b][0] - U[a][0]; }).slice(0, 20).forEach(function (k) { real.push(k); });
+  for (var j = 0; j < ukeys.length && real.length < 260; j += 18) real.push(ukeys[j]);
+  flagged.slice(0, 40).forEach(function (k) { if (real.indexOf(k) < 0) real.push(k); });
+  var sectors = ['Banks', 'IT Services', 'Pharma', 'Auto', 'Capital Goods', 'FMCG', 'Chemicals', 'Power', 'Realty', 'Metals'];
+  var rows = [];
+  for (var i = 0; i < 300; i++) {
+    var sym = real[i] || ('FAKE' + i);
+    rows.push({ s: sym, name: 'Company ' + (i + 1), sec: sectors[i % sectors.length], mcap: PK.capMcap(sym),
+      r1m: +((rnd() - 0.45) * 30).toFixed(2), r1y: +((rnd() - 0.4) * 120).toFixed(2), pe: rnd() < 0.08 ? null : +(rnd() * 80 + 5).toFixed(1),
+      tr: Array.from({ length: 20 }, function () { return rnd(); }) });
+  }
+  var pc = function (v) { return v == null ? '–' : PK.fmt.pct(v); };
+  var cls = function (v) { return v > 0 ? 'up' : v < 0 ? 'dn' : ''; };
+  window._tbl = PK.table('#tbl', {
+    columns: [
+      { key: 's', label: 'Symbol', fmt: function (v, r) { return '<b>' + PK.esc(v) + '</b>' + PK.badges(v, { max: 3 }) + '<span class="sub">' + PK.esc(r.name) + '</span>'; } },
+      { key: 'sec', label: 'Sector' },
+      { key: 'mcap', label: 'M-cap', num: true, fmt: function (v) { return PK.fmt.cr(v); } },
+      { key: 'r1m', label: '1M', num: true, fmt: pc, cls: cls },
+      { key: 'r1y', label: '1Y', num: true, fmt: pc, cls: cls },
+      { key: 'pe', label: 'P/E', num: true, fmt: function (v) { return v == null ? '<span class="dim">–</span>' : PK.fmt.num(v, 1); } },
+      { key: 'tr', label: 'Trend', csv: false, sortable: false, fmt: function (v) { return PK.spark(v, { w: 70, h: 20 }); } }
+    ],
+    rows: rows, sortKey: 'mcap', sortDir: 'desc', search: true, pageSize: 100, csvName: 'kit-demo', tvExport: true, symbolKey: 's', capKey: 's',
+    presets: [{ label: 'Large caps', filter: function (r) { return r.mcap > 100000; } }, { label: 'Winners 1M', filter: function (r) { return r.r1m > 5; } },
+      { label: 'Flagged', filter: function (r) { return !!PK.badges(r.s); } }],
+    rowClick: function (r) { window._lastRow = r; }
+  });
+
+  // ---- bars
+  window._b1 = PK.svgBars('#b1', sectors.map(function (s) { return { label: s, value: +((rnd() - 0.45) * 20).toFixed(1) }; })
+    .sort(function (a, b) { return b.value - a.value; }), { fmt: function (v) { return PK.fmt.pct(v); }, valueLabel: '1M return' });
+  var mon = ['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
+  window._b2 = PK.svgBars('#b2', mon.map(function (m) { return { label: m, value: Math.round((rnd() - 0.4) * 30000) }; }),
+    { vertical: true, height: 240, fmt: function (v) { return PK.fmt.compact(v); }, valueLabel: 'Net flow ₹ Cr' });
+  document.getElementById('sp').innerHTML = [0, 1, 2, 3, 4, 5].map(function (k) {
+    return '<span class="pk-chip">' + PK.spark(series(40, 100, k % 2 ? -0.004 : 0.004, 0.05).map(function (d) { return d.value; }), { w: 90, h: 26 }) + '</span>';
+  }).join('');
+
+  // ---- badges
+  document.getElementById('legend').innerHTML = PK.badgeLegend();
+  document.getElementById('real').innerHTML = Object.keys((window.PK_BADGES && PK_BADGES.s) || {})
+    .filter(function (s) { return PK_BADGES.s[s].length > 1; }).slice(0, 40)
+    .map(function (s) { return '<div><b>' + PK.esc(s) + '</b> ' + PK.badges(s) + '</div>'; }).join('');
+})();
+</script>
+</body>
+</html>
