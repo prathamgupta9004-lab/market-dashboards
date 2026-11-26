@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concall Tracker · Pratham Gupta</title>
+<meta name="description" content="Indian earnings-call transcripts and recordings from NSE filings: guidance lines, keyword hits, a published-lexicon tone score, a guidance ledger checked against reported results, and full-text transcript search. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<meta name="theme-color" content="#030806">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kit.css?v=202611281537">
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sage:#8EC3A9;
+--sky:#5AA9F0;--lav:#A78BFA;--slate:#8A9690;--teal:#3E6B5E;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--text);font:14px/1.5 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+a{color:var(--acc2)}
+header{display:flex;align-items:center;gap:16px;padding:10px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:8px 13px;transition:all .2s;white-space:nowrap;min-height:40px;display:inline-flex;align-items:center}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover;flex:none}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.capf:empty{display:none}.capf{margin-left:auto}.capf+nav.tb{margin-left:0}
+nav.tb{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+nav.tb::-webkit-scrollbar{display:none}
+nav.tb button{border:0;border-radius:999px;background:transparent;color:var(--muted);padding:8px 14px;min-height:40px;font:600 13px var(--font);cursor:pointer;white-space:nowrap;transition:all .18s}
+nav.tb button:hover{color:var(--text)}
+nav.tb button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+main{padding:22px 24px 48px;max-width:1360px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.6vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 20px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s cubic-bezier(.2,.8,.2,1) both;min-width:0}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.pk .l{font-size:11.5px;color:var(--muted)}
+.pk .v{font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .s{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.up{color:var(--up)}.dn{color:var(--dn)}.am{color:var(--amber)}.mut{color:var(--muted)}.dimc{color:var(--dim)}
+.sec{margin-top:16px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0;position:relative;animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.box .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.verdict{font-size:15.5px;font-weight:650;line-height:1.35;margin:0 0 8px}
+.verdict b{color:var(--acc)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;min-height:40px;font:500 13px var(--font);cursor:pointer;transition:all .18s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+.chip.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:650;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+select,input[type=search]{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;min-height:40px;font:500 13px var(--font);max-width:100%}
+input[type=search]:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(47,227,181,.15)}
+details.how{margin-top:10px;border-top:1px dashed var(--line2);padding-top:4px;color:var(--muted);font-size:12.5px}
+details.how summary{cursor:pointer;color:var(--acc2);font-weight:600;min-height:40px;display:flex;align-items:center;list-style:none}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary::before{content:"+";display:inline-block;width:16px;font-weight:700}
+details.how[open] summary::before{content:"−"}
+details.how p,details.how li{margin:5px 0}
+.lexw{font-size:11.5px;color:var(--dim);line-height:1.6}
+.src{color:var(--dim);font-size:11.5px;margin-top:8px}
+.skel{height:220px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite;margin-bottom:12px}
+.skel.s{height:96px;margin:0}
+.unavail{border:1px dashed var(--line2);border-radius:12px;padding:14px;color:var(--muted);font-size:13px;background:rgba(10,23,19,.5)}
+.capnote{font-size:12.5px;color:var(--muted);margin:4px 0 8px}.capnote:empty{display:none}
+.linkbtn{background:none;border:0;color:var(--acc2);cursor:pointer;font:inherit;text-decoration:underline;padding:0 2px;min-height:0}
+/* call cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;margin-top:12px}
+.cc{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0;animation:rise .5s cubic-bezier(.2,.8,.2,1) both;
+ transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s}
+.cc:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35)}
+.cc .hd{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.cc .nm{font-weight:700;font-size:15px;line-height:1.25}.cc .meta{font-size:11.5px;color:var(--dim);margin-top:2px}
+.tone{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;border:1px solid;white-space:nowrap;cursor:pointer}
+.tone.p{color:#2FE3B5;border-color:rgba(47,227,181,.5);background:rgba(47,227,181,.08)}.tone.n{color:#FF5C6C;border-color:rgba(255,92,108,.5);background:rgba(255,92,108,.06)}.tone.z{color:var(--amber);border-color:rgba(224,166,74,.5)}
+.kwr{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:10px 0 6px}
+.kwr div{background:rgba(10,23,19,.6);border:1px solid var(--line);border-radius:10px;padding:5px 7px;font-size:11px;color:var(--dim);cursor:pointer;min-width:0}
+.kwr b{display:block;font-size:15px;color:var(--text)}
+.kwr i{display:block;height:3px;border-radius:9px;background:linear-gradient(90deg,#10B981,#2FE3B5);margin-top:3px;width:0;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.gl{margin:6px 0 0;padding:0;list-style:none}
+.gl li{font-size:12.5px;padding:6px 0;border-top:1px solid var(--line);color:var(--muted);cursor:pointer}
+.gl li b{color:var(--text);font-weight:600}
+.gl .v{color:var(--acc);font-weight:700}
+.lk{margin-top:8px;font-size:12px;display:flex;gap:6px 14px;flex-wrap:wrap}
+.lk a{min-height:32px;display:inline-flex;align-items:center}
+.st{display:inline-block;font-size:11px;font-weight:650;padding:1px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.st.D{color:#2FE3B5;border-color:rgba(47,227,181,.5)}.st.M{color:#FF5C6C;border-color:rgba(255,92,108,.5)}.st.P{color:var(--amber);border-color:rgba(224,166,74,.5)}
+.more{display:block;margin:16px auto 0}
+.pk-btn.more{min-height:40px}
+/* tone histogram */
+.hist{display:flex;align-items:flex-end;gap:4px;height:110px;margin:6px 0 2px}
+.hist div{flex:1;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#2FE3B5,#10B981);box-shadow:0 0 12px rgba(47,227,181,.25);cursor:pointer;transform-origin:bottom;animation:grow .7s cubic-bezier(.2,.8,.2,1) both;min-height:2px}
+.hist div.neg{background:linear-gradient(180deg,#FF5C6C,#a33945);box-shadow:none}
+.histx{display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim)}
+/* search */
+.sbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sbar input{flex:1 1 260px;min-width:0}
+.hit{border-top:1px solid var(--line);padding:10px 0}
+.hit .h1{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px}
+.hit .sn{font-size:13px;color:var(--muted);margin:4px 0}
+.hit mark{background:rgba(47,227,181,.22);color:var(--text);border-radius:3px;padding:0 2px}
+.hit .pg{font-size:11.5px;color:var(--dim)}
+/* calendar */
+.cday{border-top:1px solid var(--line);padding:10px 0}
+.cday h4{margin:0 0 6px;font-size:13px;color:var(--acc2)}
+.ce{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:4px 0;flex-wrap:wrap}
+.ce .x{color:var(--dim);font-size:12px;flex:1 1 100%}
+table.mini{width:100%;border-collapse:collapse;font-size:13px}
+table.mini th,table.mini td{padding:8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.mini th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em;background:#08130F;position:sticky;top:0}
+table.mini tbody tr:hover{background:rgba(47,227,181,.06)}
+table.mini td.r{text-align:right;white-space:nowrap}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;max-height:520px;overflow-y:auto}
+.qt{font-size:12px;color:var(--muted);display:block;margin-top:2px;white-space:normal}
+.pk-table td .sub.qt{max-width:520px}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+[data-panel][hidden]{display:none!important}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.g3{grid-template-columns:1fr}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:8px 16px;gap:8px 10px}.back span{display:none}.back{padding:0 13px}.capf{margin-left:auto;flex:none}.me{flex:1 1 0;min-width:0}.me>div{min-width:0}.me .h{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.me img{width:32px;height:32px}nav.tb{margin-left:0;width:100%}nav.tb button{flex:1 0 auto;padding:8px 12px}
+ main{padding:16px 16px 40px}.g2{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .pk:last-child{grid-column:span 2}.pk .v{font-size:21px}
+ .box{padding:14px}.verdict{font-size:14.5px}.cards{grid-template-columns:1fr}.kwr{gap:4px}.kwr div{padding:4px 5px;font-size:10px}}
+@media (pointer:coarse),(max-width:760px){.pk-chip,.pk-btn,.pk-capbtn{min-height:40px;padding-top:8px;padding-bottom:8px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../" aria-label="All dashboards">←<span>&nbsp;All dashboards</span></a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Concall Tracker</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div id="capf" class="capf"></div>
+  <nav class="tb pk-tabs" id="tabs" aria-label="Sections">
+    <button data-tab="calls" class="on">Latest Calls</button><button data-tab="ledger">Guidance Ledger</button><button data-tab="search">Transcript Search</button><button data-tab="upcoming">Upcoming Calls</button>
+  </nav>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">NSE con-call filings · transcripts · recordings</div>
+  <h1>What managements said, <em>and whether it came true.</em></h1>
+  <div class="asof" id="asof">Loading…</div></div>
+  <span class="live"><i></i>Refreshed every night · rules only, no AI</span>
+</div>
+<div class="kpis" id="kpis"><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div></div>
+
+<!-- ============================== LATEST CALLS -->
+<section data-panel="calls">
+  <div class="grid g2">
+    <div class="box">
+      <div class="k">Tone across calls</div>
+      <p class="verdict" id="tn-verdict"></p>
+      <div class="hist" id="tn-hist"></div><div class="histx"><span>−100 gloomy</span><span>0</span><span>+100 upbeat</span></div>
+      <details class="how"><summary>How to read this</summary>
+        <p>Tone = 100 × (positive − negative) ÷ (positive + negative) words, counted only in what management said (moderator and analyst turns removed by speaker labels). A word right after <i>not / no / never / without</i> (within 3 words) counts for the other side.</p>
+        <p>Calls with fewer than 15 scored words get no tone. It is a word count, not a judgement: "lower costs" counts as negative. Compare a company with its own earlier calls more than with other companies.</p>
+        <div id="lexlist" class="lexw"></div></details>
+      <div class="src" id="tn-src"></div>
+    </div>
+    <div class="box">
+      <div class="k">What calls talked about</div>
+      <p class="verdict" id="kw-verdict"></p>
+      <div id="kw-bars"></div>
+      <details class="how"><summary>How to read this</summary>
+        <p>Total mentions in management remarks across the calls shown, per 10,000 management words, for five themes. Patterns used:</p>
+        <div id="kwlist" class="lexw"></div></details>
+    </div>
+  </div>
+  <div class="box sec">
+    <div class="k">Latest calls</div>
+    <p class="verdict" id="fd-verdict"></p>
+    <div class="row"><span class="lbl">Quarter</span><div class="chips" id="fd-q"></div>
+      <select id="fd-sort" aria-label="Sort"><option value="d">Newest first</option><option value="tone">Most upbeat tone</option><option value="-tone">Most cautious tone</option><option value="k0">Most capex talk</option><option value="k1">Most order-book talk</option><option value="ng">Most guidance lines</option><option value="mc">Largest companies</option></select>
+      <input type="search" id="fd-find" placeholder="Search company…" aria-label="Search company"></div>
+    <div class="row"><span class="lbl">Show</span><div class="chips" id="fd-only"><button class="chip on" data-v="">All calls</button><button class="chip" data-v="p">Transcript parsed</button><button class="chip" data-v="g">With guidance</button><button class="chip" data-v="a">Recording link</button></div></div>
+    <div class="capnote" id="fd-cap"></div>
+    <div class="cards" id="fd-list"><div class="skel"></div><div class="skel"></div></div>
+    <button class="chip more" id="fd-more" hidden>Show more</button>
+    <details class="how"><summary>How to read this</summary>
+      <p>One card per company per quarter. Links go to the filings on NSE: the transcript PDF, the recording intimation, and the audio/video link printed inside that intimation when one was found.</p>
+      <p><b>Key numbers</b> are sentences by management that contain a forward-looking word (expect, guidance, target, plan to, aim, outlook, we will…), a metric (revenue, EBITDA margin, order inflow, capex, loan growth…) and a value (a %, a ₹ Cr amount, bps, or words like "mid-teens" = 14–16%). Numbers about the industry, the market or the Union Budget are dropped, as are statements about periods already over. Tap a line for the full quote and page.</p>
+      <p>Transcripts are parsed for companies of ₹1,000 Cr market cap and above; smaller companies list their links only. "Transcript queued" means the PDF is on NSE but has not been read yet (the nightly run reads more each night).</p></details>
+    <div class="src" id="fd-src"></div>
+  </div>
+</section>
+
+<!-- ============================== GUIDANCE LEDGER -->
+<section data-panel="ledger" hidden>
+  <div class="grid g3">
+    <div class="box"><div class="k">Guidance raised</div><p class="verdict" id="rs-verdict"></p><div class="scroll" id="rs-list"></div></div>
+    <div class="box"><div class="k">Guidance cut</div><p class="verdict" id="ct-verdict"></p><div class="scroll" id="ct-list"></div></div>
+    <div class="box"><div class="k">Big capex announced</div><p class="verdict" id="cx-verdict"></p><div class="scroll" id="cx-list"></div></div>
+  </div>
+  <details class="how box sec" style="margin-top:14px"><summary>How these lists are made</summary>
+    <p><b>Raised / cut:</b> the same company, metric, period and unit (e.g. FY27 revenue growth in %) stated on two consecutive calls; the median value on the newer call is compared with the older one. A change of at least 1 point (0.5 point for margins, 25 bps, or 5% for ₹ amounts) counts. Higher credit-cost guidance counts as a cut.</p>
+    <p><b>Big capex:</b> capex or investment amounts in ₹ Cr stated with a plan/target on the latest two quarters' calls, at least ₹500 Cr or 5% of market cap, ranked by amount ÷ market cap. Amounts above 4× market cap are dropped as likely industry figures.</p></details>
+  <div class="box sec">
+    <div class="k">Guidance ledger</div>
+    <p class="verdict" id="lg-verdict"></p>
+    <div class="row"><span class="lbl">Metric</span><select id="lg-m" aria-label="Metric"><option value="">All metrics</option></select>
+      <span class="lbl">Call</span><select id="lg-q" aria-label="Call quarter"><option value="">All calls</option></select></div>
+    <div class="capnote" id="lg-cap"></div>
+    <div id="lg-table"><div class="skel"></div></div>
+    <details class="how"><summary>How to read this</summary>
+      <p>Every guidance statement found in the transcripts, as <b>metric · period · value</b>, with the verbatim sentence and the transcript page.</p>
+      <p><b>Status</b> compares the statement with reported quarterly results (NSE XBRL filings, via the Earnings Centre store): revenue / PAT / EBITDA growth = the period's total vs the same quarters a year earlier; margins = the period's EBITDA (or PAT) ÷ revenue; ₹ revenue targets = the period's total revenue.
+        <span class="st D">Delivered</span> when the period is fully reported and the actual is at or above the low end of the guidance (1 point tolerance for growth, 0.5 for margins, 3% for ₹ amounts); <span class="st M">Missed</span> when below; <span class="st P">Pending</span> while the period is still running (the note shows the figure so far and whether it is on track) or when the metric is not in the results filing (order inflow, loan growth, capex…).</p>
+      <p>Rules, not judgement: a sentence about one segment ("exports will grow 15–20%") is read as company revenue. Always read the quote.</p></details>
+    <div class="src" id="lg-src"></div>
+  </div>
+</section>
+
+<!-- ============================== SEARCH -->
+<section data-panel="search" hidden>
+  <div class="box">
+    <div class="k">Transcript search</div>
+    <p class="verdict" id="sr-verdict">Search what managements said on their calls.</p>
+    <div class="sbar"><input type="search" id="sr-q" placeholder='Try: price hike, "order inflow", data centre, monsoon' aria-label="Search transcripts"><div class="chips" id="sr-qs"></div></div>
+    <div class="row"><span class="lbl">Try</span><div class="chips" id="sr-try"></div></div>
+    <div class="capnote" id="sr-cap"></div>
+    <div id="sr-out"></div>
+    <button class="chip more" id="sr-more" hidden>Show more</button>
+    <details class="how"><summary>How to read this</summary>
+      <p>Searches a compact index of each parsed transcript: up to ~5 KB per call of sentences, management remarks and sentences with numbers or business words first (opening disclaimers and moderator lines removed). Each quarter's index loads only when you search it.</p>
+      <p>All words must appear in the same sentence; put a phrase in "quotes" to match it exactly. Results are ranked by the number of matching sentences in the call. The page number links into the PDF (most browsers jump to the page).</p></details>
+    <div class="src" id="sr-src"></div>
+  </div>
+</section>
+
+<!-- ============================== UPCOMING -->
+<section data-panel="upcoming" hidden>
+  <div class="box">
+    <div class="k">Upcoming calls</div>
+    <p class="verdict" id="up-verdict"></p>
+    <div class="row"><div class="chips" id="up-k"><button class="chip on" data-v="e">Earnings calls</button><button class="chip" data-v="">All analyst / investor meets</button></div>
+      <input type="search" id="up-find" placeholder="Search company…" aria-label="Search company"></div>
+    <div class="capnote" id="up-cap"></div>
+    <div id="up-list"></div>
+    <details class="how"><summary>How to read this</summary>
+      <p>From "Schedule of meet" intimations filed with NSE: the first date in the filing's subject line or NSE's summary that falls on or after the filing date. "Earnings call" = the text mentions results, earnings, a quarter or a conference call; the rest are investor conferences, roadshows and one-on-ones.</p>
+      <p>Dates come from the companies' own text and can be wrong if the filing is ambiguous. Open the filing to confirm the dial-in details.</p></details>
+    <div class="src" id="up-src"></div>
+  </div>
+</section>
+
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: NSE corporate announcements (Analysts / Institutional Investor Meet / Con. Call Updates) and the transcript PDFs they link; vault transcripts ingested from BSE filings; reported results from NSE XBRL filings (Earnings Centre)</span></footer>
+</main>
+
+<script src="../assets/universe.js?v=202611281537"></script>
+<script src="../assets/badges.js?v=202611281537"></script>
+<script src="../assets/kit.js?v=202611281537"></script>
+<script src="data.js?v=202611281537"></script>
+<script>
+(function () {
+'use strict';
+var PK = window.PK = window.PK || {};
+function esc(s) { return s == null ? '' : String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function num(v) { return typeof v === 'number' && isFinite(v); }
+function $(id) { return document.getElementById(id); }
+PK.haptic = PK.haptic || function () {};
+PK.press = PK.press || function () {};
+PK.badges = PK.badges || function () { return ''; };
+PK.countUp = PK.countUp || function (el, v, o) { el.textContent = (o && o.fmt) ? o.fmt(v) : v; };
+PK.tip = PK.tip || { show: function () {}, hide: function () {} };
+var hasCap = typeof PK.capOK === 'function';
+function capOK(s) { try { return !hasCap || PK.capOK(s) !== false; } catch (e) { return true; } }
+function capOn() { try { return hasCap && typeof PK.capIsDefault === 'function' && !PK.capIsDefault(); } catch (e) { return false; } }
+function capNote(el, hidden) { if (!el) return; el.innerHTML = capOn() ? 'Filtered to <b>' + esc(PK.capSummary()) + '</b>' + (hidden != null ? ' · ' + hidden + ' hidden' : '') + ' · <button class="linkbtn" data-capreset>reset</button>' : ''; }
+document.addEventListener('click', function (e) { if (e.target.closest('[data-capreset]')) { try { PK.capSet(null); } catch (x) {} } });
+PK.tabs = PK.tabs || function (el, o) {
+  var btns = [].slice.call(el.querySelectorAll('[data-tab]'));
+  function set(n) { btns.forEach(function (b) { b.classList.toggle('on', b.dataset.tab === n); }); [].forEach.call(document.querySelectorAll('[data-panel]'), function (p) { p.hidden = p.dataset.panel !== n; }); if (o.onChange) o.onChange(n); }
+  el.addEventListener('click', function (e) { var b = e.target.closest('[data-tab]'); if (b) set(b.dataset.tab); });
+  var st = (/tab=(\w+)/.exec(location.hash) || [])[1]; set(btns.some(function (b) { return b.dataset.tab === st; }) ? st : btns[0].dataset.tab);
+  return { set: set, get: function () { var b = el.querySelector('.on'); return b && b.dataset.tab; } };
+};
+PK.table = PK.table || function (el, cfg) {
+  var rows = cfg.rows || [];
+  function paint() { var v = rows.filter(function (r) { return !cfg.capKey || capOK(r[cfg.capKey]); });
+    el.innerHTML = '<div class="scroll"><table class="mini"><thead><tr>' + cfg.columns.map(function (c) { return '<th>' + esc(c.label || c.key) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      v.slice(0, 300).map(function (r) { return '<tr>' + cfg.columns.map(function (c) { var x = r[c.key]; return '<td>' + (c.fmt ? c.fmt(x, r) : esc(x == null ? '–' : x)) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>'; }
+  paint(); return { update: function (r) { rows = r; paint(); }, destroy: function () {} };
+};
+var fmtN = function (v, d) { return num(v) ? v.toLocaleString('en-IN', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }) : '–'; };
+var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+function pd(s) { return new Date(s + 'T00:00:00'); }
+function D(s) { if (!s) return '–'; var d = pd(s); return d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); }
+function Ds(s) { if (!s) return '–'; var d = pd(s); return d.getDate() + ' ' + MON[d.getMonth()]; }
+function chips(id, fn) {
+  var el = $(id); if (!el) return;
+  el.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select');
+    [].forEach.call(el.children, function (x) { x.classList.toggle('on', x === b); }); fn(b.dataset.v, b); });
+}
+function onv(id) { var b = $(id).querySelector('.chip.on'); return b ? b.dataset.v : ''; }
+function unavailable(el, msg) { el.innerHTML = '<div class="unavail">' + esc(msg || 'Source unavailable for now. It fills in after the next successful nightly fetch.') + '</div>'; }
+function tipAt(e, html) { var p = e.touches ? e.touches[0] : e; PK.tip.show(html, p.clientX, p.clientY); }
+function loadScript(src, glob, key) { return new Promise(function (res) { var g = window[glob]; if (g && (!key || g[key])) return res(key ? g[key] : g); var s = document.createElement('script'); s.src = src + '?v=' + encodeURIComponent(CT.built || ''); s.onload = function () { var g2 = window[glob]; res(g2 ? (key ? g2[key] || null : g2) : null); }; s.onerror = function () { res(null); }; document.head.appendChild(s); }); }
+
+var CT = window.CT;
+if (!CT) { $('asof').textContent = 'Data file missing. Run ConcallTracker/run.bat.'; $('kpis').innerHTML = ''; return; }
+var ML = CT.mlabel || {}, KWK = Object.keys(CT.kw || {}), KWL = { capex: 'Capex', orderbook: 'Order book', demand: 'Demand', pricing: 'Pricing', margins: 'Margins' };
+var DOCS = CT.docs; // [s, name, q, date, url]
+var TODAY = CT.asof;
+function val(lo, hi, u) {
+  if (!num(lo)) return '–';
+  var f = function (x) { return u === 'Cr' ? fmtN(x, x < 100 ? 1 : 0) : (Math.round(x * 10) / 10).toString(); };
+  var s = hi == null ? f(lo) + '+' : hi !== lo ? f(lo) + '–' + f(hi) : f(lo);
+  return u === 'Cr' ? '₹' + s + ' Cr' : u === 'bps' ? s + ' bps' : s + '%';
+}
+function stHtml(st) { return '<span class="st ' + (st || 'P')[0] + '">' + esc(st || 'Pending') + '</span>'; }
+function pdfPage(u, pg) { return u ? esc(u) + (pg ? '#page=' + pg : '') : ''; }
+function nameCell(s, n) { return '<b>' + esc(n) + '</b>' + PK.badges(s) + '<span class="sub">' + esc(s) + '</span>'; }
+
+/* ---------- hero + KPIs */
+var src = CT.src || {};
+$('asof').innerHTML = 'Calls for <b>' + esc(CT.quarters.join(' & ')) + '</b> · NSE filings ' + D(src.annFrom) + ' – ' + D(src.annTo) + ' · built ' + esc(CT.built) + ' IST';
+function feedRows() { return CT.feed.filter(function (r) { return capOK(r.s); }); }
+function kpis() {
+  var f = feedRows(), parsed = f.filter(function (r) { return r.id != null; }), cq = f.filter(function (r) { return r.q === CT.quarters[0]; });
+  var tones = parsed.filter(function (r) { return r.q === CT.quarters[0] && r.tone != null; }).map(function (r) { return r.tone; }).sort(function (a, b) { return a - b; });
+  var medT = tones.length ? tones[tones.length >> 1] : null;
+  var ng = parsed.reduce(function (a, r) { return a + (r.ng || 0); }, 0);
+  var wk = new Date(pd(TODAY).getTime() + 7 * 864e5).toISOString().slice(0, 10);
+  var up = CT.cal.filter(function (c) { return c.e && c.d >= TODAY && c.d <= wk && capOK(c.s); }).length;
+  var kp = [
+    { l: 'Calls tracked', v: f.length, s: cq.length + ' for ' + CT.quarters[0] + ' · ' + (f.length - cq.length) + ' for ' + CT.quarters[1] },
+    { l: 'Transcripts parsed', v: parsed.length, s: 'companies ≥ ₹1,000 Cr' + (src.pending ? ' · ' + src.pending + ' queued' : '') },
+    { l: 'Guidance lines', v: ng, s: 'metric · period · value with the quote' },
+    { l: 'Median tone ' + CT.quarters[0], v: medT, f: function (x) { return (x > 0 ? '+' : '') + Math.round(x); }, c: medT > 0 ? 'up' : medT < 0 ? 'dn' : '', s: 'scale −100 … +100, published word lists' },
+    { l: 'Earnings calls next 7 days', v: up, s: 'from schedule-of-meet filings' }
+  ];
+  $('kpis').innerHTML = kp.map(function (k, i) { return '<div class="pk" style="animation-delay:' + i * 45 + 'ms"><div class="l">' + esc(k.l) + '</div><div class="v ' + (k.c || '') + '" data-i="' + i + '">–</div><div class="s">' + esc(k.s) + '</div></div>'; }).join('');
+  kp.forEach(function (k, i) { if (num(k.v)) PK.countUp(document.querySelector('.kpis .v[data-i="' + i + '"]'), k.v, { fmt: k.f || function (x) { return fmtN(Math.round(x)); }, dur: 900 }); });
+}
+kpis();
+
+/* ---------- tabs */
+var built = {}, redraw = {}, tabsReady = false;
+var tabs = PK.tabs($('tabs'), { storeKey: 'ct_tab', onChange: function (n) { if (tabsReady) render(n); } });
+function render(n) { if (built[n]) { if (redraw[n]) redraw[n](); return; } built[n] = true; try { ({ calls: buildCalls, ledger: buildLedger, search: buildSearch, upcoming: buildUpcoming })[n](); } catch (e) { console.error(e); } }
+var cur0 = tabs && tabs.get ? tabs.get() : 'calls';
+setTimeout(function () { tabsReady = true; render(cur0 || 'calls'); }, 0);
+PK.press(document);
+if (typeof PK.capFilter === 'function') { try { PK.capFilter($('capf'), { compact: innerWidth < 760 }); } catch (e) { console.warn('capFilter', e); } }
+document.addEventListener('pk:cap', function () { kpis(); Object.keys(built).forEach(function (n) { if (redraw[n]) redraw[n](); }); });
+
+/* ============================================================ LATEST CALLS */
+function buildCalls() {
+  var shown = 30, Q = CT.quarters[0];
+  $('fd-q').innerHTML = CT.quarters.map(function (q, i) { return '<button class="chip' + (i ? '' : ' on') + '" data-v="' + q + '">' + q + '</button>'; }).join('') + '<button class="chip" data-v="">Both</button>';
+  $('lexlist').innerHTML = '<p><b class="up">Positive (' + CT.lex.pos.length + '):</b> ' + esc(CT.lex.pos.join(', ')) + '</p><p><b class="dn">Negative (' + CT.lex.neg.length + '):</b> ' + esc(CT.lex.neg.join(', ')) + '</p><p><b class="am">Uncertainty (counted, not scored):</b> ' + esc(CT.lex.unc.join(', ')) + '</p><p><b>Negators:</b> ' + esc(CT.lex.negators.join(', ')) + '</p>';
+  $('kwlist').innerHTML = KWK.map(function (k) { return '<p><b>' + KWL[k] + ':</b> <code>' + esc(CT.kw[k]) + '</code></p>'; }).join('');
+  function rows() {
+    var q = $('fd-find').value.trim().toLowerCase(), only = onv('fd-only');
+    var pre = CT.feed.filter(function (r) { return (!Q || r.q === Q) && (!q || (r.n + ' ' + r.s).toLowerCase().indexOf(q) >= 0) &&
+      (!only || (only === 'p' ? r.id != null : only === 'g' ? r.ng > 0 : (r.al && r.al.length))); });
+    var out = pre.filter(function (r) { return capOK(r.s); });
+    capNote($('fd-cap'), pre.length - out.length);
+    var srt = $('fd-sort').value, dir = srt[0] === '-' ? 1 : -1, key = srt.replace('-', '');
+    var gv = function (r) { return key[0] === 'k' && key.length === 2 ? (r.kw ? r.kw[+key[1] === 0 ? 0 : 1] : null) : r[key]; };
+    if (key === 'k0') gv = function (r) { return r.kw ? r.kw[0] : null; };
+    if (key === 'k1') gv = function (r) { return r.kw ? r.kw[1] : null; };
+    out.sort(function (a, b) { var x = gv(a), y = gv(b); if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * dir; });
+    return out;
+  }
+  function card(r, i) {
+    var tcls = r.tone > 15 ? 'p' : r.tone < -5 ? 'n' : 'z';
+    var mx = r.kw ? Math.max.apply(null, r.kw.concat([1])) : 1;
+    var h = '<div class="cc" style="animation-delay:' + Math.min(i, 12) * 45 + 'ms"><div class="hd"><div><div class="nm">' + esc(r.n) + PK.badges(r.s) + '</div><div class="meta">' + esc(r.s) + ' · ' + esc(r.q) + ' call' + (r.d ? ' · ' + D(r.d) : '') + (num(r.mc) ? ' · ₹' + fmtN(r.mc) + ' Cr' : '') + '</div></div>' +
+      (r.id != null && r.tone != null ? '<span class="tone ' + tcls + '" data-tt="' + i + '">Tone ' + (r.tone > 0 ? '+' : '') + r.tone + '</span>' : '') + '</div>';
+    if (r.id != null) {
+      h += '<div class="kwr">' + KWK.map(function (k, j) { return '<div data-kw="' + i + ':' + j + '">' + KWL[k] + '<b>' + r.kw[j] + '</b><i style="width:' + (r.kw[j] / mx * 100) + '%"></i></div>'; }).join('') + '</div>';
+      if (r.ob) h += '<div class="meta">Order book mentioned: <b class="up">₹' + fmtN(r.ob) + ' Cr</b></div>';
+      if (r.g && r.g.length) h += '<ul class="gl">' + r.g.map(function (g, j) { return '<li data-g="' + i + ':' + j + '"><b>' + esc(ML[g[0]] || g[0]) + '</b> · ' + esc(g[1] || 'no period') + ' · <span class="v">' + val(g[2], g[3], g[4]) + '</span> ' + stHtml(g[7]) + '</li>'; }).join('') + '</ul>' + (r.ng > r.g.length ? '<div class="meta">+' + (r.ng - r.g.length) + ' more in the Guidance Ledger</div>' : '');
+      else h += '<div class="meta">No guidance line matched the rules in this transcript.</div>';
+    } else if (r.pend) h += '<div class="meta am" style="margin-top:8px">Transcript queued: it will be parsed on a coming nightly run.</div>';
+    else if (!r.tu) h += '<div class="meta" style="margin-top:8px">Recording filed; no transcript on NSE yet.</div>';
+    else h += '<div class="meta" style="margin-top:8px">Below ₹1,000 Cr: links only.</div>';
+    h += '<div class="lk">' + (r.tu ? '<a href="' + esc(r.tu) + '" target="_blank" rel="noopener">Transcript PDF' + (r.td ? ' (' + Ds(r.td) + ')' : '') + '</a>' : '') +
+      (r.au ? '<a href="' + esc(r.au) + '" target="_blank" rel="noopener">Recording filing</a>' : '') +
+      (r.al || []).map(function (u, j) { return '<a href="' + esc(u) + '" target="_blank" rel="noopener nofollow">Audio/video link' + (j ? ' ' + (j + 1) : '') + '</a>'; }).join('') + '</div></div>';
+    return h;
+  }
+  var cur = [];
+  function draw(reset) {
+    if (reset) shown = 30;
+    cur = rows();
+    var parsed = cur.filter(function (r) { return r.id != null; }), toned = parsed.filter(function (r) { return r.tone != null; });
+    // tone histogram
+    var bins = []; for (var b = 0; b < 10; b++) bins.push([]);
+    toned.forEach(function (r) { bins[Math.min(9, Math.floor((r.tone + 100) / 20))].push(r); });
+    var mx = Math.max.apply(null, bins.map(function (x) { return x.length; }).concat([1]));
+    $('tn-hist').innerHTML = bins.map(function (x, i) { return '<div class="' + (i < 5 ? 'neg' : '') + '" data-b="' + i + '" style="height:' + (x.length / mx * 100) + '%;animation-delay:' + i * 40 + 'ms"></div>'; }).join('');
+    $('tn-hist').onclick = $('tn-hist').onmouseover = function (e) { var d = e.target.closest('[data-b]'); if (!d) return; var x = bins[+d.dataset.b], lo = +d.dataset.b * 20 - 100;
+      tipAt(e, '<b>Tone ' + lo + ' to ' + (lo + 20) + '</b><br>' + x.length + ' calls' + (x.length ? '<br>' + x.slice().sort(function (a, b) { return (b.mc || 0) - (a.mc || 0); }).slice(0, 5).map(function (r) { return esc(r.n); }).join(', ') : '')); };
+    var pos = toned.filter(function (r) { return r.tone > 0; }).length;
+    var best = toned.slice().sort(function (a, b) { return b.tone - a.tone; })[0], worst = toned.slice().sort(function (a, b) { return a.tone - b.tone; })[0];
+    $('tn-verdict').innerHTML = toned.length ? '<b>' + Math.round(pos / toned.length * 100) + '%</b> of ' + toned.length + ' scored calls leaned upbeat' + (best ? '; most upbeat: <b>' + esc(best.n) + '</b> (' + best.tone + '), most cautious: <b>' + esc(worst.n) + '</b> (' + worst.tone + ').' : '.') : 'No parsed transcript for this selection yet.';
+    $('tn-src').textContent = 'Source: management remarks in exchange-filed transcripts · lexicon published under "How to read this" · as of ' + D(CT.asof);
+    // keyword bars per 10k management words
+    var words = parsed.reduce(function (a, r) { return a + (r.w || 0); }, 0) || 1;
+    var items = KWK.map(function (k, j) { var t = parsed.reduce(function (a, r) { return a + r.kw[j]; }, 0); return { label: KWL[k], value: Math.round(t / words * 1e5) / 10, tip: '<b>' + KWL[k] + '</b><br>' + fmtN(t) + ' mentions in ' + parsed.length + ' calls' }; });
+    var top = items.slice().sort(function (a, b) { return b.value - a.value; });
+    $('kw-verdict').innerHTML = parsed.length ? '<b>' + esc(top[0].label) + '</b> came up most (' + top[0].value + ' per 10k words), <b>' + esc(top[top.length - 1].label) + '</b> least.' : 'Nothing to count yet.';
+    if (PK.svgBars) { if (buildCalls.bars && buildCalls.bars.update) buildCalls.bars.update(items); else buildCalls.bars = PK.svgBars($('kw-bars'), items, { fmt: function (v) { return v + ' /10k'; }, labelW: 90 }); }
+    $('fd-verdict').innerHTML = cur.length ? '<b>' + cur.length + '</b> calls · ' + parsed.length + ' transcripts parsed · ' + cur.filter(function (r) { return r.ng; }).length + ' with guidance lines · ' + cur.filter(function (r) { return r.al && r.al.length; }).length + ' with a recording link.' : 'No call matches these filters.';
+    $('fd-list').innerHTML = cur.slice(0, shown).map(card).join('') || '<div class="unavail">No call matches these filters.</div>';
+    requestAnimationFrame(function () { [].forEach.call($('fd-list').querySelectorAll('.kwr i'), function (x) { var w = x.style.width; x.style.width = '0'; requestAnimationFrame(function () { x.style.width = w; }); }); });
+    $('fd-more').hidden = cur.length <= shown; $('fd-more').textContent = 'Show more (' + (cur.length - shown) + ' left)';
+    $('fd-src').textContent = 'Source: NSE announcements "Analysts/Institutional Investor Meet/Con. Call Updates" (' + fmtN(src.ann) + ' filings since ' + D(src.annFrom) + '), the PDFs they link, and ' + fmtN(src.vault) + ' transcripts already in the vault (BSE filings) · as of ' + D(CT.asof);
+  }
+  $('fd-list').addEventListener('click', function (e) {
+    var g = e.target.closest('[data-g]'), t = e.target.closest('[data-tt]'), k = e.target.closest('[data-kw]');
+    if (g) { var p = g.dataset.g.split(':'), r = cur[+p[0]], x = r.g[+p[1]]; tipAt(e, '“' + esc(x[5]) + '”<br><span class="dimc">' + esc(r.n) + ' · ' + esc(r.q) + ' call · page ' + x[6] + '</span>' + (r.tu ? '<br><a href="' + pdfPage(r.tu, x[6]) + '" target="_blank" rel="noopener">Open page ' + x[6] + '</a>' : '')); PK.haptic('tap'); }
+    if (t) { var r2 = cur[+t.dataset.tt]; tipAt(e, '<b>Tone ' + r2.tone + '</b><br>' + r2.tp + ' positive vs ' + r2.tn + ' negative words<br>' + r2.tu2 + ' uncertainty words · ' + fmtN(r2.w) + ' words in ' + r2.np + ' pages'); }
+    if (k) { var q2 = k.dataset.kw.split(':'), r3 = cur[+q2[0]]; tipAt(e, '<b>' + KWL[KWK[+q2[1]]] + '</b>: ' + r3.kw[+q2[1]] + ' mentions by management'); }
+  });
+  chips('fd-q', function (v) { Q = v; draw(true); }); chips('fd-only', function () { draw(true); });
+  $('fd-sort').addEventListener('change', function () { draw(true); });
+  var tm; $('fd-find').addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(function () { draw(true); }, 180); });
+  $('fd-more').addEventListener('click', function () { shown += 30; draw(); });
+  redraw.calls = function () { draw(true); };
+  draw(true);
+}
+
+/* ============================================================ GUIDANCE LEDGER */
+function buildLedger() {
+  function chg(r) { var a = val(r.from, r.from, r.u), b = val(r.to, r.to, r.u); return a + ' → <b>' + b + '</b>'; }
+  function lst(id, vid, arr, kind) {
+    var rows = arr.filter(function (r) { return capOK(r.s); });
+    var el = $(id);
+    if (!rows.length) { el.innerHTML = '<div class="unavail">' + (arr.length ? 'Nothing for this market-cap filter.' : 'None found yet: needs two consecutive calls with the same metric and period.') + '</div>'; }
+    else el.innerHTML = '<table class="mini"><tbody>' + rows.slice(0, 60).map(function (r, i) {
+      var d = DOCS[r.doc] || [];
+      return '<tr data-i="' + i + '"><td><b>' + esc(d[1] || r.s) + '</b>' + PK.badges(r.s) + '<span class="qt">' + esc(ML[r.m] || r.m) + ' · ' + esc(r.p) + (kind === 'cx' ? '' : ' · ' + esc(r.qa) + ' → ' + esc(r.qb)) + '</span></td><td class="r">' +
+        (kind === 'cx' ? '<b class="up">₹' + fmtN(r.amt) + ' Cr</b><span class="qt">' + (num(r.pct) ? r.pct + '% of mcap' : '') + '</span>' : '<span class="' + (kind === 'rs' ? 'up' : 'dn') + '">' + chg(r) + '</span>') + '</td></tr>'; }).join('') + '</tbody></table>';
+    el.onclick = function (e) { var tr = e.target.closest('tr[data-i]'); if (!tr) return; var r = rows[+tr.dataset.i], d = DOCS[r.doc] || [];
+      tipAt(e, '“' + esc(r.q) + '”<br><span class="dimc">' + esc(d[1]) + ' · ' + esc(d[2]) + ' call · page ' + r.pg + '</span>' + (r.qa_q ? '<br><br>Earlier (' + esc(r.qa) + '): “' + esc(r.qa_q) + '”' : '') + (d[4] ? '<br><a href="' + pdfPage(d[4], r.pg) + '" target="_blank" rel="noopener">Open transcript page ' + r.pg + '</a>' : '')); PK.haptic('tap'); };
+    var top = rows[0];
+    $(vid).innerHTML = rows.length ? '<b>' + rows.length + '</b> ' + (kind === 'cx' ? 'companies, biggest vs size: <b>' + esc((DOCS[top.doc] || [])[1]) + '</b> (₹' + fmtN(top.amt) + ' Cr' + (num(top.pct) ? ', ' + top.pct + '% of mcap' : '') + ')' : (kind === 'rs' ? 'upgrades' : 'downgrades') + ', largest company: <b>' + esc((DOCS[top.doc] || [])[1]) + '</b>') + '.' : (kind === 'cx' ? 'No big capex line found yet.' : 'No ' + (kind === 'rs' ? 'upgrade' : 'downgrade') + ' found yet.');
+  }
+  function lists() { lst('rs-list', 'rs-verdict', CT.raised, 'rs'); lst('ct-list', 'ct-verdict', CT.cut, 'ct'); lst('cx-list', 'cx-verdict', CT.capex, 'cx'); }
+  lists();
+  var tbl = null, L = null;
+  Object.keys(ML).forEach(function (k) { $('lg-m').insertAdjacentHTML('beforeend', '<option value="' + k + '">' + esc(ML[k]) + '</option>'); });
+  CT.ledgerQ.forEach(function (q) { $('lg-q').insertAdjacentHTML('beforeend', '<option>' + q + '</option>'); });
+  function data() {
+    var m = $('lg-m').value, q = $('lg-q').value;
+    return L.filter(function (x) { var d = DOCS[x[0]]; return (!m || x[1] === m) && (!q || d[2] === q); }).map(function (x) { var d = DOCS[x[0]];
+      return { s: d[0], n: d[1], cq: d[2], cd: d[3], u: d[4], m: x[1], ml: ML[x[1]] || x[1], p: x[2] || '', lo: x[3], hi: x[4], un: x[5], quote: x[6], pg: x[7], st: x[8], nt: x[9] }; });
+  }
+  function draw() {
+    var rows = data(), vis = rows.filter(function (r) { return capOK(r.s); });
+    capNote($('lg-cap'), rows.length - vis.length);
+    var c = { Delivered: 0, Missed: 0, Pending: 0 }; vis.forEach(function (r) { c[r.st] = (c[r.st] || 0) + 1; });
+    var done = c.Delivered + c.Missed, onT = vis.filter(function (r) { return / on track$/.test(r.nt); }).length, beh = vis.filter(function (r) { return / behind$/.test(r.nt); }).length;
+    $('lg-verdict').innerHTML = '<b>' + fmtN(vis.length) + '</b> guidance statements · ' + (done ? '<b>' + Math.round(c.Delivered / done * 100) + '%</b> of the ' + done + ' that can already be checked were delivered (' + c.Missed + ' missed)' : 'none can be checked against a full reported period yet') + ' · ' + fmtN(c.Pending) + ' pending' + (onT + beh ? ', of which <b>' + onT + '</b> on track and <b>' + beh + '</b> behind on the quarters reported so far.' : '.');
+    var cols = [
+      { key: 'n', label: 'Company', fmt: function (v, r) { return nameCell(r.s, v); }, csvVal: function (r) { return r.n; } },
+      { key: 'cd', label: 'Call', fmt: function (v, r) { return esc(r.cq) + '<span class="sub">' + D(v) + '</span>'; } },
+      { key: 'ml', label: 'Metric', fmt: function (v, r) { return '<b>' + esc(v) + '</b><span class="sub">' + esc(r.p || 'no period') + '</span>'; } },
+      { key: 'lo', label: 'Value', num: true, fmt: function (v, r) { return '<b class="up">' + val(r.lo, r.hi, r.un) + '</b>'; }, csvVal: function (r) { return val(r.lo, r.hi, r.un); } },
+      { key: 'st', label: 'Status', fmt: function (v, r) { return stHtml(v) + '<span class="sub">' + esc(r.nt) + '</span>'; } },
+      { key: 'quote', label: 'Quote (page)', sortable: false, fmt: function (v, r) { return '<span class="sub qt">“' + esc(v) + '” · ' + (r.u ? '<a href="' + pdfPage(r.u, r.pg) + '" target="_blank" rel="noopener">p.' + r.pg + '</a>' : 'p.' + r.pg) + '</span>'; } }
+    ];
+    if (tbl && tbl.update) tbl.update(rows); else tbl = PK.table($('lg-table'), { columns: cols, rows: rows, sortKey: 'cd', sortDir: 'desc', search: true, pageSize: 60, csvName: 'concall_guidance', tvExport: true, symbolKey: 's', capKey: 's', countLabel: 'statements', placeholder: 'Search company, metric or words…',
+      presets: [{ label: 'Delivered', filter: function (r) { return r.st === 'Delivered'; } }, { label: 'Missed', filter: function (r) { return r.st === 'Missed'; } }, { label: 'Pending', filter: function (r) { return r.st === 'Pending'; } }, { label: 'Has period', filter: function (r) { return !!r.p; } }],
+      empty: 'No guidance statement for this selection.' });
+    $('lg-src').textContent = 'Source: transcripts (NSE / vault) · actuals: NSE XBRL results via Earnings Centre' + (CT.resAsof ? ' (as of ' + D(CT.resAsof) + ')' : ' (unavailable: all statuses Pending)') + ' · built ' + CT.built;
+  }
+  loadScript('ledger.js', 'CT_LEDGER').then(function (l) { if (!l) { unavailable($('lg-table'), 'Ledger file did not load.'); return; } L = l; draw(); });
+  ['lg-m', 'lg-q'].forEach(function (id) { $(id).addEventListener('change', function () { if (L) { tbl && tbl.destroy && tbl.destroy(); tbl = null; draw(); } }); });
+  redraw.ledger = function () { lists(); if (L) draw(); };
+}
+
+/* ============================================================ SEARCH */
+function buildSearch() {
+  var IDX = {}, Qs = CT.quarters.slice(), shown = 20, res = [];
+  $('sr-qs').innerHTML = CT.quarters.map(function (q) { return '<button class="chip on" data-q="' + q + '">' + q + '</button>'; }).join('');
+  $('sr-try').innerHTML = ['price hike', '"order inflow"', 'data centre', 'monsoon', 'tariff', 'capacity expansion', 'GLP-1', 'working capital'].map(function (t) { return '<button class="chip" data-t="' + esc(t) + '">' + esc(t) + '</button>'; }).join('');
+  $('sr-qs').addEventListener('click', function (e) { var b = e.target.closest('[data-q]'); if (!b) return; b.classList.toggle('on'); PK.haptic('select'); Qs = [].slice.call($('sr-qs').querySelectorAll('.chip.on')).map(function (x) { return x.dataset.q; }); run(); });
+  $('sr-try').addEventListener('click', function (e) { var b = e.target.closest('[data-t]'); if (!b) return; $('sr-q').value = b.dataset.t; PK.haptic('select'); run(); });
+  function load(q) { if (!IDX[q]) IDX[q] = loadScript('idx_' + q + '.js', 'CT_IDX', q); return IDX[q]; }
+  function terms(s) { var out = [], m, re = /"([^"]+)"|(\S+)/g; while ((m = re.exec(s))) { var t = (m[1] || m[2]).toLowerCase().replace(/[^\w₹%&\-\s.]/g, ''); if (t.length >= 2) out.push(t); } return out; }
+  function rx(t) { return new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+'), 'gi'); }
+  function hl(text, ts) { var h = esc(text); ts.forEach(function (t) { h = h.replace(rx(esc(t)), function (m) { return '<mark>' + m + '</mark>'; }); }); return h; }
+  var seq = 0;
+  function run() {
+    var q = $('sr-q').value.trim(), ts = terms(q), my = ++seq;
+    if (!ts.length) { $('sr-out').innerHTML = ''; $('sr-more').hidden = true; $('sr-verdict').textContent = 'Search what managements said on their calls.'; capNote($('sr-cap')); return; }
+    if (!Qs.length) { $('sr-out').innerHTML = '<div class="unavail">Pick at least one quarter.</div>'; return; }
+    $('sr-out').innerHTML = '<div class="skel s"></div>';
+    Promise.all(Qs.map(load)).then(function (parts) {
+      if (my !== seq) return;
+      var res2 = {}, t0 = performance.now(), failed = 0;
+      parts.forEach(function (rows) { if (!rows) { failed++; return; }
+        for (var i = 0; i < rows.length; i++) { var r = rows[i], low = r[2].toLowerCase(), ok = true;
+          for (var j = 0; j < ts.length; j++) { if (low.indexOf(ts[j]) < 0 && !(ts[j].indexOf(' ') > 0 && rx(ts[j]).test(r[2]))) { ok = false; break; } }
+          if (!ok) continue;
+          var o = res2[r[0]] || (res2[r[0]] = { id: r[0], n: 0, hits: [] }); o.n++; if (o.hits.length < 3) o.hits.push(r); } });
+      var all = Object.keys(res2).map(function (k) { return res2[k]; });
+      res = all.filter(function (o) { return capOK(DOCS[o.id][0]); });
+      capNote($('sr-cap'), all.length - res.length);
+      res.sort(function (a, b) { return b.n - a.n || (DOCS[b.id][3] > DOCS[a.id][3] ? 1 : -1); });
+      var tot = res.reduce(function (a, o) { return a + o.n; }, 0);
+      $('sr-verdict').innerHTML = res.length ? '<b>' + esc(q) + '</b> appears in <b>' + res.length + '</b> calls (' + tot + ' sentences)' + '; most: <b>' + esc(DOCS[res[0].id][1]) + '</b> (' + res[0].n + ').' : 'No call mentions <b>' + esc(q) + '</b> in the indexed text.';
+      if (failed) $('sr-verdict').innerHTML += ' <span class="am">(' + failed + ' quarter index did not load)</span>';
+      shown = 20; paint(ts);
+      $('sr-src').textContent = 'Index: ' + Qs.join(', ') + ' · searched in ' + Math.round(performance.now() - t0) + ' ms in your browser · source: exchange-filed transcripts (NSE, BSE via vault)';
+    });
+  }
+  function paint(ts) {
+    ts = ts || terms($('sr-q').value);
+    $('sr-out').innerHTML = res.slice(0, shown).map(function (o) { var d = DOCS[o.id];
+      return '<div class="hit"><div class="h1"><span><b>' + esc(d[1]) + '</b>' + PK.badges(d[0]) + ' <span class="dimc">' + esc(d[0]) + ' · ' + esc(d[2]) + ' · ' + D(d[3]) + '</span></span><span class="pg">' + o.n + ' matching sentence' + (o.n > 1 ? 's' : '') + '</span></div>' +
+        o.hits.map(function (h) { return '<div class="sn">' + hl(h[2], ts) + ' <span class="pg">' + (d[4] ? '<a href="' + pdfPage(d[4], h[1]) + '" target="_blank" rel="noopener">p.' + h[1] + '</a>' : 'p.' + h[1]) + '</span></div>'; }).join('') + '</div>'; }).join('');
+    $('sr-more').hidden = res.length <= shown; $('sr-more').textContent = 'Show more (' + (res.length - shown) + ' left)';
+  }
+  var tm; $('sr-q').addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(run, 300); });
+  $('sr-more').addEventListener('click', function () { shown += 20; paint(); });
+  redraw.search = function () { if ($('sr-q').value.trim()) run(); };
+  $('sr-src').textContent = 'Index files load per quarter on your first search · source: exchange-filed transcripts (NSE, BSE via vault)';
+  setTimeout(function () { load(CT.quarters[0]); }, 400);
+}
+
+/* ============================================================ UPCOMING */
+function buildUpcoming() {
+  function draw() {
+    var k = onv('up-k'), q = $('up-find').value.trim().toLowerCase();
+    var pre = CT.cal.filter(function (c) { return c.d >= TODAY && (!k || c.e) && (!q || (c.n + ' ' + c.s).toLowerCase().indexOf(q) >= 0); });
+    var rows = pre.filter(function (c) { return capOK(c.s); });
+    capNote($('up-cap'), pre.length - rows.length);
+    var wk = new Date(pd(TODAY).getTime() + 7 * 864e5).toISOString().slice(0, 10);
+    var n7 = rows.filter(function (c) { return c.d <= wk; }).length;
+    var by = {}; rows.forEach(function (c) { (by[c.d] = by[c.d] || []).push(c); });
+    var days = Object.keys(by).sort();
+    var busiest = days.slice().sort(function (a, b) { return by[b].length - by[a].length; })[0];
+    $('up-verdict').innerHTML = rows.length ? '<b>' + n7 + '</b> ' + (k ? 'earnings calls' : 'meets') + ' in the next 7 days, ' + rows.length + ' scheduled in all' + (busiest ? '; busiest day <b>' + D(busiest) + '</b> (' + by[busiest].length + ').' : '.') : 'No upcoming ' + (k ? 'earnings call' : 'meet') + ' found in recent intimations.';
+    $('up-list').innerHTML = days.slice(0, 60).map(function (d) { var x = by[d].sort(function (a, b) { return (b.mc || 0) - (a.mc || 0); }), dd = pd(d);
+      return '<div class="cday"><h4>' + DOW[dd.getDay()] + ', ' + D(d) + ' · ' + x.length + '</h4>' + x.map(function (c) { return '<div class="ce"><span><b>' + esc(c.n) + '</b>' + PK.badges(c.s) + ' <span class="dimc">' + esc(c.s) + (num(c.mc) ? ' · ₹' + fmtN(c.mc) + ' Cr' : '') + '</span></span><span>' + esc(c.tm) + ' <a href="' + esc(c.u) + '" target="_blank" rel="noopener">filing ' + Ds(c.f) + '</a></span><span class="x">' + esc(c.x) + '</span></div>'; }).join('') + '</div>'; }).join('') || '<div class="unavail">Nothing scheduled for this selection.</div>';
+    $('up-src').textContent = 'Source: NSE "Schedule of meet" intimations filed up to ' + D(src.annTo) + ' · dates parsed from the filing text';
+  }
+  chips('up-k', draw);
+  var tm; $('up-find').addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(draw, 180); });
+  redraw.upcoming = draw; draw();
+}
+})();
+</script>
+</body>
+</html>

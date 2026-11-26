@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily &amp; Weekly Brief · Pratham Gupta</title>
+<meta name="description" content="A morning brief before the Indian market opens (GIFT Nifty, global cues, flows, options, today's events, overnight filings) and an automatic weekly market wrap with an archive. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<meta name="theme-color" content="#030806">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kit.css?v=202611281537">
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sage:#8EC3A9;
+--sky:#5AA9F0;--lav:#A78BFA;--slate:#8A9690;--teal:#3E6B5E;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--text);font:14px/1.5 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+header{display:flex;align-items:center;gap:16px;padding:10px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:8px 13px;transition:all .2s;white-space:nowrap;min-height:40px;display:inline-flex;align-items:center}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover;flex:none}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.capf:empty{display:none}.capf{margin-left:auto}.capf+nav.tb{margin-left:0}
+nav.tb{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+nav.tb::-webkit-scrollbar{display:none}
+nav.tb button{border:0;border-radius:999px;background:transparent;color:var(--muted);padding:8px 15px;min-height:40px;font:600 13px var(--font);cursor:pointer;white-space:nowrap;transition:all .18s}
+nav.tb button:hover{color:var(--text)}
+nav.tb button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+main{padding:22px 24px 48px;max-width:1360px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.6vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 20px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s cubic-bezier(.2,.8,.2,1) both;min-width:0}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.pk .l{font-size:11.5px;color:var(--muted)}
+.pk .v{font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .s{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.up{color:var(--up)}.dn{color:var(--dn)}.am{color:var(--amber)}.mut{color:var(--muted)}.dimc{color:var(--dim)}
+.sec{margin-top:22px}
+.sec>h2{font-size:18px;letter-spacing:-.01em;margin:0 0 4px}
+.sec>.sub{color:var(--muted);font-size:13px;margin:0 0 12px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0;position:relative;
+ animation:rise .55s cubic-bezier(.2,.8,.2,1) both;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s}
+.box.hov:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35)}
+.box h3{margin:0 0 2px;font-size:15px;font-weight:650;letter-spacing:-.1px;line-height:1.35}
+.box .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.verdict{font-size:15px;font-weight:650;line-height:1.35;margin:0 0 8px}
+.verdict b{color:var(--acc)}
+.chart{height:300px;margin-top:6px;touch-action:pan-y}
+.chart.sm{height:220px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;min-height:40px;font:500 13px var(--font);cursor:pointer;transition:all .18s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+.chip.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:650;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+details.how{margin-top:10px;border-top:1px dashed var(--line2);padding-top:8px;color:var(--muted);font-size:12.5px}
+details.how summary{cursor:pointer;color:var(--acc2);font-weight:600;min-height:40px;display:flex;align-items:center;list-style:none}
+details.how summary::before{content:"+";display:inline-block;width:16px;font-weight:700}
+details.how[open] summary::before{content:"−"}
+details.how p{margin:6px 0}
+.src{color:var(--dim);font-size:11.5px;margin-top:8px}
+.icard{cursor:pointer}
+.icard .nm{font-size:12.5px;color:var(--muted)}
+.icard .px{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.icard .rets{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px;font-size:12px}
+.icard .rets span{display:block;color:var(--dim);font-size:10.5px}
+.icard svg{display:block;width:100%;margin-top:6px}
+.mood{font-size:16px;font-weight:600;line-height:1.45}
+.state{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.dot{width:14px;height:14px;border-radius:50%;flex:none;box-shadow:0 0 0 6px rgba(47,227,181,.12)}
+.st-up{background:var(--acc)}.st-press{background:var(--amber);box-shadow:0 0 0 6px rgba(224,166,74,.14)}.st-rally{background:var(--sky);box-shadow:0 0 0 6px rgba(90,169,240,.14)}.st-corr{background:var(--dn);box-shadow:0 0 0 6px rgba(255,92,108,.14)}
+.tag{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line2);white-space:nowrap}
+.tag.up{color:var(--acc);border-color:rgba(47,227,181,.4)}.tag.press{color:var(--amber);border-color:rgba(224,166,74,.45)}.tag.rally{color:var(--sky);border-color:rgba(90,169,240,.45)}.tag.corr{color:var(--dn);border-color:rgba(255,92,108,.45)}
+.big{font-size:clamp(24px,3vw,32px);font-weight:750;letter-spacing:-.02em}
+table.mini{width:100%;border-collapse:collapse;font-size:13px}
+table.mini th,table.mini td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.mini th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+table.mini th:first-child,table.mini td:first-child{text-align:left}
+table.mini tbody tr:hover{background:rgba(47,227,181,.06)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.gauge{display:flex;justify-content:center}
+.gauge svg{width:100%;max-width:340px;height:auto}
+.legend2{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:4px 0}
+.legend2 i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.skel{height:220px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+.skel.s{height:110px}
+.unavail{border:1px dashed var(--line2);border-radius:12px;padding:14px;color:var(--muted);font-size:13px;background:rgba(10,23,19,.5)}
+.sym b{font-weight:650}.sym .nm2{display:block;color:var(--dim);font-size:11.5px;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.stg{display:inline-block;min-width:24px;text-align:center;border-radius:6px;padding:1px 5px;font-size:11.5px;font-weight:700}
+.stg.s1{background:rgba(138,150,144,.18);color:#C9D6D0}.stg.s2{background:rgba(47,227,181,.16);color:var(--acc)}.stg.s3{background:rgba(224,166,74,.16);color:var(--amber)}.stg.s4{background:rgba(255,92,108,.16);color:var(--dn)}
+.ddl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ddl span{font-size:12px;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;color:var(--muted)}
+.ddl span b{color:var(--text)}
+.bars{display:grid;gap:6px}
+.hb{display:grid;grid-template-columns:120px 1fr 64px;gap:8px;align-items:center;font-size:12.5px}
+.hb .t{background:rgba(47,227,181,.06);height:14px;border-radius:999px;overflow:hidden;position:relative}
+.hb .f{height:100%;border-radius:999px;background:linear-gradient(90deg,#10B981,#2FE3B5)}
+.hb .f.neg{background:linear-gradient(90deg,#C93A4B,#FF5C6C)}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+[data-panel][hidden]{display:none!important}
+.stagger>*{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.g5{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:8px 16px;gap:8px 10px}.back span{display:none}.back{padding:0 13px}.capf{margin-left:auto;flex:none}.me{flex:1 1 0;min-width:0}.me>div{min-width:0}.me .h{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.me img{width:32px;height:32px}nav.tb{margin-left:0;width:100%}nav.tb button{flex:1 0 auto;padding:8px 12px}
+ main{padding:16px 16px 40px}.g2,.g3{grid-template-columns:1fr}.g5{grid-template-columns:repeat(2,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .pk:last-child{grid-column:span 2}.pk .v{font-size:21px}.chart{height:260px}.hb{grid-template-columns:92px 1fr 58px}
+ .box{padding:14px}.verdict{font-size:14px}}
+@media (pointer:coarse),(max-width:760px){.pk-chip,.pk-btn,.pk-capbtn{min-height:40px;padding-top:8px;padding-bottom:8px}}
+@media (max-width:420px){.back{padding:6px 10px;font-size:12px}.me .t{font-size:15px}}
+/* brief extras */
+.share{flex:none}
+.summary{margin-top:0}.summary .mood{margin:4px 0 0;font-size:16.5px;line-height:1.6}
+.gcues{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:6px}
+.gcol{min-width:0}.gcol .lbl{display:block;margin-bottom:4px}
+.gq{display:grid;grid-template-columns:minmax(0,1fr) 64px auto 58px;gap:6px;align-items:center;font-size:12.5px;padding:7px 0;border-bottom:1px solid var(--line);cursor:pointer;min-height:40px}
+.gq small{display:block;color:var(--dim);font-size:10.5px}.gq .v{text-align:right;font-weight:600}.gq>span:last-child{text-align:right}
+.gq .sp svg{display:block;width:64px;height:22px}
+.strow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.strow .dot{width:10px;height:10px;box-shadow:none}
+.ob{background:rgba(3,8,6,.35);border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}
+.obh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.oirow{display:grid;grid-template-columns:84px 1fr 62px;gap:8px;align-items:center;font-size:12.5px;padding:3px 0;cursor:pointer;min-height:28px}
+.oirow .t{background:rgba(47,227,181,.06);height:12px;border-radius:999px;overflow:hidden}
+.oirow .f{height:100%;width:var(--w);border-radius:999px;background:linear-gradient(90deg,#10B981,#2FE3B5);animation:grow .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
+.oirow .f.ce{background:linear-gradient(90deg,#C93A4B,#FF5C6C)}
+.oirow span:last-child{text-align:right;color:var(--muted)}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.fil{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fi{display:block;text-decoration:none;color:var(--text);border:1px solid var(--line);border-left:3px solid var(--line2);border-radius:12px;padding:10px 12px;background:rgba(3,8,6,.35);transition:transform .2s,border-color .2s;min-width:0}
+.fi:hover{transform:translateY(-2px);border-color:rgba(47,227,181,.5)}
+.fi.tonep{border-left-color:var(--acc)}.fi.tonen{border-left-color:var(--dn)}
+.fih{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:12.5px}.fit{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.45;overflow-wrap:anywhere}
+.capnote{font-size:12px;color:var(--amber);margin:0 0 8px}.capnote a,.lbl a{color:var(--acc)}
+.weeksel{gap:10px}.weeksel select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:999px;padding:8px 14px;min-height:40px;font:600 13px var(--font);max-width:100%}
+.symlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.symlist span{font-size:12px;border:1px solid var(--line2);border-radius:999px;padding:3px 9px}
+.take{margin:6px 0 0;color:var(--acc2);font-size:13px}
+a{color:var(--acc)}
+@media (max-width:1100px){.gcues{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.gcues{grid-template-columns:1fr}.fil{grid-template-columns:1fr}.summary .mood{font-size:15px}.hero .share{order:3}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../" aria-label="All dashboards">←<span>&nbsp;All dashboards</span></a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Daily &amp; Weekly Brief</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div id="capf" class="capf"></div>
+  <nav class="tb pk-tabs" id="tabs" aria-label="Sections">
+    <button data-tab="morning" class="on">Morning Brief</button><button data-tab="weekly">Weekly Wrap</button>
+  </nav>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb" id="eb">Before the 9:15 open</div>
+  <h1 id="h1">What to know <em>before the bell</em></h1>
+  <div class="asof" id="asof">Loading…</div></div>
+  <button class="pk-btn share" id="share" type="button" aria-label="Share this brief">Share ↗</button>
+</div>
+
+<section data-panel="morning">
+  <div class="kpis" id="m-kpis"><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div></div>
+  <div class="box summary" id="m-sum"><div class="skel s"></div></div>
+  <div class="grid g2 sec" id="m-grid1">
+    <div class="box hov" id="m-gift"></div>
+    <div class="box hov" id="m-closes"></div>
+  </div>
+  <div class="box sec" id="m-global"></div>
+  <div class="grid g2 sec">
+    <div class="box hov" id="m-flows"></div>
+    <div class="box hov" id="m-status"></div>
+  </div>
+  <div class="box sec" id="m-opt"></div>
+  <div class="grid g2 sec">
+    <div class="box hov" id="m-events"></div>
+    <div class="box hov" id="m-ban"></div>
+  </div>
+  <div class="box sec" id="m-fil"></div>
+</section>
+
+<section data-panel="weekly" hidden>
+  <div class="row weeksel"><span class="lbl">Week</span><select id="wsel" aria-label="Choose a week"></select><span class="mut" id="wnote"></span></div>
+  <div class="kpis" id="w-kpis"></div>
+  <div class="grid g2 sec">
+    <div class="box hov" id="w-idx"></div>
+    <div class="box hov" id="w-breadth"></div>
+  </div>
+  <div class="box sec" id="w-sec"></div>
+  <div class="grid g2 sec">
+    <div class="box hov" id="w-s2"></div>
+    <div class="box hov" id="w-flows"></div>
+  </div>
+  <div class="grid g2 sec">
+    <div class="box hov" id="w-ins"></div>
+    <div class="box hov" id="w-deals"></div>
+  </div>
+  <div class="grid g2 sec">
+    <div class="box hov" id="w-orders"></div>
+    <div class="box hov" id="w-res"></div>
+  </div>
+</section>
+
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: NSE (allIndices, F&amp;O bhavcopy, FII/DII provisional, board meetings, filings, PIT and bulk/block deals), NSE IX (GIFT Nifty), Yahoo Finance (global cues) · built from the site's Market Pulse, F&amp;O, Sector, Stage 2, Insider &amp; Deals, Order Tracker, Earnings Centre and Filings Radar data</span></footer>
+</main>
+
+<script src="../assets/universe.js?v=202611281537"></script>
+<script src="../assets/badges.js?v=202611281537"></script>
+<script src="../assets/kit.js?v=202611281537"></script>
+<script src="data.js?v=202611281537"></script>
+<script>
+(function () {
+'use strict';
+var D = window.DB;
+var $ = function (id) { return document.getElementById(id); };
+var HAS = typeof window.PK === 'object' && window.PK;
+var PK = HAS ? window.PK : {};
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+var INR = new Intl.NumberFormat('en-IN');
+function num(v, dp) { if (v == null || isNaN(v)) return '–'; return Number(v).toLocaleString('en-IN', { minimumFractionDigits: dp || 0, maximumFractionDigits: dp || 0 }); }
+function sg(v, dp, suf) { if (v == null || isNaN(v)) return '–'; dp = dp == null ? 2 : dp; var s = Number(v).toLocaleString('en-IN', { minimumFractionDigits: dp, maximumFractionDigits: dp }); return (v > 0 ? '+' : '') + s + (suf == null ? '%' : suf); }
+function cls(v) { return v == null ? 'mut' : v > 0 ? 'up' : v < 0 ? 'dn' : 'mut'; }
+function cr(v, dp) { return v == null ? '–' : '₹' + num(v, dp || 0) + ' Cr'; }
+function dmy(iso) { if (!iso) return '–'; var d = new Date(iso + 'T00:00:00'); return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }); }
+function dlong(iso) { var d = new Date(iso + 'T00:00:00'); return d.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }); }
+function badges(s) { try { return HAS && PK.badges ? PK.badges(s, { max: 2 }) : ''; } catch (e) { return ''; } }
+function capOK(s) { try { return HAS && PK.capOK ? PK.capOK(s) : true; } catch (e) { return true; } }
+function capNote(n, total) { if (!HAS || !PK.capIsDefault || PK.capIsDefault()) return ''; return '<div class="capnote">Filtered to ' + esc(PK.capSummary()) + ' · ' + n + ' of ' + total + ' shown · <a href="#" data-capreset>reset</a></div>'; }
+function how(t) { return '<details class="how"><summary>How to read this</summary><p>' + t + '</p></details>'; }
+function src(t) { return '<div class="src">' + t + '</div>'; }
+function unavail(t) { return '<div class="unavail">' + esc(t) + '</div>'; }
+function spark(v, o) { try { return HAS && PK.spark && v && v.length > 1 ? PK.spark(v, o || { w: 90, h: 26 }) : ''; } catch (e) { return ''; } }
+function countUps(root) {
+  [].forEach.call(root.querySelectorAll('[data-cu]'), function (el) {
+    var v = parseFloat(el.dataset.cu), dp = +(el.dataset.dp || 0), pre = el.dataset.pre || '', suf = el.dataset.suf || '', sgn = el.dataset.sgn === '1';
+    var f = function (x) { return pre + (sgn && x > 0 ? '+' : '') + Number(x).toLocaleString('en-IN', { minimumFractionDigits: dp, maximumFractionDigits: dp }) + suf; };
+    if (HAS && PK.countUp) PK.countUp(el, v, { fmt: f }); else el.textContent = f(v);
+  });
+}
+function cu(v, dp, pre, suf, sgn) { if (v == null || isNaN(v)) return '–'; return '<span data-cu="' + v + '" data-dp="' + (dp || 0) + '" data-pre="' + (pre || '') + '" data-suf="' + (suf || '') + '" data-sgn="' + (sgn ? 1 : 0) + '">' + (pre || '') + num(v, dp) + (suf || '') + '</span>'; }
+function kpi(l, v, s, c) { return '<div class="pk"><div class="l">' + l + '</div><div class="v ' + (c || '') + '">' + v + '</div><div class="s">' + (s || '') + '</div></div>'; }
+function bars(el, items, o) {
+  if (!el) return;
+  if (HAS && PK.svgBars) { try { PK.svgBars(el, items, o || {}); return; } catch (e) { console.warn(e); } }
+  var mx = Math.max.apply(null, items.map(function (i) { return Math.abs(i.value) || 0; }).concat([1]));
+  el.innerHTML = '<div class="bars">' + items.map(function (i) { var w = Math.abs(i.value) / mx * 100; return '<div class="hb"><span>' + esc(i.label) + '</span><div class="t"><div class="f' + (i.value < 0 ? ' neg' : '') + '" style="width:' + w + '%"></div></div><span class="' + cls(i.value) + '">' + ((o && o.fmt) ? o.fmt(i.value) : i.value) + '</span></div>'; }).join('') + '</div>';
+}
+function symCell(s, sub) { return '<span class="sym"><b>' + esc(s) + '</b>' + badges(s) + (sub ? '<span class="nm2">' + esc(sub) + '</span>' : '') + '</span>'; }
+function mini(cols, rows) {
+  return '<div class="scroll"><table class="mini"><thead><tr>' + cols.map(function (c) { return '<th>' + c[0] + '</th>'; }).join('') + '</tr></thead><tbody>' +
+    rows.map(function (r) { return '<tr>' + cols.map(function (c) { return '<td>' + c[1](r) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+}
+function stagger(root) { [].forEach.call(root.querySelectorAll('.box,.pk'), function (b, i) { b.style.animationDelay = (i * 45) + 'ms'; }); }
+
+if (!D) { $('asof').textContent = 'Data file missing.'; return; }
+var M = D.morning || {};
+
+/* ============================================================ MORNING */
+function renderMorning() {
+  var forDay = M['for'];
+  var gift = M.gift || {}, rows = {};
+  ((M.closes || {}).rows || []).forEach(function (r) { rows[r.k] = r; });
+  var n50 = rows.n50, vix = rows.vix, fl = (M.flows || []).slice(-1)[0], nifty = ((M.options || {}).idx || [])[0];
+  $('m-kpis').innerHTML =
+    kpi('GIFT Nifty implied open', gift.ok && gift.pts != null ? cu(gift.pts, 1, '', ' pts', true) : 'unavailable', gift.ok && gift.pct != null ? '<span class="' + cls(gift.pct) + '">' + sg(gift.pct) + '</span> vs Nifty ' + num(gift.base, 1) : 'NSE IX not reachable', gift.ok ? cls(gift.pts) : 'mut') +
+    kpi('Nifty 50 last close', n50 ? cu(n50.c, 1) : '–', n50 ? '<span class="' + cls(n50.p) + '">' + sg(n50.p) + '</span> on ' + dmy(n50.d) : '') +
+    kpi('India VIX', vix ? cu(vix.c, 2) : '–', vix ? '<span class="' + cls(-vix.p) + '">' + sg(vix.p) + '</span> day change' : '') +
+    kpi('FII net (cash)', fl ? cu(fl.fii, 0, '₹', ' Cr', true) : '–', fl ? 'DII ' + sg(fl.dii, 0, '') + ' Cr · ' + dmy(fl.d) : '', fl ? cls(fl.fii) : '') +
+    kpi('Nifty PCR (OI)', nifty && nifty.pcr != null ? cu(nifty.pcr, 2) : '–', nifty ? 'Max pain ' + num(nifty.mp) + ' · expiry ' + dmy(nifty.exp) : '');
+  $('m-sum').innerHTML = '<div class="k">Auto summary · rule-based, numbers only from this page</div><p class="mood">' + esc(M.summary || '') + '</p>' +
+    how('This paragraph is written by fixed templates from the numbers in the cards below (no AI). "Higher / lower start" needs GIFT Nifty more than 15 points away from the last Nifty close; otherwise it says flat.');
+
+  // GIFT
+  var g = $('m-gift');
+  if (gift.ok) {
+    var dir = gift.pts > 15 ? 'a gap-up' : gift.pts < -15 ? 'a gap-down' : 'a flat';
+    g.innerHTML = '<div class="k">GIFT Nifty · NSE IX</div><h3 class="verdict">GIFT Nifty points to <b>' + dir + ' open</b> (' + sg(gift.pts, 1, ' pts') + ')</h3>' +
+      '<div class="state"><div><div class="big">' + cu(gift.last, 1) + '</div><div class="mut">near-month future · expiry ' + esc(gift.exp) + '</div></div>' +
+      '<div><div class="big ' + cls(gift.pts) + '">' + sg(gift.pct) + '</div><div class="mut">vs Nifty close ' + num(gift.base, 1) + ' (' + dmy(gift.based) + ')</div></div></div>' +
+      '<div class="ddl"><span>Range <b>' + num(gift.lo, 1) + ' – ' + num(gift.hi, 1) + '</b></span><span>Day change <b class="' + cls(gift.chg) + '">' + sg(gift.chg, 1, '') + '</b></span></div>' +
+      how('Implied open = GIFT Nifty near-month future minus the last Nifty 50 spot close. The future carries a small premium (cost of carry), so a reading within ±15 points is effectively flat. Last traded: ' + esc(gift.ts || '') + (gift.status ? ' · ' + esc(gift.status) : '')) +
+      src('Source: NSE IX derivatives watch (nseix.com) · last trade ' + esc(gift.ts || ''));
+  } else {
+    g.innerHTML = '<div class="k">GIFT Nifty · NSE IX</div><h3 class="verdict">GIFT Nifty is unavailable right now</h3>' + unavail('NSE IX did not answer a plain request (' + (gift.why || 'no data') + '). No implied open is shown.') + src('Source: NSE IX');
+  }
+  // closes
+  var cl = (M.closes || {}).rows || [];
+  var upN = cl.filter(function (r) { return r.k !== 'vix' && r.p > 0; }).length, eqN = cl.filter(function (r) { return r.k !== 'vix'; }).length;
+  $('m-closes').innerHTML = '<div class="k">Previous session · ' + dmy((M.closes || {}).day) + '</div><h3 class="verdict">' + (eqN ? '<b>' + upN + ' of ' + eqN + '</b> key indices closed higher' : 'Index closes unavailable') + '</h3>' +
+    mini([['Index', function (r) { return '<b>' + esc(r.n) + '</b>'; }], ['Close', function (r) { return num(r.c, r.k === 'vix' ? 2 : 1); }], ['Day', function (r) { return '<span class="' + (r.k === 'vix' ? cls(-r.p) : cls(r.p)) + '">' + sg(r.p) + '</span>'; }], ['1W', function (r) { return '<span class="' + (r.k === 'vix' ? cls(-r.w) : cls(r.w)) + '">' + sg(r.w) + '</span>'; }]], cl) +
+    how('Closing values of the last completed NSE session. For India VIX, a rise is shown in red because it means more expected volatility. 1W compares with the same weekday a week earlier.') +
+    src('Source: ' + esc((cl[0] || {}).src || 'NSE') + ' · as of ' + dmy((M.closes || {}).day));
+  // global
+  var G = M.global || [], groups = ['US', 'US futures', 'Europe', 'Asia', 'Macro'];
+  var eq = G.filter(function (x) { return x.g !== 'Macro' && x.d1 != null; }), gu = eq.filter(function (x) { return x.d1 > 0; }).length;
+  var html = '<div class="k">Global cues</div><h3 class="verdict">' + (eq.length ? '<b>' + gu + ' of ' + eq.length + '</b> global equity gauges were up in their last session' : 'Global cues unavailable') + '</h3><div class="gcues">';
+  groups.forEach(function (gname) {
+    var L = G.filter(function (x) { return x.g === gname; }); if (!L.length) return;
+    html += '<div class="gcol"><div class="lbl">' + gname + '</div>' + L.map(function (x) {
+      if (x.last == null) return '<div class="gq" data-pk-tip><span>' + esc(x.n) + '</span><span class="mut">unavailable</span></div>';
+      var good = x.n === 'USD/INR' || x.n === 'Dollar index (DXY)' || x.n === 'US 10Y yield' || x.n === 'Brent crude' ? -x.d1 : x.d1;
+      var tip = esc(x.n) + ': ' + num(x.last, x.last < 200 ? 2 : 1) + ' ' + esc(x.u || '') + ' · day ' + sg(x.d1) + ' · 1M ' + sg(x.m1) + ' · ' + dmy(x.d) + ' · ' + esc(x.src || '');
+      return '<div class="gq" data-tip="' + tip + '" tabindex="0"><span>' + esc(x.n) + '<small>' + dmy(x.d) + '</small></span><span class="sp">' + spark(x.sp) + '</span><span class="v">' + num(x.last, x.last < 200 ? 2 : 1) + '</span><span class="' + cls(good) + '">' + sg(x.d1) + '</span></div>';
+    }).join('') + '</div>';
+  });
+  html += '</div>' + how('Last close and day change of each market. Colour shows what is usually good for Indian equities: a stronger rupee (USD/INR down), a softer dollar, lower US yields and cheaper crude are green. Asian markets may already be trading when the brief is built at 8:15.') +
+    src('Source: Yahoo Finance chart data (same feed as the World Risk Map); falls back to the nightly Atlas copy');
+  $('m-global').innerHTML = html;
+  // flows
+  var F = M.flows || [];
+  var fsum = F.reduce(function (a, r) { return a + (r.fii || 0); }, 0), dsum = F.reduce(function (a, r) { return a + (r.dii || 0); }, 0);
+  $('m-flows').innerHTML = '<div class="k">FII / DII · last ' + F.length + ' sessions</div><h3 class="verdict">FIIs net ' + (fsum > 0 ? '<b>bought ' : '<b class="dn">sold ') + cr(Math.abs(fsum)) + '</b>, DIIs net ' + (dsum > 0 ? 'bought ' : 'sold ') + cr(Math.abs(dsum)) + '</h3>' +
+    '<div class="legend2"><span><i style="background:#2FE3B5"></i>FII</span><span><i style="background:#5AA9F0"></i>DII</span></div><div id="m-flowbars"></div>' +
+    how('Provisional cash-market net buying (buy − sell, ₹ Cr) reported by NSE after each session. Positive = net buyers.') + src('Source: NSE provisional FII/DII via Market Pulse · latest ' + dmy((F[F.length - 1] || {}).d));
+  var items = [];
+  F.forEach(function (r) { items.push({ label: dmy(r.d) + ' FII', value: r.fii, color: r.fii < 0 ? '#FF5C6C' : '#2FE3B5', tip: 'FII ' + dmy(r.d) + ': ' + sg(r.fii, 0, '') + ' Cr' }); items.push({ label: dmy(r.d) + ' DII', value: r.dii, color: r.dii < 0 ? '#FF5C6C' : '#5AA9F0', tip: 'DII ' + dmy(r.d) + ': ' + sg(r.dii, 0, '') + ' Cr' }); });
+  bars($('m-flowbars'), items, { fmt: function (v) { return sg(v, 0, ''); }, labelW: 92, barH: 14, gap: 5 });
+  // status
+  var S = M.status || {}, SR = S.rows || [], up = SR.filter(function (r) { return r.s === 'up'; }).length;
+  $('m-status').innerHTML = '<div class="k">Market status · Market Pulse</div><h3 class="verdict">' + (SR.length ? '<b>' + up + ' of ' + SR.length + '</b> indices are in a confirmed uptrend' : 'Market status unavailable') + '</h3>' +
+    SR.map(function (r) { return '<div class="strow"><span class="dot st-' + esc(r.s) + '"></span><b>' + esc(r.n) + '</b><span class="tag ' + esc(r.s) + '">' + esc(r.state) + '</span><span class="mut">since ' + dmy(r.since) + ' · ' + (r.dd || 0) + ' distribution days</span></div>'; }).join('') +
+    (S.mood ? '<p class="mut" style="margin-top:10px">' + esc(S.mood) + '</p>' : '') +
+    how('O\'Neil-style market direction: distribution days (down ≥0.2% on higher turnover) push an uptrend to "under pressure" or "correction"; a follow-through day confirms a new uptrend. Full rules and history on the Market Pulse page.') +
+    src('Source: Market Pulse (NSE end-of-day) · as of ' + dmy(S.asof));
+  // options
+  var O = M.options || {}, OI = O.idx || [];
+  var oh = '<div class="k">Options snapshot · nearest expiry</div>';
+  if (!OI.length) oh += unavail('F&O data unavailable');
+  else {
+    var nf = OI[0];
+    var tone = nf.pcr >= 1.2 ? 'put writers are confident (PCR above 1.2)' : nf.pcr <= 0.8 ? 'call writers dominate (PCR below 0.8)' : 'positioning is balanced';
+    oh += '<h3 class="verdict">Nifty ' + tone + ': calls cap at <b>' + num(nf.cr) + '</b>, puts support at <b>' + num(nf.sp) + '</b></h3><div class="grid g2">' +
+      OI.map(function (o) {
+        var mxo = Math.max.apply(null, o.ce.concat(o.pe).map(function (x) { return x.oi; }).concat([1]));
+        var row = function (x, c) { return '<div class="oirow" data-tip="' + esc(o.n) + ' ' + num(x.k) + ' ' + c + ': OI ' + INR.format(x.oi) + '" tabindex="0"><span>' + num(x.k) + ' ' + c + '</span><div class="t"><div class="f' + (c === 'CE' ? ' ce' : '') + '" style="--w:' + (x.oi / mxo * 100).toFixed(1) + '%"></div></div><span>' + PKc(x.oi) + '</span></div>'; };
+        return '<div class="ob"><div class="obh"><b>' + esc(o.n) + '</b><span class="mut">spot ' + num(o.px, 1) + ' · expiry ' + dmy(o.exp) + '</span></div>' +
+          '<div class="ddl"><span>PCR (OI) <b>' + (o.pcr != null ? o.pcr.toFixed(2) : '–') + '</b></span><span>PCR near expiry <b>' + (o.pcrn != null ? o.pcrn.toFixed(2) : '–') + '</b></span><span>Max pain <b>' + num(o.mp) + '</b></span><span>IV <b>' + (o.iv != null ? o.iv + '%' : '–') + '</b></span></div>' +
+          '<div class="lbl" style="margin-top:8px">Top call OI (resistance)</div>' + o.ce.map(function (x) { return row(x, 'CE'); }).join('') +
+          '<div class="lbl" style="margin-top:8px">Top put OI (support)</div>' + o.pe.map(function (x) { return row(x, 'PE'); }).join('') + '</div>';
+      }).join('') + '</div>';
+  }
+  oh += how('PCR = put open interest ÷ call open interest across all strikes (near-expiry PCR uses only the nearest expiry). Max pain is the strike where option buyers of the nearest expiry would lose the most. The biggest call OI strike often acts as resistance and the biggest put OI strike as support. These are end-of-day figures from the last session.') +
+    src('Source: NSE F&O bhavcopy via the F&O dashboard · as of ' + dmy(O.day));
+  $('m-opt').innerHTML = oh;
+  renderEvents();
+  renderFilings();
+  stagger($('m-grid1').parentNode);
+  countUps(document.querySelector('[data-panel=morning]'));
+}
+function PKc(v) { if (v == null) return '–'; if (v >= 1e7) return (v / 1e7).toFixed(2) + ' Cr'; if (v >= 1e5) return (v / 1e5).toFixed(1) + ' L'; return INR.format(v); }
+
+function renderEvents() {
+  var R = M.results || [], forDay = M['for'];
+  var vis = R.filter(function (r) { return capOK(r.s); });
+  var conf = R.filter(function (r) { return r.k === 'c'; }).length;
+  $('m-events').innerHTML = '<div class="k">Results board meetings · ' + dlong(forDay) + '</div><h3 class="verdict">' + (R.length ? '<b>' + R.length + '</b> compan' + (R.length === 1 ? 'y' : 'ies') + ' meet on results (' + conf + ' confirmed)' : 'No results board meetings on the calendar') + '</h3>' +
+    capNote(vis.length, R.length) +
+    (vis.length ? mini([['Company', function (r) { return symCell(r.s, r.n); }], ['MCap', function (r) { return r.mc ? cr(r.mc) : '–'; }], ['Status', function (r) { return r.k === 'c' ? '<span class="tag up">confirmed</span>' : '<span class="tag">expected</span>'; }]], vis.slice(0, 40)) : (R.length ? unavail('None match the market-cap filter.') : '')) +
+    how('"Confirmed" meetings were announced to NSE; "expected" ones are estimated from the date the company reported a year earlier.') +
+    src(esc(M.results_src || 'Earnings Centre calendar'));
+}
+function renderFilings() {
+  var F = M.filings || {}, el = $('m-fil');
+  if (!F.ok) { el.innerHTML = '<div class="k">Top filings since the last close</div><h3 class="verdict">Overnight filings unavailable</h3>' + unavail(F.why || 'Filings Radar data not available') + src('Source: Filings Radar'); return; }
+  var all = F.rows || [], vis = all.filter(function (r) { return capOK(r.s); });
+  var pos = all.filter(function (r) { return r.tone > 0; }).length, neg = all.filter(function (r) { return r.tone < 0; }).length;
+  el.innerHTML = '<div class="k">Top filings since ' + esc(F.since) + '</div><h3 class="verdict"><b>' + F.n + '</b> notable filings overnight · top ' + all.length + ': ' + pos + ' positive, ' + neg + ' red flags</h3>' + capNote(vis.length, all.length) +
+    '<div class="fil">' + vis.map(function (r) {
+      return '<a class="fi tone' + (r.tone > 0 ? 'p' : r.tone < 0 ? 'n' : '0') + '" href="' + esc(r.url) + '" target="_blank" rel="noopener"><div class="fih">' + symCell(r.s) + '<span class="tag ' + (r.tone > 0 ? 'up' : r.tone < 0 ? 'corr' : '') + '">' + esc(r.cat) + '</span><span class="mut">' + esc(r.t) + '</span></div><div class="fit">' + esc(r.h) + '</div></a>';
+    }).join('') + '</div>' + (vis.length ? '' : unavail('None match the market-cap filter.')) +
+    how('Filings since the previous session close, classified by Filings Radar. Ranked by how sure the classifier is, then by size relative to market cap. Plain "results filed" notices are left out (see Earnings Centre). Tap a filing to open the exchange PDF.') +
+    src(esc(F.src) + ' · as of ' + dmy(F.asof));
+}
+
+/* ============================================================ WEEKLY */
+var WEEKS = D.weeks || [];
+var curW = null;
+function wByKey(k) { return WEEKS.find(function (w) { return w.key === k; }); }
+function renderWeek(k) {
+  var W = wByKey(k) || WEEKS[0]; if (!W) { $('w-kpis').innerHTML = unavail('No weekly wrap yet.'); return; }
+  curW = W.key; $('wsel').value = W.key;
+  var T = W.takeaways || {};
+  $('wnote').textContent = W.partial ? 'week in progress · ' + W.sessions + ' sessions so far' : W.sessions + ' sessions';
+  var I = {}; ((W.idx || {}).rows || []).forEach(function (r) { I[r.k] = r; });
+  var f = W.flows, s2 = W.stage2, b = W.breadth;
+  $('w-kpis').innerHTML = kpi('Nifty 50 week', I.n50 ? cu(I.n50.p, 2, '', '%', true) : '–', I.n50 ? 'close ' + num(I.n50.c, 1) : '', I.n50 ? cls(I.n50.p) : '') +
+    kpi('Smallcap 250 week', I.sml ? cu(I.sml.p, 2, '', '%', true) : '–', I.mid ? 'Midcap 150 ' + sg(I.mid.p) : '', I.sml ? cls(I.sml.p) : '') +
+    kpi('% above 50-DMA', b ? cu(b.ma50_end, 1, '', '%') : '–', b && b.ma50_ch != null ? '<span class="' + cls(b.ma50_ch) + '">' + sg(b.ma50_ch, 1, ' pts') + '</span> in the week' : '') +
+    kpi('Stage 2 stocks', s2 ? cu(s2.now, 0) : '–', s2 ? '<span class="' + cls(s2.ch) + '">' + sg(s2.ch, 0, '') + '</span> vs last week' : '') +
+    kpi('FII net (week)', f ? cu(f.fii, 0, '₹', ' Cr', true) : '–', f ? 'DII ' + sg(f.dii, 0, '') + ' Cr' : '', f ? cls(f.fii) : '');
+  var tk = function (key) { return T[key] ? '<p class="take">' + esc(T[key]) + '</p>' : ''; };
+  // index
+  var IR = (W.idx || {}).rows || [];
+  $('w-idx').innerHTML = '<div class="k">Index moves · ' + esc(W.label) + '</div><h3 class="verdict">' + (T.idx ? esc(T.idx) : 'Index moves unavailable') + '</h3><div id="w-idxbars"></div>' +
+    how('Change from the previous week\'s last close to this week\'s last close. India VIX is a volatility gauge, not a price index.') + src(esc((W.idx || {}).src || '') + ' · base ' + dmy((W.idx || {}).start));
+  bars($('w-idxbars'), IR.map(function (r) { return { label: r.n, value: r.p, tip: r.n + ': ' + num(r.from, 1) + ' → ' + num(r.c, 1) + ' (' + sg(r.p) + ')' }; }), { fmt: function (v) { return sg(v); }, labelW: 124 });
+  // breadth
+  $('w-breadth').innerHTML = '<div class="k">Breadth</div>' + (b ? '<h3 class="verdict">' + esc(T.breadth || '') + '</h3>' +
+    '<div class="ddl"><span>% above 200-DMA <b>' + num(b.ma200_end, 1) + '%</b> (' + sg(b.ma200_ch, 1, ' pts') + ')</span><span>New highs <b>' + num(b.hi) + '</b></span><span>New lows <b>' + num(b.lo) + '</b></span><span>Adv/Dec <b>' + num(b.adv) + ' / ' + num(b.dec) + '</b></span></div><div id="w-adbars"></div>' : '<h3 class="verdict">Breadth unavailable</h3>' + unavail('No breadth data for this week.')) +
+    how('Breadth counts every NSE mainboard stock. % above 50-DMA is the end-of-week share of stocks above their 50-day average; advances, declines and 52-week highs/lows are summed over the week\'s sessions.') + src(esc(b ? b.src : 'Market Pulse') + (b ? ' · through ' + dmy(b.end) : ''));
+  if (b) bars($('w-adbars'), [{ label: 'Advances', value: b.adv, color: '#2FE3B5' }, { label: 'Declines', value: -b.dec, color: '#FF5C6C', tip: 'Declines: ' + num(b.dec) }], { fmt: function (v) { return num(Math.abs(v)); }, labelW: 84 });
+  // sectors
+  var sc = W.sectors;
+  if (!sc) $('w-sec').innerHTML = '<div class="k">Sectors & themes</div><h3 class="verdict">Sector and theme moves unavailable for this week</h3>' + unavail('The Sector dashboard keeps only the latest one-week ranking, so archived weeks built afterwards have no sector section.') + src('Source: Sector Rotation dashboard');
+  else {
+    $('w-sec').innerHTML = '<div class="k">Sectors & themes · last 5 sessions to ' + dmy(sc.asof) + '</div><h3 class="verdict">' + esc(T.sectors || '') + '</h3><div class="grid g3">' +
+      '<div><div class="lbl">Sectors: best & worst</div><div id="w-sb"></div></div><div><div class="lbl">Sub-sectors: best & worst</div><div id="w-ssb"></div></div><div><div class="lbl">Themes: best & worst</div><div id="w-tb"></div></div></div>' +
+      how('Equal-weight basket returns over the last 5 sessions from the Sector Rotation dashboard (' + sc.sectors.n + ' sectors, ' + sc.subs.n + ' sub-sectors, ' + sc.themes.n + ' themes). Totals use all stocks, not the market-cap filter.') + src(esc(sc.src) + ' · as of ' + dmy(sc.asof));
+    var tb = function (blk) { return blk.top.slice(0, 4).concat(blk.bot.slice(0, 4).reverse()).map(function (x) { return { label: x.n, value: x.r, tip: x.n + ': ' + sg(x.r) }; }); };
+    bars($('w-sb'), tb(sc.sectors), { fmt: function (v) { return sg(v, 1); }, labelW: 120 });
+    bars($('w-ssb'), tb(sc.subs), { fmt: function (v) { return sg(v, 1); }, labelW: 120 });
+    bars($('w-tb'), tb(sc.themes), { fmt: function (v) { return sg(v, 1); }, labelW: 120 });
+  }
+  // stage 2
+  var s2h = '<div class="k">Stage 2 (Weinstein) count</div>';
+  if (!s2) s2h += '<h3 class="verdict">Stage 2 count unavailable</h3>' + unavail('No Stage 2 history for this week.');
+  else {
+    var ent = (s2.entered_s || []).filter(capOK);
+    s2h += '<h3 class="verdict">' + esc(T.stage2 || '') + '</h3><div class="ddl"><span>Entered <b class="up">' + s2.entered + '</b></span><span>Left <b class="dn">' + s2.left + '</b></span><span>Week of <b>' + dmy(s2.d) + '</b>' + (s2.partial ? ' (in progress)' : '') + '</span></div><div id="w-s2bars"></div>' +
+      '<div class="lbl" style="margin-top:8px">New Stage 2 entrants' + (PK.capIsDefault && !PK.capIsDefault() ? ' · filtered to ' + esc(PK.capSummary()) + ' (' + ent.length + ' of ' + (s2.entered_s || []).length + ') · <a href="#" data-capreset>reset</a>' : '') + '</div><div class="symlist">' + ent.slice(0, 40).map(function (s) { return '<span>' + esc(s) + badges(s) + '</span>'; }).join('') + (ent.length > 40 ? '<span class="mut">+' + (ent.length - 40) + ' more</span>' : '') + '</div>';
+  }
+  s2h += how('Stage 2 = price above a rising 30-week average (Weinstein). The count is over every NSE stock in the Stage 2 scanner\'s weekly history. The bars show the last 12 weeks.') + src('Source: Stage 2 scanner weekly history');
+  $('w-s2').innerHTML = s2h;
+  if (s2) bars($('w-s2bars'), s2.trend.map(function (t) { return { label: dmy(t.d), value: t.n, tip: 'Week of ' + dmy(t.d) + ': ' + num(t.n) + ' Stage 2 stocks' }; }), { vertical: true, height: 120, fmt: function (v) { return num(v); }, values: false });
+  // flows
+  $('w-flows').innerHTML = '<div class="k">FII / DII · week total</div>' + (f ? '<h3 class="verdict">' + esc(T.flows || '') + '</h3><div id="w-fb"></div>' : '<h3 class="verdict">Flows unavailable</h3>' + unavail('No provisional FII/DII figures collected for this week.')) +
+    how('Sum of NSE provisional cash-market net figures for each session of the week (₹ Cr).') + src('Source: NSE provisional FII/DII via Market Pulse');
+  if (f) { var fi = []; f.days.forEach(function (r) { fi.push({ label: dmy(r.d) + ' FII', value: r.fii, color: r.fii < 0 ? '#FF5C6C' : '#2FE3B5' }); fi.push({ label: dmy(r.d) + ' DII', value: r.dii, color: r.dii < 0 ? '#FF5C6C' : '#5AA9F0' }); }); bars($('w-fb'), fi, { fmt: function (v) { return sg(v, 0, ''); }, labelW: 92, barH: 12, gap: 4 }); }
+  // insider
+  var ins = W.insider;
+  var ih = '<div class="k">Insider buying (open market)</div>';
+  if (!ins) ih += '<h3 class="verdict">Insider data unavailable</h3>' + unavail('Insider & Deals data missing.');
+  else { var iv = ins.rows.filter(function (r) { return capOK(r.s); }); ih += '<h3 class="verdict">' + esc(T.insider || '') + '</h3>' + capNote(iv.length, ins.rows.length) + (iv.length ? mini([['Stock', function (r) { return symCell(r.s, r.who); }], ['Who', function (r) { return esc(r.cat); }], ['Value', function (r) { return cr(r.cr, 2); }], ['Last', function (r) { return dmy(r.last); }]], iv.slice(0, 10)) : ''); }
+  ih += how('Open-market purchases by promoters, directors and key managers filed under SEBI PIT rules, summed per company for trades dated in this week.') + src(esc(ins ? ins.src : 'Insider & Deals') + (ins ? ' · data to ' + dmy(ins.asof) : ''));
+  $('w-ins').innerHTML = ih;
+  // deals
+  var dl = W.deals, dh = '<div class="k">Bulk & block deals</div>';
+  if (!dl) dh += '<h3 class="verdict">Deals unavailable</h3>' + unavail('Insider & Deals data missing.');
+  else { var dv = dl.rows.filter(function (r) { return capOK(r.s); }); dh += '<h3 class="verdict">' + esc(T.deals || 'No bulk or block deals recorded') + '</h3>' + capNote(dv.length, dl.rows.length) + (dv.length ? mini([['Stock', function (r) { return symCell(r.s, r.who); }], ['Side', function (r) { return '<span class="' + (r.side === 'Buy' ? 'up' : 'dn') + '">' + esc(r.side) + '</span>'; }], ['Value', function (r) { return cr(r.cr, 1); }], ['Date', function (r) { return dmy(r.d); }]], dv.slice(0, 10)) : ''); }
+  dh += how('Largest NSE/BSE bulk and block deals of the week by value. Same-day buy-and-sell round trips by trading firms are excluded.') + src(esc(dl ? dl.src : '') + (dl ? ' · data to ' + dmy(dl.asof) : ''));
+  $('w-deals').innerHTML = dh;
+  // orders
+  var o = W.orders, oh2 = '<div class="k">Biggest order wins</div>';
+  if (!o) oh2 += '<h3 class="verdict">Order data unavailable</h3>' + unavail('Order Tracker data missing.');
+  else { var ov = o.rows.filter(function (r) { return capOK(r.s); }); oh2 += '<h3 class="verdict">' + esc(T.orders || 'No order-win filings this week') + '</h3>' + capNote(ov.length, o.rows.length) + (ov.length ? mini([['Company', function (r) { return symCell(r.s, r.cl); }], ['Order', function (r) { return r.cr != null ? cr(r.cr, 1) : '–'; }], ['% mcap', function (r) { return r.pmc != null ? r.pmc.toFixed(1) + '%' : '–'; }], ['Date', function (r) { return r.url ? '<a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + dmy(r.d) + '</a>' : dmy(r.d); }]], ov.slice(0, 10)) : ''); }
+  oh2 += how('Order-win filings by order-book companies tracked by the Order Tracker, sorted by order value. % mcap = order value ÷ market cap; a big number means the order matters for that company.') + src(esc(o ? o.src : 'Order Tracker'));
+  $('w-orders').innerHTML = oh2;
+  // results
+  var rs = W.results, rh = '<div class="k">Results scoreboard</div>';
+  if (!rs) rh += '<h3 class="verdict">Results data unavailable</h3>' + unavail('Earnings Centre data missing.');
+  else {
+    rh += '<h3 class="verdict">' + esc(T.results || '') + '</h3><div id="w-rb"></div><div class="ddl"><span>Season ' + esc(rs.q) + ': <b>' + num(rs.season_n) + '</b> reported</span><span>Strong <b class="up">' + rs.season.Strong + '</b></span><span>Weak <b class="dn">' + rs.season.Weak + '</b></span></div>';
+    var bv = rs.big.filter(function (r) { return capOK(r.s); });
+    if (bv.length) rh += mini([['Company', function (r) { return symCell(r.s, r.n); }], ['Label', function (r) { return r.l ? '<span class="tag ' + ({ Strong: 'up', Good: 'up', Mixed: 'press', Weak: 'corr' }[r.l] || '') + '">' + esc(r.l) + '</span>' : '–'; }], ['Sales YoY', function (r) { return '<span class="' + cls(r.sy) + '">' + sg(r.sy, 1) + '</span>'; }], ['PAT YoY', function (r) { return '<span class="' + cls(r.py) + '">' + sg(r.py, 1) + '</span>'; }]], bv.slice(0, 8));
+  }
+  rh += how('Labels from Earnings Centre: Strong = revenue YoY ≥15% and PAT YoY ≥20% without a big margin drop; Weak = PAT YoY ≤ −10%, both down, or a loss; Good = both ≥5%; Mixed = the rest. Companies listed are the largest that filed in this week.') + src(esc(rs ? rs.src : 'Earnings Centre'));
+  $('w-res').innerHTML = rh;
+  if (rs) bars($('w-rb'), ['Strong', 'Good', 'Mixed', 'Weak'].map(function (k) { return { label: k, value: rs.labels[k], color: { Strong: '#2FE3B5', Good: '#6EE7B7', Mixed: '#E0A64A', Weak: '#FF5C6C' }[k], tip: k + ': ' + rs.labels[k] + ' companies this week' }; }), { fmt: function (v) { return num(v); }, labelW: 70 });
+  // per-section takeaways under the verdicts are the verdicts themselves; stagger + count-ups
+  stagger(document.querySelector('[data-panel=weekly]'));
+  countUps(document.querySelector('[data-panel=weekly]'));
+}
+
+/* ============================================================ shell */
+function setHero(tab) {
+  if (tab === 'weekly') {
+    var W = wByKey(curW) || WEEKS[0] || {};
+    $('eb').textContent = 'Weekly wrap · ' + (W.partial ? 'week so far' : 'week ended');
+    $('h1').innerHTML = 'The week in markets, <em>' + esc(W.label || '') + '</em>';
+    $('asof').innerHTML = 'Built <b>' + esc(W.built || D.built) + '</b> · last session <b>' + dmy(W.last) + '</b>';
+  } else {
+    var pre = M.pre_open;
+    $('eb').textContent = pre ? 'Before the 9:15 open' : 'Evening preview · next session';
+    $('h1').innerHTML = 'What to know for <em>' + (M['for'] ? dlong(M['for']) : 'the next session') + '</em>';
+    $('asof').innerHTML = 'Built <b>' + esc(D.built) + '</b> IST · last NSE session <b>' + dmy(D.asof) + '</b>';
+  }
+}
+function parseHash() {
+  var h = location.hash.replace(/^#/, ''), m = /week=(\d{4}-W\d{2})/.exec(h), t = /tab=(\w+)/.exec(h);
+  return { tab: m ? 'weekly' : t ? t[1] : null, week: m ? m[1] : null };
+}
+function writeHash(tab) { var h = tab === 'weekly' ? '#week=' + curW : '#tab=morning'; try { history.replaceState(null, '', h); } catch (e) {} }
+
+var sel = $('wsel');
+sel.innerHTML = WEEKS.map(function (w) { return '<option value="' + w.key + '">' + esc(w.label) + (w.partial ? ' (so far)' : '') + '</option>'; }).join('');
+var ph = parseHash();
+curW = ph.week && wByKey(ph.week) ? ph.week : (WEEKS[0] || {}).key;
+var rendered = {}, current = null;
+function show(tab) {
+  current = tab;
+  if (!rendered[tab]) { rendered[tab] = 1; try { tab === 'weekly' ? renderWeek(curW) : renderMorning(); } catch (e) { console.error(e); } }
+  setHero(tab); writeHash(tab);
+}
+var tabsCtl;
+if (HAS && PK.tabs) tabsCtl = PK.tabs($('tabs'), { hash: false, storeKey: 'db_tab', initial: ph.tab || 'morning', onChange: function (n) { show(n); } });
+else { $('tabs').addEventListener('click', function (e) { var b = e.target.closest('[data-tab]'); if (!b) return; [].forEach.call($('tabs').children, function (x) { x.classList.toggle('on', x === b); }); [].forEach.call(document.querySelectorAll('[data-panel]'), function (p) { p.hidden = p.dataset.panel !== b.dataset.tab; }); show(b.dataset.tab); }); }
+if (ph.tab && tabsCtl && tabsCtl.set) tabsCtl.set(ph.tab);
+if (!current) { var on = document.querySelector('#tabs .on'); show(on ? on.dataset.tab : 'morning'); }
+sel.addEventListener('change', function () { if (HAS && PK.haptic) PK.haptic('select'); renderWeek(sel.value); setHero('weekly'); writeHash('weekly'); });
+window.addEventListener('hashchange', function () { var p = parseHash(); if (p.week && wByKey(p.week) && p.week !== curW) { if (tabsCtl && tabsCtl.set) tabsCtl.set('weekly'); renderWeek(p.week); setHero('weekly'); } });
+$('share').addEventListener('click', function () {
+  var url = location.href.split('#')[0] + (current === 'weekly' ? '#week=' + curW : '#tab=morning');
+  var title = current === 'weekly' ? 'Weekly market wrap · ' + ((wByKey(curW) || {}).label || '') : 'Morning market brief · ' + dlong(M['for']);
+  if (navigator.share) navigator.share({ title: title, url: url }).catch(function () {});
+  else { (HAS && PK.copy ? PK.copy(url) : navigator.clipboard && navigator.clipboard.writeText(url)); $('share').textContent = 'Link copied ✓'; setTimeout(function () { $('share').textContent = 'Share ↗'; }, 1800); }
+  if (HAS && PK.haptic) PK.haptic('success');
+});
+// tooltips on custom marks
+document.addEventListener('click', function (e) {
+  var t = e.target.closest('[data-tip]');
+  if (t && HAS && PK.tip) { PK.tip.show(esc(t.dataset.tip), e.clientX, e.clientY); }
+  var r = e.target.closest('[data-capreset]'); if (r) { e.preventDefault(); if (PK.capSet) PK.capSet(null); }
+});
+document.addEventListener('mouseover', function (e) { var t = e.target.closest('[data-tip]'); if (t && HAS && PK.tip && matchMedia('(hover:hover)').matches) PK.tip.show(esc(t.dataset.tip), e.clientX, e.clientY); });
+document.addEventListener('mouseout', function (e) { if (e.target.closest('[data-tip]') && HAS && PK.tip) PK.tip.hide(); });
+// global market-cap filter
+if (HAS && PK.capFilter) { try { PK.capFilter($('capf'), { compact: innerWidth < 760 }); } catch (e) { console.warn('capFilter', e); } }
+document.addEventListener('pk:cap', function () { try { if (rendered.morning) { renderEvents(); renderFilings(); } if (rendered.weekly) renderWeek(curW); } catch (e) { console.error(e); } });
+if (HAS && PK.press) PK.press(document);
+})();
+</script>
+</body>
+</html>

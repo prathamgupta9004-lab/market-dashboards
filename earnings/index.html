@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Earnings Centre · Pratham Gupta</title>
+<meta name="description" content="Indian results season in one place: calendar, season scoreboard by index and industry, result cards with the price reaction, warning flags and profit pools. From NSE XBRL filings. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<meta name="theme-color" content="#030806">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kit.css?v=202611281537">
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sage:#8EC3A9;
+--sky:#5AA9F0;--lav:#A78BFA;--slate:#8A9690;--teal:#3E6B5E;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--text);font:14px/1.5 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+a{color:var(--acc2)}
+header{display:flex;align-items:center;gap:16px;padding:10px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:8px 13px;transition:all .2s;white-space:nowrap;min-height:40px;display:inline-flex;align-items:center}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover;flex:none}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.capf:empty{display:none}.capf{margin-left:auto}.capf+nav.tb{margin-left:0}
+nav.tb{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+nav.tb::-webkit-scrollbar{display:none}
+nav.tb button{border:0;border-radius:999px;background:transparent;color:var(--muted);padding:8px 14px;min-height:40px;font:600 13px var(--font);cursor:pointer;white-space:nowrap;transition:all .18s}
+nav.tb button:hover{color:var(--text)}
+nav.tb button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+main{padding:22px 24px 48px;max-width:1360px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.6vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 20px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s cubic-bezier(.2,.8,.2,1) both;min-width:0}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.pk .l{font-size:11.5px;color:var(--muted)}
+.pk .v{font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .s{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.up{color:var(--up)}.dn{color:var(--dn)}.am{color:var(--amber)}.mut{color:var(--muted)}.dimc{color:var(--dim)}
+.sec{margin-top:16px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0;position:relative;
+ animation:rise .55s cubic-bezier(.2,.8,.2,1) both;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s}
+.box.hov:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35)}
+.box .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.verdict{font-size:15.5px;font-weight:650;line-height:1.35;margin:0 0 8px}
+.verdict b{color:var(--acc)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;min-height:40px;font:500 13px var(--font);cursor:pointer;transition:all .18s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+.chip.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:650;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+select,input[type=search]{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;min-height:40px;font:500 13px var(--font);max-width:100%}
+details.how{margin-top:10px;border-top:1px dashed var(--line2);padding-top:4px;color:var(--muted);font-size:12.5px}
+details.how summary{cursor:pointer;color:var(--acc2);font-weight:600;min-height:40px;display:flex;align-items:center;list-style:none}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary::before{content:"+";display:inline-block;width:16px;font-weight:700}
+details.how[open] summary::before{content:"−"}
+details.how p,details.how li{margin:5px 0}
+.src{color:var(--dim);font-size:11.5px;margin-top:8px}
+.skel{height:220px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+.skel.s{height:96px}
+.unavail{border:1px dashed var(--line2);border-radius:12px;padding:14px;color:var(--muted);font-size:13px;background:rgba(10,23,19,.5)}
+.capnote{font-size:12.5px;color:var(--muted);margin:4px 0 8px}.capnote:empty{display:none}
+.linkbtn{background:none;border:0;color:var(--acc2);cursor:pointer;font:inherit;text-decoration:underline;padding:0 2px}
+/* week strip */
+.weeks{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(104px,1fr);gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.wk{background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:10px 12px;cursor:pointer;text-align:left;color:var(--text);font:inherit;min-height:40px;transition:all .18s}
+.wk:hover{border-color:rgba(47,227,181,.55);transform:translateY(-2px)}
+.wk.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc),0 8px 24px -12px rgba(47,227,181,.5)}
+.wk .w1{font-size:11.5px;color:var(--muted)}.wk .w2{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.wk .w3{font-size:11px;color:var(--dim)}.wk.now .w1::after{content:" · this week";color:var(--acc)}
+.wk .bar{display:flex;height:4px;border-radius:99px;overflow:hidden;margin-top:6px;background:rgba(47,227,181,.06)}
+.wk .bar i{display:block;height:100%}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:10px 0}
+.day{background:rgba(10,23,19,.6);border:1px solid var(--line);border-radius:12px;padding:8px;cursor:pointer;text-align:center;color:var(--text);font:inherit;min-height:56px}
+.day.on{border-color:var(--acc)}.day .d1{font-size:11px;color:var(--muted)}.day .d2{font-size:18px;font-weight:700}.day.zero{opacity:.45}
+.kc{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line2);white-space:nowrap}
+.kc.c{color:var(--acc);border-color:rgba(47,227,181,.45)}.kc.e{color:var(--sky);border-color:rgba(90,169,240,.45)}.kc.o{color:var(--amber);border-color:rgba(224,166,74,.45)}.kc.r{color:var(--lav);border-color:rgba(167,139,250,.45)}
+/* labels */
+.lab{display:inline-block;font-size:11.5px;font-weight:650;padding:2px 9px;border-radius:999px;border:1px solid;white-space:nowrap}
+.lab.S{color:#2FE3B5;border-color:rgba(47,227,181,.5);background:rgba(47,227,181,.08)}.lab.G{color:#5AA9F0;border-color:rgba(90,169,240,.5)}
+.lab.M{color:#E0A64A;border-color:rgba(224,166,74,.5)}.lab.W{color:#FF5C6C;border-color:rgba(255,92,108,.5);background:rgba(255,92,108,.06)}.lab.N{color:var(--dim);border-color:var(--line2)}
+.ltiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.lt{border:1px solid var(--line);border-radius:14px;padding:12px;background:rgba(10,23,19,.6);cursor:pointer;text-align:left;color:var(--text);font:inherit;min-height:40px}
+.lt .n{font-size:26px;font-weight:750;letter-spacing:-.02em}.lt .p{font-size:12px;color:var(--muted)}
+.prog{height:12px;border-radius:999px;background:rgba(47,227,181,.08);overflow:hidden;margin:8px 0 4px}
+.prog i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#10B981,#2FE3B5);box-shadow:0 0 14px rgba(47,227,181,.5);width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.rules{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.rules div{border:1px dashed var(--line2);border-radius:10px;padding:8px 10px}
+table.mini{width:100%;border-collapse:collapse;font-size:13px}
+table.mini th,table.mini td{padding:8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.mini th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em;background:#08130F;position:sticky;top:0}
+table.mini th:first-child,table.mini td:first-child{text-align:left}
+table.mini tbody tr:hover{background:rgba(47,227,181,.06)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+/* trend + bubble */
+.svgc{width:100%;display:block;touch-action:pan-y}
+.svgc text{fill:rgba(238,245,242,.55);font:11px var(--font)}
+.svgc .ax{stroke:#16302A}.svgc .zero{stroke:#21443A;stroke-dasharray:4 4}
+.svgc .ln{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.svgc .draw{stroke-dasharray:2000;stroke-dashoffset:2000;animation:draw .9s cubic-bezier(.2,.8,.2,1) forwards}
+.svgc circle.b{cursor:pointer;transition:opacity .2s}
+.legend2{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:4px 0}
+.legend2 i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+/* result cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.rc{padding:14px;min-width:0}.cards>*{min-width:0}.rc .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.rc .hd{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.rc .nm{font-weight:700;font-size:15px;line-height:1.25}.rc .meta{font-size:11.5px;color:var(--dim)}
+.rc table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+.rc td,.rc th{padding:5px 4px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.rc th{font-weight:500;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
+.rc td:first-child,.rc th:first-child{text-align:left;color:var(--muted)}
+.rc .rx{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;font-size:12px}
+.rc .rx div{background:rgba(10,23,19,.6);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.rc .rx span{display:block;color:var(--dim);font-size:10.5px}
+.rc .sp{font-size:12px;color:var(--muted);margin-top:8px}
+.rc .fl{margin-top:8px;font-size:12px;color:var(--amber)}
+.rc .lk{margin-top:8px;font-size:12px;display:flex;gap:12px;flex-wrap:wrap}
+.rc .lk a{min-height:32px;display:inline-flex;align-items:center}
+.more{display:block;margin:16px auto 0}
+.flagc{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid rgba(224,166,74,.45);color:var(--amber);margin:2px 4px 2px 0;white-space:nowrap}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+[data-panel][hidden]{display:none!important}
+.stagger>*{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.svgc .draw{stroke-dashoffset:0}}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.rules{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:8px 16px;gap:8px 10px}.back span{display:none}.back{padding:0 13px}.capf{margin-left:auto;flex:none}.me{flex:1 1 0;min-width:0}.me>div{min-width:0}.me .h{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.me img{width:32px;height:32px}nav.tb{margin-left:0;width:100%}nav.tb button{flex:1 0 auto;padding:8px 12px}
+ main{padding:16px 16px 40px}.g2,.g4{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .pk:last-child{grid-column:span 2}.pk .v{font-size:21px}
+ .box{padding:14px}.verdict{font-size:14.5px}.ltiles{grid-template-columns:repeat(2,minmax(0,1fr))}.cards{grid-template-columns:1fr}.days{gap:4px}.day{padding:6px 2px}.day .d2{font-size:15px}
+ .rules{grid-template-columns:1fr}.rc td,.rc th{padding:5px 3px;font-size:11.5px}.rc .rx{grid-template-columns:repeat(2,1fr)}}
+@media (pointer:coarse),(max-width:760px){.pk-chip,.pk-btn,.pk-capbtn{min-height:40px;padding-top:8px;padding-bottom:8px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../" aria-label="All dashboards">←<span>&nbsp;All dashboards</span></a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Earnings Centre</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div id="capf" class="capf"></div>
+  <nav class="tb pk-tabs" id="tabs" aria-label="Sections">
+    <button data-tab="calendar" class="on">Calendar</button><button data-tab="score">Season Scoreboard</button><button data-tab="cards">Result Cards</button><button data-tab="flags">Warning Flags</button><button data-tab="pools">Profit Pools</button>
+  </nav>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">NSE results · XBRL filings · end-of-day prices</div>
+  <h1>Results season, <em>scored as it lands.</em></h1>
+  <div class="asof" id="asof">Loading…</div></div>
+  <span class="live"><i></i>Refreshed every weekday evening</span>
+</div>
+<div class="kpis" id="kpis"><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div></div>
+
+<!-- ============================== CALENDAR -->
+<section data-panel="calendar">
+  <div class="box">
+    <div class="k">Results calendar</div>
+    <p class="verdict" id="cal-verdict"></p>
+    <div class="weeks" id="weeks"></div>
+    <div class="days" id="days"></div>
+    <div class="row"><span class="lbl">Show</span><div class="chips" id="cal-kind">
+      <button class="chip on" data-v="">All</button><button class="chip" data-v="c">Confirmed</button><button class="chip" data-v="e">Estimated</button><button class="chip" data-v="r">Reported</button><button class="chip" data-v="o">Overdue</button></div></div>
+    <div class="row"><span class="lbl">Index</span><div class="chips" id="cal-ix">
+      <button class="chip on" data-v="">All</button><button class="chip" data-v="1">Nifty 50</button><button class="chip" data-v="2">Next 50</button><button class="chip" data-v="3">Midcap 150</button><button class="chip" data-v="4">Smallcap 250</button><button class="chip" data-v="0">Outside Nifty 500</button></div>
+      <select id="cal-sec" aria-label="Sector"><option value="">All sectors</option></select></div>
+    <div id="cal-table"></div>
+    <details class="how"><summary>How to read this</summary>
+      <p><span class="kc c">Confirmed</span> the company has told NSE the board meeting date (NSE board-meeting and event-calendar feeds, purpose mentions results).</p>
+      <p><span class="kc e">Estimated</span> no notice yet: the date is the same quarter last year's filing date plus 52 weeks, so it lands on the same weekday. Treat it as a guide only.</p>
+      <p><span class="kc o">Overdue</span> last year's date plus 52 weeks has passed and no result is on file yet. <span class="kc r">Reported</span> filed on NSE in the last 7 days.</p>
+      <p>Tap a week to see its days, tap a day to list its companies. Filters, search and the market-cap filter in the header narrow the list.</p></details>
+    <div class="src" id="cal-src"></div>
+  </div>
+</section>
+
+<!-- ============================== SCOREBOARD -->
+<section data-panel="score" hidden>
+  <div class="box">
+    <div class="k">Season progress</div>
+    <p class="verdict" id="sc-verdict"></p>
+    <div class="prog"><i id="sc-prog"></i></div>
+    <div class="mut" style="font-size:12.5px" id="sc-progtxt"></div>
+    <div class="row" style="margin-top:12px"><span class="lbl">Min market cap</span><div class="chips" id="sc-mc">
+      <button class="chip" data-v="0">Any</button><button class="chip" data-v="500">₹500 Cr</button><button class="chip on" data-v="1000">₹1,000 Cr</button><button class="chip" data-v="5000">₹5,000 Cr</button><button class="chip" data-v="20000">₹20,000 Cr</button></div></div>
+    <div class="capnote" id="sc-capnote"></div>
+    <div class="ltiles" id="sc-tiles"></div>
+    <div class="rules">
+      <div><span class="lab S">Strong</span><br>Revenue YoY ≥ +15% <b>and</b> PAT YoY ≥ +20% <b>and</b> margin not down more than 100 bps</div>
+      <div><span class="lab G">Good</span><br>Revenue and PAT both up ≥ 5% YoY (and not Strong)</div>
+      <div><span class="lab W">Weak</span><br>PAT down ≥ 10% YoY, <b>or</b> revenue and PAT both down, <b>or</b> turned to a loss</div>
+      <div><span class="lab M">Mixed</span><br>Everything else with a year-ago quarter to compare</div>
+    </div>
+    <details class="how"><summary>How to read this</summary>
+      <p>Each company's latest quarter is compared with the same quarter last year on the same basis (consolidated where filed). Margin is the EBITDA margin (PBT before exceptional items + finance cost + depreciation − other income, over revenue); for banks, NBFCs and insurers it is the net margin.</p>
+      <p>"X of Y" counts companies in this dashboard's universe (NSE, market cap ≥ ₹300 Cr) that filed the previous quarter or the same quarter last year. The minimum market-cap chips remove tiny bases whose growth rates swamp medians.</p></details>
+  </div>
+  <div class="grid g2 sec">
+    <div class="box"><div class="k">By Nifty index membership</div><p class="verdict" id="ix-verdict"></p><div class="scroll" id="ix-table"></div>
+      <details class="how"><summary>How to read this</summary><p><b>Median</b> is the middle company's YoY growth. <b>Like-for-like</b> adds up revenue (or PAT) of every company that reported both this quarter and the same quarter last year and compares the totals, so big companies weigh more. Tap a row to plot its trend below.</p></details>
+      <div class="src">Index lists: niftyindices.com constituents (Nifty 50, Nifty 500, Midcap 150, Smallcap 250). Next 50 = rest of the Nifty 500's top 100.</div></div>
+    <div class="box"><div class="k">Trend of the medians</div><p class="verdict" id="tr-verdict"></p>
+      <div class="row"><div class="chips" id="tr-g"></div></div>
+      <div class="legend2"><span><i style="background:#2FE3B5"></i>Median PAT YoY</span><span><i style="background:#5AA9F0"></i>Median revenue YoY</span><span><i style="background:#E0A64A"></i>Like-for-like PAT YoY</span></div>
+      <div id="tr-chart"><div class="skel"></div></div>
+      <details class="how"><summary>How to read this</summary><p>Each point is one results season. The group uses today's index membership and the minimum market cap chosen above. Tap a point for the numbers and the count of companies behind it.</p></details>
+      <div class="src">Source: NSE XBRL results, up to 9 seasons where history is on file.</div></div>
+  </div>
+  <div class="box sec"><div class="k">By sector</div><p class="verdict" id="se-verdict"></p><div id="se-table"></div>
+    <details class="how"><summary>How to read this</summary><p>Sectors are the custom sectors from the Sector Rotation dashboard (sector_map.csv). Sectors with fewer than 3 reporters are hidden. Click a column to sort; CSV export downloads the table.</p></details></div>
+</section>
+
+<!-- ============================== RESULT CARDS -->
+<section data-panel="cards" hidden>
+  <div class="box">
+    <div class="k">Result cards</div>
+    <p class="verdict" id="rc-verdict"></p>
+    <div class="row"><span class="lbl">Quarter</span><div class="chips" id="rc-q"></div>
+      <span class="lbl" style="margin-left:6px">Sort</span><select id="rc-sort" aria-label="Sort cards">
+        <option value="f">Latest filed</option><option value="x0">Biggest result-day move</option><option value="-x0">Worst result-day move</option><option value="pys">PAT surprise vs own trend</option><option value="py">PAT YoY</option><option value="sy">Revenue YoY</option><option value="mc">Market cap</option><option value="x20">20-day drift</option></select>
+      <input type="search" id="rc-q2" placeholder="Search company or symbol" aria-label="Search"></div>
+    <div class="row"><span class="lbl">Label</span><div class="chips" id="rc-l"><button class="chip on" data-v="">All</button><button class="chip" data-v="Strong">Strong</button><button class="chip" data-v="Good">Good</button><button class="chip" data-v="Mixed">Mixed</button><button class="chip" data-v="Weak">Weak</button></div>
+      <select id="rc-sec" aria-label="Sector"><option value="">All sectors</option></select>
+      <select id="rc-ix" aria-label="Index"><option value="">All indices</option><option value="1">Nifty 50</option><option value="2">Next 50</option><option value="3">Midcap 150</option><option value="4">Smallcap 250</option><option value="0">Outside Nifty 500</option></select></div>
+    <div class="capnote" id="rc-capnote"></div>
+    <details class="how"><summary>How to read this</summary>
+      <p>Columns: this quarter, the previous quarter, the same quarter last year, then YoY and QoQ change (▲ ▼). Margin change is in basis points (100 bps = 1 percentage point).</p>
+      <p><b>Result day</b> is the first session after the filing (filings after 3:30 pm count from the next day): its return, and versus the Nifty 500. <b>Gap</b> is that day's open against the previous close. <b>5d / 20d drift</b> is the return from the result-day close over the next 5 / 20 sessions, versus the Nifty 500.</p>
+      <p><b>Surprise vs own trend</b> is this quarter's YoY growth minus the average YoY growth of the previous four quarters. There is no analyst consensus here.</p></details>
+  </div>
+  <div class="cards sec" id="rc-list"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+  <button class="chip more" id="rc-more" hidden>Show more</button>
+</section>
+
+<!-- ============================== WARNING FLAGS -->
+<section data-panel="flags" hidden>
+  <div class="box">
+    <div class="k">Warning flags</div>
+    <p class="verdict" id="fl-verdict"></p>
+    <div id="fl-bars"></div>
+    <div class="row"><span class="lbl">Quarter</span><div class="chips" id="fl-q"></div></div>
+    <div id="fl-table"></div>
+    <details class="how"><summary>How to read this</summary>
+      <ul>
+        <li><b>Other income</b>: other income is 30% or more of profit before tax (skipped for banks, NBFCs and insurers, where it is core income).</li>
+        <li><b>Exceptional items</b>: an exceptional gain is 25% or more of PBT, or profit rose only because of one (PBT before exceptional items fell YoY).</li>
+        <li><b>Receivables</b>: trade receivables grew 20% or more in a year and at least 20 points faster than revenue (half-year revenue where filed). Needs the balance sheet, which companies file with September and March results.</li>
+        <li><b>Cash conversion</b>: half-year cash from operations is under a quarter of half-year profit (or negative) (September filings carry the half-year cash-flow statement).</li>
+        <li><b>Margin collapse</b>: EBITDA margin (net margin for financials) down 5 points or more YoY, or EBITDA turned negative.</li>
+      </ul>
+      <p>A flag is a prompt to read the filing, not a verdict. The checks only run where the filing has the numbers; the counts show how many companies each check covered.</p></details>
+    <div class="src" id="fl-src"></div>
+  </div>
+</section>
+
+<!-- ============================== PROFIT POOLS -->
+<section data-panel="pools" hidden>
+  <div class="box">
+    <div class="k">Profit pools by industry</div>
+    <p class="verdict" id="pp-verdict"></p>
+    <div class="row"><span class="lbl">Measure</span><div class="chips" id="pp-m"><button class="chip on" data-v="pat">PAT</button><button class="chip" data-v="sales">Revenue</button></div>
+      <span class="lbl" style="margin-left:6px">Group</span><div class="chips" id="pp-lv"><button class="chip on" data-v="sec">Sector</button><button class="chip" data-v="par">Broad sector</button></div></div>
+    <div class="capnote" id="pp-capnote"></div>
+    <div id="pp-bars"></div>
+    <div id="pp-table" class="sec"></div>
+    <details class="how"><summary>How to read this</summary><p>Each bar is the industry's share of the quarter's total PAT (or revenue) across companies that reported. Growth is like-for-like: only companies with the same quarter last year on file. TTM is the sum of the last four quarters.</p></details>
+  </div>
+  <div class="box sec">
+    <div class="k">Valuation vs growth</div>
+    <p class="verdict" id="bb-verdict"></p>
+    <div class="row"><span class="lbl">X</span><select id="bb-x" aria-label="X axis"></select><span class="lbl">Y</span><select id="bb-y" aria-label="Y axis"></select>
+      <span class="lbl">Dots</span><div class="chips" id="bb-lv"><button class="chip on" data-v="co">Companies</button><button class="chip" data-v="sec">Sectors</button></div>
+      <select id="bb-sec" aria-label="Sector"><option value="">All sectors</option></select></div>
+    <div id="bb-chart"></div>
+    <details class="how"><summary>How to read this</summary><p>Bubble size is market cap. Axes are clipped to the 3rd–97th percentile so a few extreme values don't squash the rest; clipped dots sit on the edge. P/E = latest close ÷ trailing-four-quarter EPS (loss-makers are left out). Sector dots use aggregates: P/E = total market cap ÷ total TTM PAT, growth is like-for-like. Tap a bubble for details.</p></details>
+    <div class="src">Prices: NSE market-cap file · results: NSE XBRL.</div>
+  </div>
+</section>
+
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: NSE Integrated Filing / financial results XBRL, NSE board-meeting &amp; event calendar, NSE end-of-day prices · sectors from the Sector Rotation dashboard</span></footer>
+</main>
+
+<script src="../assets/universe.js?v=202611281537"></script>
+<script src="../assets/badges.js?v=202611281537"></script>
+<script src="../assets/kit.js?v=202611281537"></script>
+<script src="data.js?v=202611281537"></script>
+<script>
+(function () {
+'use strict';
+var PK = window.PK = window.PK || {};
+function esc(s) { return s == null ? '' : String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function num(v) { return typeof v === 'number' && isFinite(v); }
+function $(id) { return document.getElementById(id); }
+/* ---------- kit fallbacks: the page still renders if kit files fail */
+PK.haptic = PK.haptic || function () {};
+PK.press = PK.press || function () {};
+PK.badges = PK.badges || function () { return ''; };
+PK.countUp = PK.countUp || function (el, v, o) { el.textContent = (o && o.fmt) ? o.fmt(v) : v; };
+PK.tip = PK.tip || { show: function (h) { }, hide: function () {} };
+var hasCap = typeof PK.capOK === 'function';
+function capOK(s) { try { return !hasCap || PK.capOK(s) !== false; } catch (e) { return true; } }
+function capOn() { try { return hasCap && typeof PK.capIsDefault === 'function' && !PK.capIsDefault(); } catch (e) { return false; } }
+function capNote(el, hidden) { if (!el) return; el.innerHTML = capOn() ? 'Filtered to <b>' + esc(PK.capSummary()) + '</b>' + (hidden != null ? ' · ' + hidden + ' hidden' : '') + ' · <button class="linkbtn" data-capreset>reset</button>' : ''; }
+document.addEventListener('click', function (e) { if (e.target.closest('[data-capreset]')) { try { PK.capSet(null); } catch (x) {} } });
+PK.svgBars = PK.svgBars || function (el, items, o) {
+  o = o || {}; var mx = Math.max.apply(null, items.map(function (i) { return Math.abs(+i.value || 0); }).concat([1]));
+  el.innerHTML = items.map(function (it) { var v = +it.value || 0; return '<div style="display:grid;grid-template-columns:140px 1fr 70px;gap:8px;font-size:12.5px;margin:4px 0"><span class="mut">' + esc(it.label) + '</span><div style="background:rgba(47,227,181,.06);border-radius:99px"><div style="height:12px;border-radius:99px;width:' + (Math.abs(v) / mx * 100) + '%;background:' + (v < 0 ? '#FF5C6C' : '#2FE3B5') + '"></div></div><b>' + esc(o.fmt ? o.fmt(v, it) : v) + '</b></div>'; }).join('');
+  return { update: function (n) { PK.svgBars(el, n, o); } };
+};
+PK.table = PK.table || function (el, cfg) {
+  var rows = cfg.rows || [];
+  function paint() { var v = rows.filter(function (r) { return !cfg.capKey || capOK(r[cfg.capKey]); });
+    el.innerHTML = '<div class="scroll"><table class="mini"><thead><tr>' + cfg.columns.map(function (c) { return '<th>' + esc(c.label || c.key) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      v.slice(0, 200).map(function (r) { return '<tr>' + cfg.columns.map(function (c) { var x = r[c.key]; return '<td>' + (c.fmt ? c.fmt(x, r) : esc(x == null ? '–' : x)) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>'; }
+  paint(); return { update: function (r) { rows = r; paint(); }, destroy: function () {} };
+};
+PK.tabs = PK.tabs || function (el, o) {
+  var btns = [].slice.call(el.querySelectorAll('[data-tab]'));
+  function set(n) { btns.forEach(function (b) { b.classList.toggle('on', b.dataset.tab === n); }); [].forEach.call(document.querySelectorAll('[data-panel]'), function (p) { p.hidden = p.dataset.panel !== n; }); if (o.onChange) o.onChange(n); }
+  el.addEventListener('click', function (e) { var b = e.target.closest('[data-tab]'); if (b) set(b.dataset.tab); });
+  var st = (/tab=(\w+)/.exec(location.hash) || [])[1]; set(btns.some(function (b) { return b.dataset.tab === st; }) ? st : btns[0].dataset.tab);
+  return { set: set, get: function () { var b = el.querySelector('.on'); return b && b.dataset.tab; } };
+};
+
+/* ---------- formatting */
+var fmtN = function (v, d) { return num(v) ? v.toLocaleString('en-IN', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }) : '–'; };
+var pct = function (v, d) { return num(v) ? (v > 0 ? '+' : '') + v.toFixed(d == null ? 1 : d) + '%' : '–'; };
+var cls = function (v) { return num(v) ? (v > 0 ? 'up' : v < 0 ? 'dn' : '') : ''; };
+var crs = function (v) { if (!num(v)) return '–'; var a = Math.abs(v), s = v < 0 ? '−' : ''; return s + (a >= 1e5 ? '₹' + (a / 1e5).toFixed(2) + ' L Cr' : a >= 1000 ? '₹' + fmtN(Math.round(a)) + ' Cr' : '₹' + fmtN(a, a < 10 ? 2 : 0) + ' Cr'); };
+var bps = function (v) { return num(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + fmtN(Math.abs(v)) + ' bps' : '–'; };
+var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+function pd(s) { return new Date(s + 'T00:00:00'); }
+function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function Ds(s) { if (!s) return '–'; var d = pd(s); return d.getDate() + ' ' + MON[d.getMonth()]; }
+function D(s) { if (!s) return '–'; var d = pd(s); return d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); }
+function filedIso(f) { if (!f) return null; var p = f.slice(0, 11).split('-'); var m = MON.indexOf(p[1].slice(0, 1).toUpperCase() + p[1].slice(1, 3).toLowerCase()); return p[2] + '-' + String(m + 1).padStart(2, '0') + '-' + p[0]; }
+function med(a) { a = a.filter(num).sort(function (x, y) { return x - y; }); if (!a.length) return null; var m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2; }
+function g(cur, base, profit) { if (!num(cur) || !num(base)) return null; if (base > 0) return Math.max(-100, Math.min(300, (cur / base - 1) * 100)); if (!profit || (base === 0 && cur === 0)) return null; if (base <= 0 && cur > 0) return 100; if (base < 0) return Math.max(-100, Math.min(100, (base - cur) / Math.abs(base) * -100)); return null; }
+function chips(id, fn) {
+  var el = $(id); if (!el) return;
+  el.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select');
+    [].forEach.call(el.children, function (x) { x.classList.toggle('on', x === b); }); fn(b.dataset.v, b); });
+}
+function onv(id) { var b = $(id).querySelector('.chip.on'); return b ? b.dataset.v : ''; }
+function unavailable(el, msg) { el.innerHTML = '<div class="unavail">' + esc(msg || 'Source unavailable for now. It will fill in after the next successful nightly fetch.') + '</div>'; }
+function tipAt(e, html) { var p = e.touches ? e.touches[0] : e; PK.tip.show(html, p.clientX, p.clientY); }
+var IXN = ['Outside Nifty 500', 'Nifty 50', 'Next 50', 'Midcap 150', 'Smallcap 250'];
+var LABC = { Strong: 'S', Good: 'G', Mixed: 'M', Weak: 'W' };
+function labHtml(l) { return l ? '<span class="lab ' + LABC[l] + '">' + l + '</span>' : '<span class="lab N">No YoY base</span>'; }
+function nameCell(s, n) { return '<b>' + esc(n) + '</b>' + PK.badges(s) + '<span class="sub">' + esc(s) + '</span>'; }
+
+var EC = window.EC;
+if (!EC) { $('asof').textContent = 'Data file missing. Run EarningsCentre/run.bat.'; $('kpis').innerHTML = ''; return; }
+var SQ = EC.season.qe, ROWS = EC.cards[SQ] || [], COS = EC.cos || {};
+ROWS.forEach(function (r) { r.fd = filedIso(r.f); });
+var PREV = null, prevP = null, H = null, histP = null;
+function loadScript(src, glob) { return new Promise(function (res) { if (window[glob]) return res(window[glob]); var s = document.createElement('script'); s.src = src + '?v=' + encodeURIComponent(EC.built || ''); s.onload = function () { res(window[glob] || null); }; s.onerror = function () { res(null); }; document.head.appendChild(s); }); }
+function loadHist() { if (!histP) histP = loadScript('hist.js', 'EC_H').then(function (h) { H = h; return h; }); return histP; }
+function loadPrev() { if (!prevP) prevP = loadScript('prev.js', 'EC_PREV').then(function (p) { PREV = p; if (p) p.rows.forEach(function (r) { r.fd = filedIso(r.f); }); return p; }); return prevP; }
+function qrows(which) { return which === 'prev' ? (PREV ? PREV.rows : []) : ROWS; }
+var TODAY = (EC.built || EC.asof).slice(0, 10);
+
+/* ---------- hero + KPIs */
+$('asof').innerHTML = 'Results season <b>' + esc(EC.season.ql) + '</b> · prices to <b>' + D(EC.priceDay) + '</b> · built ' + esc(EC.built) + ' IST';
+function kpis() {
+  var rows = ROWS.filter(function (r) { return capOK(r.s); });
+  var lab = rows.filter(function (r) { return r.l; });
+  var strong = lab.filter(function (r) { return r.l === 'Strong'; }).length, weak = lab.filter(function (r) { return r.l === 'Weak'; }).length;
+  var big = lab.filter(function (r) { return (r.mc || 0) >= 1000; });
+  var next7 = EC.cal.filter(function (c) { return c.k === 'c' && c.d >= TODAY && (pd(c.d) - pd(TODAY)) / 864e5 <= 7 && capOK(c.s); }).length;
+  var fl = rows.filter(function (r) { return r.fl && r.fl.length; }).length;
+  var kp = [
+    { l: 'Reported ' + EC.season.ql, v: EC.season.reported, f: function (x) { return fmtN(Math.round(x)); }, s: 'of ' + fmtN(EC.season.expected) + ' expected · ' + Math.round(EC.season.reported / Math.max(1, EC.season.expected) * 100) + '% done' },
+    { l: 'Strong results', v: lab.length ? strong / lab.length * 100 : null, f: function (x) { return Math.round(x) + '%'; }, c: 'up', s: strong + ' Strong vs ' + weak + ' Weak' },
+    { l: 'Median PAT YoY (₹1k Cr+)', v: med(big.map(function (r) { return r.py; })), f: function (x) { return pct(x); }, c: cls(med(big.map(function (r) { return r.py; }))), s: 'revenue ' + pct(med(big.map(function (r) { return r.sy; }))) + ' · ' + big.length + ' companies' },
+    { l: 'Confirmed next 7 days', v: next7, f: function (x) { return fmtN(Math.round(x)); }, s: EC.calOk ? 'board-meeting notices on NSE' : 'calendar source unavailable' },
+    { l: 'Warning flags', v: fl, f: function (x) { return fmtN(Math.round(x)); }, c: 'am', s: 'companies with at least one flag this season' }
+  ];
+  $('kpis').innerHTML = kp.map(function (k, i) { return '<div class="pk" style="animation-delay:' + i * 45 + 'ms"><div class="l">' + esc(k.l) + '</div><div class="v ' + (k.c || '') + '" data-i="' + i + '">–</div><div class="s">' + esc(k.s) + '</div></div>'; }).join('');
+  kp.forEach(function (k, i) { if (num(k.v)) PK.countUp(document.querySelector('.kpis .v[data-i="' + i + '"]'), k.v, { fmt: k.f, dur: 900 }); });
+}
+kpis();
+
+/* ---------- tabs */
+var built = {}, redraw = {};
+var tabsReady = false;
+var tabs = PK.tabs($('tabs'), { storeKey: 'ec_tab', onChange: function (n) { if (tabsReady) render(n); } });
+function render(n) { if (built[n]) { if (redraw[n]) redraw[n](); return; } built[n] = true; try { ({ calendar: buildCal, score: buildScore, cards: buildCards, flags: buildFlags, pools: buildPools })[n](); } catch (e) { console.error(e); } }
+var cur0 = tabs && tabs.get ? tabs.get() : 'calendar';
+setTimeout(function () { tabsReady = true; render(cur0 || 'calendar'); }, 0);
+PK.press(document);
+if (typeof PK.capFilter === 'function') { try { PK.capFilter($('capf'), { compact: innerWidth < 760 }); } catch (e) { console.warn('capFilter', e); } }
+document.addEventListener('pk:cap', function () { kpis(); Object.keys(built).forEach(function (n) { if (redraw[n]) redraw[n](); }); });
+setTimeout(loadHist, 1500);
+
+/* ============================================================ CALENDAR */
+function buildCal() {
+  var cal = EC.cal.map(function (c) { var m = COS[c.s] || []; return { s: c.s, n: m[0] || c.n || c.s, sec: m[1] || '', mc: m[2], ix: m[3] || 0, d: c.d, k: c.k, qe: c.qe, ly: c.ly, l: c.l, ann: c.ann }; });
+  var secs = {}; cal.forEach(function (c) { if (c.sec) secs[c.sec] = 1; });
+  $('cal-sec').insertAdjacentHTML('beforeend', Object.keys(secs).sort().map(function (s) { return '<option>' + esc(s) + '</option>'; }).join(''));
+  var t0 = pd(TODAY), mon = new Date(t0); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7) - 7);
+  var weeks = []; for (var i = 0; i < 10; i++) { var a = new Date(mon); a.setDate(a.getDate() + 7 * i); var b = new Date(a); b.setDate(b.getDate() + 6); weeks.push({ a: iso(a), b: iso(b) }); }
+  var st = { w: 1, d: null };
+  var thisWeek = weeks.findIndex(function (w) { return TODAY >= w.a && TODAY <= w.b; }); st.w = thisWeek < 0 ? 0 : thisWeek;
+  var table = null;
+  function filt() {
+    var k = onv('cal-kind'), ix = onv('cal-ix'), sec = $('cal-sec').value;
+    return cal.filter(function (c) { return (!k || c.k === k) && (ix === '' || String(c.ix) === ix) && (!sec || c.sec === sec) && capOK(c.s); });
+  }
+  function draw() {
+    var rows = filt();
+    var cnt = function (a, b, k) { return rows.filter(function (c) { return c.d >= a && c.d <= b && (!k || c.k === k); }).length; };
+    $('weeks').innerHTML = weeks.map(function (w, i) {
+      var c = cnt(w.a, w.b, 'c'), e = cnt(w.a, w.b, 'e'), r = cnt(w.a, w.b, 'r'), o = cnt(w.a, w.b, 'o'), tot = c + e + r + o || 1;
+      return '<button class="wk' + (i === st.w ? ' on' : '') + (TODAY >= w.a && TODAY <= w.b ? ' now' : '') + '" data-w="' + i + '"><div class="w1">' + Ds(w.a) + ' – ' + Ds(w.b) + '</div><div class="w2">' + (c + e + r + o) + '</div>' +
+        '<div class="w3">' + c + ' confirmed · ' + e + ' est.' + (r ? ' · ' + r + ' filed' : '') + '</div><div class="bar"><i style="width:' + c / tot * 100 + '%;background:#2FE3B5"></i><i style="width:' + e / tot * 100 + '%;background:#5AA9F0"></i><i style="width:' + r / tot * 100 + '%;background:#A78BFA"></i><i style="width:' + o / tot * 100 + '%;background:#E0A64A"></i></div></button>';
+    }).join('');
+    var w = weeks[st.w], days = [];
+    for (var j = 0; j < 7; j++) { var dd = pd(w.a); dd.setDate(dd.getDate() + j); days.push(iso(dd)); }
+    $('days').innerHTML = days.map(function (d) { var n = cnt(d, d); return '<button class="day' + (st.d === d ? ' on' : '') + (n ? '' : ' zero') + '" data-d="' + d + '"><div class="d1">' + DOW[pd(d).getDay()] + ' ' + pd(d).getDate() + '</div><div class="d2">' + n + '</div></button>'; }).join('');
+    var a = st.d || w.a, b = st.d || w.b;
+    var list = rows.filter(function (c) { return c.d >= a && c.d <= b; });
+    // verdict: busiest upcoming day
+    var byDay = {}; rows.forEach(function (c) { if (c.d >= TODAY && (c.k === 'c' || c.k === 'e')) byDay[c.d] = (byDay[c.d] || 0) + 1; });
+    var best = Object.keys(byDay).sort(function (x, y) { return byDay[y] - byDay[x]; })[0];
+    var conf7 = rows.filter(function (c) { return c.k === 'c' && c.d >= TODAY && (pd(c.d) - t0) / 864e5 <= 7; }).length;
+    var big = rows.filter(function (c) { return c.k === 'c' && c.d >= TODAY && c.ix === 1; }).sort(function (x, y) { return x.d < y.d ? -1 : 1; })[0];
+    $('cal-verdict').innerHTML = best ? '<b>' + conf7 + '</b> confirmed results in the next 7 days; the busiest day ahead is <b>' + DOW[pd(best).getDay()] + ' ' + Ds(best) + '</b> with ' + byDay[best] + ' companies' + (big ? '. Next Nifty 50 name: <b>' + esc(big.n) + '</b> on ' + Ds(big.d) + '.' : '.') : 'No upcoming results in the calendar window for this filter.';
+    var data = list.map(function (c) { return Object.assign({}, c, { kd: c.k }); });
+    var cols = [
+      { key: 'n', label: 'Company', fmt: function (v, r) { return nameCell(r.s, v); }, align: 'l', sortVal: function (r) { return r.n; } },
+      { key: 'd', label: 'Date', fmt: function (v) { return DOW[pd(v).getDay()] + ' ' + Ds(v); } },
+      { key: 'kd', label: 'Status', fmt: function (v, r) { return '<span class="kc ' + v + '">' + ({ c: 'Confirmed', e: 'Estimated', o: 'Overdue', r: 'Reported' })[v] + '</span>' + (r.l ? ' ' + labHtml(r.l) : ''); }, csvVal: function (r) { return r.k; } },
+      { key: 'sec', label: 'Sector', align: 'l' },
+      { key: 'ix', label: 'Index', fmt: function (v) { return IXN[v]; }, align: 'l' },
+      { key: 'mc', label: 'Mcap ₹ Cr', num: true, fmt: function (v) { return fmtN(v); } },
+      { key: 'ly', label: 'Last year filed', fmt: function (v) { return v ? Ds(v) : '–'; } }
+    ];
+    if (table && table.update) table.update(data);
+    else table = PK.table($('cal-table'), { columns: cols, rows: data, sortKey: 'd', sortDir: 'asc', search: true, pageSize: 60, csvName: 'results_calendar', tvExport: true, symbolKey: 's', capKey: 's', countLabel: 'companies', placeholder: 'Search company…', empty: 'Nothing scheduled for this selection.' });
+    $('cal-src').textContent = 'Source: NSE corporate board meetings + event calendar' + (EC.calFetched ? ' (fetched ' + EC.calFetched + ')' : '') + (EC.calOk ? '' : ' · source unavailable, estimates only') + ' · estimates from NSE filing dates.';
+  }
+  $('weeks').addEventListener('click', function (e) { var b = e.target.closest('[data-w]'); if (!b) return; PK.haptic('select'); st.w = +b.dataset.w; st.d = null; draw(); });
+  $('days').addEventListener('click', function (e) { var b = e.target.closest('[data-d]'); if (!b) return; PK.haptic('select'); st.d = st.d === b.dataset.d ? null : b.dataset.d; draw(); });
+  chips('cal-kind', draw); chips('cal-ix', draw); $('cal-sec').addEventListener('change', draw);
+  redraw.calendar = draw; draw();
+}
+
+/* ============================================================ SCOREBOARD */
+function minMc() { return +onv('sc-mc') || 0; }
+function scoreRows() { var m = minMc(); return ROWS.filter(function (r) { return (r.mc || 0) >= m && capOK(r.s); }); }
+function agg(rows) {
+  var lab = rows.filter(function (r) { return r.l; }), c = { Strong: 0, Good: 0, Mixed: 0, Weak: 0 };
+  lab.forEach(function (r) { c[r.l]++; });
+  var s1 = 0, s0 = 0, p1 = 0, p0 = 0;
+  rows.forEach(function (r) { if (r.c && r.y && num(r.c[0]) && num(r.y[0])) { s1 += r.c[0]; s0 += r.y[0]; } if (r.c && r.y && num(r.c[2]) && num(r.y[2])) { p1 += r.c[2]; p0 += r.y[2]; } });
+  return { n: rows.length, nl: lab.length, c: c, msy: med(rows.map(function (r) { return r.sy; })), mpy: med(rows.map(function (r) { return r.py; })),
+    lsy: s0 > 0 ? (s1 / s0 - 1) * 100 : null, lpy: p0 > 0 ? (p1 / p0 - 1) * 100 : null, strong: lab.length ? c.Strong / lab.length * 100 : null, weak: lab.length ? c.Weak / lab.length * 100 : null };
+}
+var trGroup = 'all';
+function buildScore() {
+  var seT = null;
+  var groups = [['all', 'All companies'], ['1', 'Nifty 50'], ['2', 'Next 50'], ['3', 'Midcap 150'], ['4', 'Smallcap 250'], ['0', 'Outside Nifty 500']];
+  $('tr-g').innerHTML = groups.map(function (x) { return '<button class="chip' + (x[0] === trGroup ? ' on' : '') + '" data-v="' + x[0] + '">' + x[1] + '</button>'; }).join('');
+  chips('tr-g', function (v) { trGroup = v; trend(); });
+  function draw() {
+    var rows = scoreRows(), A = agg(rows);
+    var all = ROWS.filter(function (r) { return capOK(r.s); }).length;
+    capNote($('sc-capnote'));
+    var done = EC.season.reported / Math.max(1, EC.season.expected) * 100;
+    $('sc-prog').style.width = Math.min(100, done) + '%';
+    $('sc-progtxt').innerHTML = '<b>' + fmtN(EC.season.reported) + ' of ' + fmtN(EC.season.expected) + '</b> expected companies have reported ' + esc(EC.season.ql) + ' (' + Math.round(done) + '%). Scoring ' + A.n + ' with market cap ≥ ₹' + fmtN(minMc()) + ' Cr' + (capOn() ? ' inside the header filter' : '') + '; ' + (all - A.n) + ' smaller ones are left out.';
+    var tone = A.mpy == null ? '' : A.mpy >= 15 ? 'a strong season' : A.mpy >= 5 ? 'a decent season' : A.mpy >= 0 ? 'a flat season' : 'a weak season';
+    $('sc-verdict').innerHTML = A.nl ? esc(EC.season.ql) + ' is shaping up as <b>' + tone + '</b>: median PAT ' + pct(A.mpy) + ' and revenue ' + pct(A.msy) + ' YoY, with ' + Math.round(A.strong) + '% Strong and ' + Math.round(A.weak) + '% Weak.' : 'No results with a year-ago base yet for this filter.';
+    $('sc-tiles').innerHTML = ['Strong', 'Good', 'Mixed', 'Weak'].map(function (l, i) { return '<button class="lt" data-l="' + l + '" style="animation:rise .5s ' + i * 45 + 'ms both"><span class="lab ' + LABC[l] + '">' + l + '</span><div class="n" data-c="' + l + '">0</div><div class="p">' + (A.nl ? Math.round(A.c[l] / A.nl * 100) : 0) + '% of ' + A.nl + ' · tap to see cards</div></button>'; }).join('');
+    ['Strong', 'Good', 'Mixed', 'Weak'].forEach(function (l) { PK.countUp(document.querySelector('[data-c="' + l + '"]'), A.c[l], { fmt: function (x) { return fmtN(Math.round(x)); }, dur: 800 }); });
+    // by index
+    var ix = groups.map(function (gq) { var rr = gq[0] === 'all' ? rows : rows.filter(function (r) { return String(r.ix) === gq[0]; }); return Object.assign({ k: gq[0], name: gq[1] }, agg(rr)); });
+    var bestIx = ix.slice(1).filter(function (x) { return x.n >= 5 && num(x.lpy); }).sort(function (a, b) { return b.lpy - a.lpy; });
+    $('ix-verdict').innerHTML = bestIx.length ? '<b>' + esc(bestIx[0].name) + '</b> leads on like-for-like PAT growth (' + pct(bestIx[0].lpy) + '); <b>' + esc(bestIx[bestIx.length - 1].name) + '</b> trails (' + pct(bestIx[bestIx.length - 1].lpy) + ').' : 'Too few reporters per index yet.';
+    $('ix-table').innerHTML = '<table class="mini"><thead><tr><th>Group</th><th>Reported</th><th>Median rev</th><th>Median PAT</th><th>LFL rev</th><th>LFL PAT</th><th>Strong</th><th>Weak</th></tr></thead><tbody>' +
+      ix.map(function (x) { return '<tr data-g="' + x.k + '" style="cursor:pointer"><td>' + esc(x.name) + '</td><td>' + x.n + '</td><td class="' + cls(x.msy) + '">' + pct(x.msy) + '</td><td class="' + cls(x.mpy) + '">' + pct(x.mpy) + '</td><td class="' + cls(x.lsy) + '">' + pct(x.lsy) + '</td><td class="' + cls(x.lpy) + '">' + pct(x.lpy) + '</td><td>' + (num(x.strong) ? Math.round(x.strong) + '%' : '–') + '</td><td>' + (num(x.weak) ? Math.round(x.weak) + '%' : '–') + '</td></tr>'; }).join('') + '</tbody></table>';
+    // by sector
+    var bys = {}; rows.forEach(function (r) { if (r.sec) (bys[r.sec] = bys[r.sec] || []).push(r); });
+    var se = Object.keys(bys).filter(function (k) { return bys[k].length >= 3; }).map(function (k) { var a = agg(bys[k]); return { sec: k, n: a.n, msy: a.msy, mpy: a.mpy, lsy: a.lsy, lpy: a.lpy, strong: a.strong, weak: a.weak }; });
+    var topS = se.filter(function (x) { return x.n >= 5 && num(x.lpy); }).sort(function (a, b) { return b.lpy - a.lpy; });
+    $('se-verdict').innerHTML = topS.length ? 'Profit growth is led by <b>' + topS.slice(0, 3).map(function (x) { return esc(x.sec); }).join(', ') + '</b>; the weakest are ' + topS.slice(-3).reverse().map(function (x) { return esc(x.sec) + ' (' + pct(x.lpy) + ')'; }).join(', ') + '.' : 'Too few sector reporters yet.';
+    var cols = [{ key: 'sec', label: 'Sector', align: 'l' }, { key: 'n', label: 'Reported', num: true },
+      { key: 'msy', label: 'Median rev YoY', num: true, fmt: function (v) { return pct(v); }, cls: function (v) { return cls(v); } }, { key: 'mpy', label: 'Median PAT YoY', num: true, fmt: function (v) { return pct(v); }, cls: function (v) { return cls(v); } },
+      { key: 'lsy', label: 'LFL rev', num: true, fmt: function (v) { return pct(v); }, cls: function (v) { return cls(v); } }, { key: 'lpy', label: 'LFL PAT', num: true, fmt: function (v) { return pct(v); }, cls: function (v) { return cls(v); } },
+      { key: 'strong', label: 'Strong %', num: true, fmt: function (v) { return num(v) ? Math.round(v) + '%' : '–'; } }, { key: 'weak', label: 'Weak %', num: true, fmt: function (v) { return num(v) ? Math.round(v) + '%' : '–'; } }];
+    if (seT && seT.update) seT.update(se); else seT = PK.table($('se-table'), { columns: cols, rows: se, sortKey: 'lpy', sortDir: 'desc', search: true, pageSize: 60, csvName: 'earnings_by_sector', countLabel: 'sectors', placeholder: 'Search sector…' });
+    trend();
+  }
+  $('ix-table').addEventListener('click', function (e) { var tr = e.target.closest('[data-g]'); if (!tr) return; PK.haptic('tap'); trGroup = tr.dataset.g; [].forEach.call($('tr-g').children, function (b) { b.classList.toggle('on', b.dataset.v === trGroup); }); trend(); $('tr-chart').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+  $('sc-tiles').addEventListener('click', function (e) { var b = e.target.closest('[data-l]'); if (!b) return; [].forEach.call($('rc-l').children, function (x) { x.classList.toggle('on', x.dataset.v === b.dataset.l); }); tabs.set('cards'); render('cards'); if (redraw.cards) redraw.cards(); });
+  chips('sc-mc', function () { draw(); if (redraw.pools && built.pools) redraw.pools(); });
+  redraw.score = draw; draw();
+}
+function trend() {
+  var el = $('tr-chart');
+  loadHist().then(function (h) {
+    if (!h) { unavailable(el, 'Quarterly history file did not load.'); return; }
+    var m = minMc(), Q = h.q, pts = [];
+    for (var t = 4; t < Q.length; t++) {
+      var sy = [], py = [], p1 = 0, p0 = 0, n = 0;
+      Object.keys(h.s).forEach(function (s) {
+        var c = COS[s]; if (!c || (c[2] || 0) < m || !capOK(s)) return; if (trGroup !== 'all' && String(c[3] || 0) !== trGroup) return;
+        var v = h.s[s], sa = v[0], pa = v[1];
+        if (!num(sa[t]) || !num(sa[t - 4])) return;
+        n++; sy.push(g(sa[t], sa[t - 4])); py.push(g(pa[t], pa[t - 4], true));
+        if (num(pa[t]) && num(pa[t - 4])) { p1 += pa[t]; p0 += pa[t - 4]; }
+      });
+      pts.push({ q: h.ql[t], n: n, sy: med(sy), py: med(py), lp: p0 > 0 ? (p1 / p0 - 1) * 100 : null });
+    }
+    pts = pts.filter(function (p) { return p.n >= 3; }).slice(-9);
+    if (pts.length < 2) { unavailable(el, 'Not enough quarters on file yet for a trend (history is backfilled a little more every night).'); $('tr-verdict').textContent = ''; return; }
+    var last = pts[pts.length - 1], prev = pts[pts.length - 2];
+    $('tr-verdict').innerHTML = 'Median PAT growth ' + (last.py >= prev.py ? '<b>picked up</b>' : '<b>slowed</b>') + ' to ' + pct(last.py) + ' in ' + esc(last.q) + ' from ' + pct(prev.py) + ' a season earlier (' + esc(({ all: 'all companies', 1: 'Nifty 50', 2: 'Next 50', 3: 'Midcap 150', 4: 'Smallcap 250', 0: 'outside Nifty 500' })[trGroup]) + ').';
+    var W = Math.max(300, el.clientWidth || 600), Hh = 260, L = 44, R = 12, T = 14, B = 30;
+    var vals = []; pts.forEach(function (p) { [p.sy, p.py, p.lp].forEach(function (v) { if (num(v)) vals.push(v); }); });
+    var lo = Math.min(0, Math.min.apply(null, vals)), hi = Math.max(0, Math.max.apply(null, vals)); var pad = (hi - lo) * .1 || 5; lo -= pad; hi += pad;
+    var x = function (i) { return L + (W - L - R) * (pts.length === 1 ? .5 : i / (pts.length - 1)); }, y = function (v) { return T + (Hh - T - B) * (1 - (v - lo) / (hi - lo)); };
+    var ticks = []; var step = Math.pow(10, Math.floor(Math.log10((hi - lo) / 4))); [1, 2, 5, 10].some(function (k) { if ((hi - lo) / (step * k) <= 6) { step *= k; return true; } });
+    for (var v = Math.ceil(lo / step) * step; v <= hi; v += step) ticks.push(v);
+    var line = function (key, col) { var d = '', dots = ''; pts.forEach(function (p, i) { if (!num(p[key])) return; d += (d ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(p[key]).toFixed(1); dots += '<circle cx="' + x(i) + '" cy="' + y(p[key]) + '" r="' + (i === pts.length - 1 ? 5 : 3.5) + '" fill="' + col + '"' + (i === pts.length - 1 ? ' style="filter:drop-shadow(0 0 6px ' + col + ')"' : '') + '/>'; });
+      return '<path class="ln draw" d="' + d + '" stroke="' + col + '" style="filter:drop-shadow(0 0 4px ' + col + '66)"/>' + dots; };
+    el.innerHTML = '<svg class="svgc" viewBox="0 0 ' + W + ' ' + Hh + '" height="' + Hh + '">' +
+      ticks.map(function (t) { return '<line class="' + (Math.abs(t) < 1e-9 ? 'zero' : 'ax') + '" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(t) + '" y2="' + y(t) + '"/><text x="' + (L - 6) + '" y="' + (y(t) + 4) + '" text-anchor="end">' + Math.round(t) + '%</text>'; }).join('') +
+      pts.map(function (p, i) { return (pts.length > 6 && innerWidth < 500 && i % 2) ? '' : '<text x="' + x(i) + '" y="' + (Hh - 8) + '" text-anchor="middle">' + p.q + '</text>'; }).join('') +
+      line('sy', '#5AA9F0') + line('lp', '#E0A64A') + line('py', '#2FE3B5') +
+      pts.map(function (p, i) { var w = (W - L - R) / Math.max(1, pts.length - 1); return '<rect data-i="' + i + '" x="' + (x(i) - w / 2) + '" y="' + T + '" width="' + w + '" height="' + (Hh - T - B) + '" fill="transparent" style="cursor:pointer"/>'; }).join('') + '</svg>';
+    el.querySelector('svg').addEventListener('click', function (e) { var r = e.target.closest('[data-i]'); if (!r) return; var p = pts[+r.dataset.i]; PK.haptic('tap');
+      tipAt(e, '<b>' + p.q + '</b> · ' + p.n + ' companies<br>Median PAT YoY ' + pct(p.py) + '<br>Median revenue YoY ' + pct(p.sy) + '<br>Like-for-like PAT ' + pct(p.lp)); });
+  });
+}
+
+/* ============================================================ RESULT CARDS */
+function arrow(v) { return num(v) ? '<span class="' + cls(v) + '">' + (v > 0 ? '▲' : v < 0 ? '▼' : '•') + ' ' + Math.abs(v).toFixed(0) + '%</span>' : '<span class="dimc">–</span>'; }
+function cardHtml(r, i) {
+  var mlab = r.mk === 'opm' ? 'EBITDA margin' : 'Net margin';
+  var line = function (lab, k, isEps) { var c = r.c && r.c[k], p = r.p && r.p[k], y = r.y && r.y[k];
+    var f = function (v) { return num(v) ? (isEps ? fmtN(v, 2) : fmtN(v, Math.abs(v) < 100 ? 1 : 0)) : '–'; };
+    return '<tr><td>' + lab + '</td><td>' + f(c) + '</td><td>' + f(p) + '</td><td>' + f(y) + '</td><td>' + arrow(g(c, y, k > 0)) + '</td><td>' + arrow(g(c, p, k > 0)) + '</td></tr>'; };
+  var mline = '<tr><td>' + mlab + '</td><td>' + (num(r.c && r.c[4]) ? r.c[4].toFixed(1) + '%' : '–') + '</td><td>' + (num(r.p && r.p[4]) ? r.p[4].toFixed(1) + '%' : '–') + '</td><td>' + (num(r.y && r.y[4]) ? r.y[4].toFixed(1) + '%' : '–') + '</td><td class="' + cls(r.dm) + '">' + bps(r.dm) + '</td><td class="' + cls(r.dmq) + '">' + bps(r.dmq) + '</td></tr>';
+  var rx = function (lab, v, sub) { return '<div><span>' + lab + '</span><b class="' + cls(v) + '">' + pct(v) + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div>'; };
+  var nse = 'https://www.nseindia.com/get-quotes/equity?symbol=' + encodeURIComponent(r.s);
+  var ann = 'https://www.nseindia.com/companies-listing/corporate-filings-financial-results';
+  return '<div class="box hov rc" style="animation-delay:' + Math.min(i, 12) * 45 + 'ms"><div class="hd"><div><div class="nm">' + esc(r.n) + PK.badges(r.s) + '</div><div class="meta">' + esc(r.s) + ' · ' + esc(r.sec || '–') + ' · ' + (r.mc ? crs(r.mc) : '') + ' · ' + (r.b === 'C' ? 'Consolidated' : 'Standalone') + ' · filed ' + Ds(r.fd) + '</div></div>' + labHtml(r.l) + '</div>' +
+    '<div class="tw"><table><thead><tr><th>₹ Cr</th><th>This Q</th><th>Last Q</th><th>Yr ago</th><th>YoY</th><th>QoQ</th></tr></thead><tbody>' + line('Revenue', 0) + line('EBITDA', 1) + line('PAT', 2) + line('EPS ₹', 3, true) + mline + '</tbody></table></div>' +
+    '<div class="rx">' + rx('Result day', r.r0, num(r.x0) ? 'vs Nifty ' + pct(r.x0) : (r.d0 ? '' : 'awaiting')) + rx('Gap', r.g) + rx('5d drift', r.x5, 'vs Nifty 500') + rx('20d drift', r.x20, 'vs Nifty 500') + '</div>' +
+    '<div class="sp">Surprise vs own trend: PAT ' + (num(r.pys) ? '<b class="' + cls(r.pys) + '">' + (r.pys > 0 ? '+' : '') + r.pys.toFixed(0) + ' pts</b> (YoY ' + pct(r.py, 0) + ' vs avg ' + pct(r.pyt, 0) + ')' : '–') + ' · revenue ' + (num(r.sys) ? '<b class="' + cls(r.sys) + '">' + (r.sys > 0 ? '+' : '') + r.sys.toFixed(0) + ' pts</b>' : '–') + (num(r.pe) ? ' · P/E ' + r.pe.toFixed(1) : '') + '</div>' +
+    (r.fl && r.fl.length ? '<div class="fl">⚑ ' + r.fl.map(function (f) { return esc(f[1]); }).join('<br>⚑ ') + '</div>' : '') +
+    '<div class="lk">' + (r.x ? '<a href="' + esc(r.x) + '" target="_blank" rel="noopener">XBRL filing ↗</a>' : '') + '<a href="' + ann + '" target="_blank" rel="noopener">NSE results page ↗</a><a href="' + nse + '" target="_blank" rel="noopener">NSE quote ↗</a></div></div>';
+}
+function buildCards() {
+  var shown = 30, which = 'cur';
+  $('rc-q').innerHTML = '<button class="chip on" data-v="cur">' + esc(EC.season.ql) + '</button><button class="chip" data-v="prev">' + esc(EC.prev.ql) + '</button>';
+  var secs = {}; ROWS.forEach(function (r) { if (r.sec) secs[r.sec] = 1; });
+  $('rc-sec').insertAdjacentHTML('beforeend', Object.keys(secs).sort().map(function (s) { return '<option>' + esc(s) + '</option>'; }).join(''));
+  function list() {
+    var q = $('rc-q2').value.trim().toLowerCase(), l = onv('rc-l'), sec = $('rc-sec').value, ix = $('rc-ix').value, srt = $('rc-sort').value;
+    var all = qrows(which), pre = all.filter(function (r) { return (!q || (r.n + ' ' + r.s).toLowerCase().indexOf(q) >= 0) && (!l || r.l === l) && (!sec || r.sec === sec) && (ix === '' || String(r.ix) === ix); });
+    var rows = pre.filter(function (r) { return capOK(r.s); });
+    capNote($('rc-capnote'), pre.length - rows.length);
+    var key = srt.replace('-', ''), dir = srt[0] === '-' ? 1 : -1;
+    rows.sort(function (a, b) { var x = key === 'f' ? a.fd : a[key], y = key === 'f' ? b.fd : b[key]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * dir; });
+    return rows;
+  }
+  function draw(reset) {
+    if (which === 'prev' && !PREV) { $('rc-list').innerHTML = '<div class="skel"></div><div class="skel"></div>'; loadPrev().then(function (p) { if (!p) unavailable($('rc-list'), 'Previous-quarter file did not load.'); else draw(true); }); return; }
+    if (reset) shown = 30;
+    var rows = list();
+    var lab = rows.filter(function (r) { return r.l; });
+    var up = rows.filter(function (r) { return num(r.x0); }), pos = up.filter(function (r) { return r.x0 > 0; }).length;
+    var st = lab.filter(function (r) { return r.l === 'Strong' && num(r.x0); }), stUp = st.filter(function (r) { return r.x0 > 0; }).length;
+    $('rc-verdict').innerHTML = rows.length ? '<b>' + rows.length + '</b> results shown; ' + (up.length ? Math.round(pos / up.length * 100) + '% beat the Nifty 500 on result day' : 'no price reaction yet') + (st.length >= 5 ? ', and ' + Math.round(stUp / st.length * 100) + '% of Strong results did.' : '.') : 'No result matches these filters.';
+    $('rc-list').innerHTML = rows.slice(0, shown).map(cardHtml).join('') || '<div class="unavail">No result matches these filters.</div>';
+    $('rc-more').hidden = rows.length <= shown; $('rc-more').textContent = 'Show more (' + (rows.length - shown) + ' left)';
+  }
+  chips('rc-q', function (v) { which = v; draw(true); }); chips('rc-l', function () { draw(true); });
+  ['rc-sec', 'rc-ix', 'rc-sort'].forEach(function (id) { $(id).addEventListener('change', function () { draw(true); }); });
+  var t; $('rc-q2').addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { draw(true); }, 180); });
+  $('rc-more').addEventListener('click', function () { shown += 30; draw(); });
+  redraw.cards = function () { draw(true); }; draw(true);
+}
+
+/* ============================================================ WARNING FLAGS */
+var FLN = { oi: 'Other income', exc: 'Exceptional items', rec: 'Receivables vs revenue', cfo: 'Cash conversion', mar: 'Margin collapse' };
+function buildFlags() {
+  var which = 'cur', tbl = null, only = '';
+  $('fl-q').innerHTML = '<button class="chip on" data-v="cur">' + esc(EC.season.ql) + '</button><button class="chip" data-v="prev">' + esc(EC.prev.ql) + '</button>';
+  function draw() {
+    if (which === 'prev' && !PREV) { loadPrev().then(function (p) { if (p) draw(); else unavailable($('fl-table'), 'Previous-quarter file did not load.'); }); return; }
+    var rows = qrows(which).filter(function (r) { return capOK(r.s); });
+    var cnt = {}, ran = {}; Object.keys(FLN).forEach(function (k) { cnt[k] = 0; ran[k] = 0; });
+    rows.forEach(function (r) { (r.ck || []).forEach(function (k) { ran[k]++; }); (r.fl || []).forEach(function (f) { cnt[f[0]]++; }); });
+    var flagged = rows.filter(function (r) { return r.fl && r.fl.length; });
+    var topK = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a]; })[0];
+    $('fl-verdict').innerHTML = flagged.length ? '<b>' + flagged.length + '</b> of ' + rows.length + ' companies trip at least one check; the most common is <b>' + FLN[topK].toLowerCase() + '</b> (' + cnt[topK] + ').' : 'No company trips a check for this filter.';
+    PK.svgBars($('fl-bars'), Object.keys(FLN).map(function (k) { return { label: FLN[k], value: cnt[k], key: k, tip: cnt[k] + ' flagged of ' + ran[k] + ' checked' }; }),
+      { fmt: function (v, it) { return v + ' / ' + ran[it.key]; }, labelW: 170, onClick: function (it) { only = only === it.key ? '' : it.key; draw(); } });
+    var data = flagged.filter(function (r) { return !only || r.fl.some(function (f) { return f[0] === only; }); }).map(function (r) {
+      return { s: r.s, n: r.n, sec: r.sec, mc: r.mc, l: r.l, py: r.py, nf: r.fl.length, fl: r.fl.map(function (f) { return f[1]; }).join(' | '), kinds: r.fl.map(function (f) { return f[0]; }), x: r.x }; });
+    var cols = [{ key: 'n', label: 'Company', align: 'l', fmt: function (v, r) { return nameCell(r.s, v); }, sortVal: function (r) { return r.n; } },
+      { key: 'nf', label: 'Flags', num: true }, { key: 'fl', label: 'What tripped', align: 'l', fmt: function (v, r) { return r.kinds.map(function (k) { return '<span class="flagc">' + FLN[k] + '</span>'; }).join('') + '<span class="sub" style="white-space:normal;max-width:520px;display:block">' + esc(v) + '</span>'; } },
+      { key: 'l', label: 'Label', fmt: function (v) { return labHtml(v); } }, { key: 'py', label: 'PAT YoY', num: true, fmt: function (v) { return pct(v, 0); }, cls: function (v) { return cls(v); } },
+      { key: 'mc', label: 'Mcap ₹ Cr', num: true, fmt: function (v) { return fmtN(v); } }, { key: 'sec', label: 'Sector', align: 'l' },
+      { key: 'x', label: 'Filing', csv: false, sortable: false, fmt: function (v) { return v ? '<a href="' + esc(v) + '" target="_blank" rel="noopener">XBRL ↗</a>' : '–'; } }];
+    if (tbl && tbl.update) tbl.update(data); else tbl = PK.table($('fl-table'), { columns: cols, rows: data, sortKey: 'nf', sortDir: 'desc', search: true, pageSize: 50, csvName: 'earnings_flags', tvExport: true, symbolKey: 's', capKey: 's', countLabel: 'companies', placeholder: 'Search company…' });
+    $('fl-src').textContent = 'Checks covered: ' + Object.keys(FLN).map(function (k) { return FLN[k] + ' ' + ran[k]; }).join(' · ') + (only ? ' · showing only ' + FLN[only] + ' (tap the bar again to clear)' : ' · tap a bar to filter') + '. Source: NSE XBRL results, balance sheet and cash flow.';
+  }
+  chips('fl-q', function (v) { which = v; draw(); });
+  redraw.flags = draw; draw();
+}
+
+/* ============================================================ PROFIT POOLS */
+var AXES = { pe: ['P/E (TTM)', function (r) { return r.pe; }], py: ['PAT YoY %', function (r) { return r.py; }], sy: ['Revenue YoY %', function (r) { return r.sy; }],
+  opm: ['Margin %', function (r) { return r.c ? r.c[4] : null; }], dm: ['Margin change bps', function (r) { return r.dm; }], pys: ['PAT surprise vs trend (pts)', function (r) { return r.pys; }], x0: ['Result-day move %', function (r) { return r.x0; }] };
+function buildPools() {
+  var tbl = null;
+  ['bb-x', 'bb-y'].forEach(function (id, j) { $(id).innerHTML = Object.keys(AXES).map(function (k) { return '<option value="' + k + '"' + ((j === 0 ? 'py' : 'pe') === k ? ' selected' : '') + '>' + AXES[k][0] + '</option>'; }).join(''); });
+  var secs = {}; ROWS.forEach(function (r) { if (r.sec) secs[r.sec] = 1; });
+  $('bb-sec').insertAdjacentHTML('beforeend', Object.keys(secs).sort().map(function (s) { return '<option>' + esc(s) + '</option>'; }).join(''));
+  function pools() {
+    var m = onv('pp-m'), lv = onv('pp-lv'), rows = ROWS.filter(function (r) { return capOK(r.s); });
+    var k = m === 'pat' ? 2 : 0, by = {};
+    rows.forEach(function (r) { var key = r[lv] || 'Unclassified'; var o = by[key] = by[key] || { name: key, n: 0, v: 0, c1: 0, c0: 0, ttm: 0, mc: 0, pt: 0, nt: 0 };
+      if (!r.c || !num(r.c[k])) return; o.n++; o.v += r.c[k]; o.mc += r.mc || 0;
+      if (r.y && num(r.y[k])) { o.c1 += r.c[k]; o.c0 += r.y[k]; }
+      var tt = m === 'pat' ? r.pt : r.st; if (num(tt)) { o.ttm += tt; o.nt++; } });
+    var arr = Object.keys(by).map(function (key) { var o = by[key]; o.gr = o.c0 > 0 ? (o.c1 / o.c0 - 1) * 100 : null; return o; }).filter(function (o) { return o.n; });
+    var tot = arr.reduce(function (a, o) { return a + Math.max(0, o.v); }, 0) || 1;
+    arr.forEach(function (o) { o.share = o.v / tot * 100; });
+    arr.sort(function (a, b) { return b.v - a.v; });
+    capNote($('pp-capnote'));
+    var top3 = arr.slice(0, 3).reduce(function (a, o) { return a + o.share; }, 0);
+    var fast = arr.filter(function (o) { return o.n >= 5 && num(o.gr) && o.share >= 1; }).sort(function (a, b) { return b.gr - a.gr; })[0];
+    $('pp-verdict').innerHTML = arr.length ? 'The top three industries hold <b>' + Math.round(top3) + '%</b> of the quarter\'s ' + (m === 'pat' ? 'profit' : 'revenue') + ' (' + arr.slice(0, 3).map(function (o) { return esc(o.name); }).join(', ') + ')' + (fast ? '; the fastest-growing sizeable pool is <b>' + esc(fast.name) + '</b> at ' + pct(fast.gr) + ' like-for-like.' : '.') : 'No reported results for this filter.';
+    PK.svgBars($('pp-bars'), arr.slice(0, 15).map(function (o) { return { label: o.name, value: Math.round(o.share * 10) / 10, tip: esc(o.name) + '<br>' + crs(o.v) + ' this quarter · ' + o.n + ' companies<br>LFL growth ' + pct(o.gr) }; }), { fmt: function (v) { return v.toFixed(1) + '%'; }, labelW: 170 });
+    var cols = [{ key: 'name', label: lv === 'sec' ? 'Sector' : 'Broad sector', align: 'l' }, { key: 'n', label: 'Companies', num: true },
+      { key: 'v', label: (m === 'pat' ? 'PAT' : 'Revenue') + ' this Q ₹ Cr', num: true, fmt: function (v) { return fmtN(Math.round(v)); } },
+      { key: 'share', label: 'Share', num: true, fmt: function (v) { return v.toFixed(1) + '%'; } },
+      { key: 'gr', label: 'LFL YoY', num: true, fmt: function (v) { return pct(v); }, cls: function (v) { return cls(v); } },
+      { key: 'ttm', label: 'TTM ₹ Cr', num: true, fmt: function (v) { return fmtN(Math.round(v)); } },
+      { key: 'mc', label: 'Mcap ₹ Cr', num: true, fmt: function (v) { return fmtN(Math.round(v)); } }];
+    if (tbl && tbl.destroy) tbl.destroy(); tbl = PK.table($('pp-table'), { columns: cols, rows: arr, sortKey: 'v', sortDir: 'desc', search: true, pageSize: 40, csvName: 'profit_pools', countLabel: 'industries' });
+  }
+  function bubbles() {
+    var el = $('bb-chart'), kx = $('bb-x').value, ky = $('bb-y').value, lv = onv('bb-lv'), sec = $('bb-sec').value, fx = AXES[kx][1], fy = AXES[ky][1];
+    var rows = ROWS.filter(function (r) { return capOK(r.s) && (!sec || r.sec === sec) && (r.mc || 0) >= minMcPools(); });
+    var pts;
+    if (lv === 'sec') {
+      var by = {}; rows.forEach(function (r) { (by[r.sec || 'Unclassified'] = by[r.sec || 'Unclassified'] || []).push(r); });
+      pts = Object.keys(by).filter(function (k) { return by[k].length >= 3; }).map(function (k) { var rr = by[k], mc = 0, pt = 0, p1 = 0, p0 = 0, s1 = 0, s0 = 0;
+        rr.forEach(function (r) { mc += r.mc || 0; if (num(r.pt)) pt += r.pt; if (r.c && r.y) { if (num(r.c[2]) && num(r.y[2])) { p1 += r.c[2]; p0 += r.y[2]; } if (num(r.c[0]) && num(r.y[0])) { s1 += r.c[0]; s0 += r.y[0]; } } });
+        var o = { pe: pt > 0 ? mc / pt : null, py: p0 > 0 ? (p1 / p0 - 1) * 100 : null, sy: s0 > 0 ? (s1 / s0 - 1) * 100 : null, opm: med(rr.map(function (r) { return r.c ? r.c[4] : null; })), dm: med(rr.map(function (r) { return r.dm; })), pys: med(rr.map(function (r) { return r.pys; })), x0: med(rr.map(function (r) { return r.x0; })) };
+        return { name: k, sub: rr.length + ' companies', x: o[kx], y: o[ky], mc: mc }; });
+    } else pts = rows.map(function (r) { return { name: r.n, s: r.s, sub: r.sec, x: fx(r), y: fy(r), mc: r.mc || 0 }; });
+    pts = pts.filter(function (p) { return num(p.x) && num(p.y) && p.mc > 0; });
+    if (pts.length < 3) { unavailable(el, 'Too few companies with both values for these axes.'); $('bb-verdict').textContent = ''; return; }
+    var q = function (a, p) { a = a.slice().sort(function (x, y) { return x - y; }); return a[Math.max(0, Math.min(a.length - 1, Math.round(p * (a.length - 1))))]; };
+    var xs = pts.map(function (p) { return p.x; }), ys = pts.map(function (p) { return p.y; });
+    var x0 = q(xs, .03), x1 = q(xs, .97), y0 = q(ys, .03), y1 = q(ys, .97); if (x1 === x0) x1 = x0 + 1; if (y1 === y0) y1 = y0 + 1;
+    var px = (x1 - x0) * .06, py2 = (y1 - y0) * .06; x0 -= px; x1 += px; y0 -= py2; y1 += py2;
+    var W = Math.max(300, el.clientWidth || 700), Hh = innerWidth < 760 ? 320 : 420, L = 46, R = 14, T = 12, B = 34;
+    var X = function (v) { return L + (W - L - R) * (Math.max(x0, Math.min(x1, v)) - x0) / (x1 - x0); }, Y = function (v) { return T + (Hh - T - B) * (1 - (Math.max(y0, Math.min(y1, v)) - y0) / (y1 - y0)); };
+    var mmax = Math.max.apply(null, pts.map(function (p) { return p.mc; })), rad = function (m) { return 3 + Math.sqrt(m / mmax) * (lv === 'sec' ? 26 : 20); };
+    var mx = med(xs), my = med(ys);
+    // verdict: correlation sign
+    var n = pts.length, sx = 0, sy = 0, sxx = 0, syy = 0, sxy = 0; pts.forEach(function (p) { var a = Math.max(x0, Math.min(x1, p.x)), b = Math.max(y0, Math.min(y1, p.y)); sx += a; sy += b; sxx += a * a; syy += b * b; sxy += a * b; });
+    var corr = (n * sxy - sx * sy) / Math.sqrt(Math.max(1e-9, (n * sxx - sx * sx) * (n * syy - sy * sy)));
+    $('bb-verdict').innerHTML = (Math.abs(corr) < .15 ? '<b>Little link</b> between ' + esc(AXES[kx][0]) + ' and ' :corr > 0 ? '<b>Higher ' + esc(AXES[kx][0]) + ' goes with higher</b> ' : '<b>Higher ' + esc(AXES[kx][0]) + ' goes with lower</b> ') + esc(AXES[ky][0]) + ' across ' + n + (lv === 'sec' ? ' sectors' : ' companies') + ' (correlation ' + corr.toFixed(2) + ').';
+    var ticks = function (a, b) { var s = Math.pow(10, Math.floor(Math.log10((b - a) / 4))); [1, 2, 5, 10].some(function (k) { if ((b - a) / (s * k) <= 6) { s *= k; return true; } }); var o = []; for (var v = Math.ceil(a / s) * s; v <= b; v += s) o.push(v); return o; };
+    var srt = pts.slice().sort(function (a, b) { return b.mc - a.mc; });
+    el.innerHTML = '<svg class="svgc" viewBox="0 0 ' + W + ' ' + Hh + '" height="' + Hh + '">' +
+      ticks(y0, y1).map(function (t) { return '<line class="ax" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(t) + '" y2="' + Y(t) + '"/><text x="' + (L - 6) + '" y="' + (Y(t) + 4) + '" text-anchor="end">' + fmtN(t) + '</text>'; }).join('') +
+      ticks(x0, x1).map(function (t) { return '<text x="' + X(t) + '" y="' + (Hh - 18) + '" text-anchor="middle">' + fmtN(t) + '</text>'; }).join('') +
+      '<line class="zero" x1="' + X(mx) + '" x2="' + X(mx) + '" y1="' + T + '" y2="' + (Hh - B) + '"/><line class="zero" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(my) + '" y2="' + Y(my) + '"/>' +
+      '<text x="' + (W - R) + '" y="' + (Hh - 4) + '" text-anchor="end">' + esc(AXES[kx][0]) + ' →</text><text x="' + (L + 4) + '" y="' + (T + 10) + '">↑ ' + esc(AXES[ky][0]) + '</text>' +
+      srt.map(function (p, i) { var c = p.y >= my ? (p.x >= mx ? '#2FE3B5' : '#5AA9F0') : (p.x >= mx ? '#E0A64A' : '#A78BFA');
+        return '<circle class="b" data-i="' + i + '" cx="' + X(p.x).toFixed(1) + '" cy="' + Y(p.y).toFixed(1) + '" r="' + rad(p.mc).toFixed(1) + '" fill="' + c + '" fill-opacity=".38" stroke="' + c + '" stroke-width="1"><animate attributeName="r" from="0" to="' + rad(p.mc).toFixed(1) + '" dur=".6s" fill="freeze"/></circle>'; }).join('') +
+      (lv === 'sec' ? srt.slice(0, 8).map(function (p) { return '<text x="' + X(p.x) + '" y="' + (Y(p.y) + 4) + '" text-anchor="middle" style="fill:#EEF5F2;font-size:10.5px;pointer-events:none">' + esc(p.name.slice(0, 16)) + '</text>'; }).join('') : '') + '</svg>';
+    el.querySelector('svg').addEventListener('click', function (e) { var c = e.target.closest('circle.b'); if (!c) return; var p = srt[+c.dataset.i]; PK.haptic('tap');
+      tipAt(e, '<b>' + esc(p.name) + '</b>' + (p.s ? ' · ' + esc(p.s) : '') + '<br>' + esc(p.sub || '') + '<br>' + esc(AXES[kx][0]) + ': ' + fmtN(p.x, 1) + '<br>' + esc(AXES[ky][0]) + ': ' + fmtN(p.y, 1) + '<br>Mcap ' + crs(p.mc)); });
+  }
+  function minMcPools() { return built.score ? minMc() : 1000; }
+  function draw() { pools(); bubbles(); }
+  chips('pp-m', pools); chips('pp-lv', pools); chips('bb-lv', bubbles);
+  ['bb-x', 'bb-y', 'bb-sec'].forEach(function (id) { $(id).addEventListener('change', bubbles); });
+  var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (!$('bb-chart').closest('[hidden]')) bubbles(); }, 200); });
+  redraw.pools = draw; draw();
+}
+})();
+</script>
+</body>
+</html>

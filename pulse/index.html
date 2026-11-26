@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Market Pulse · Pratham Gupta</title>
+<meta name="description" content="The whole Indian market on one page: breadth, market status with its history, FII/DII and category flows, index valuations against their own history, and today's cleanest movers. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<meta name="theme-color" content="#030806">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kit.css?v=202611281536">
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sage:#8EC3A9;
+--sky:#5AA9F0;--lav:#A78BFA;--slate:#8A9690;--teal:#3E6B5E;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--text);font:14px/1.5 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+header{display:flex;align-items:center;gap:16px;padding:10px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:8px 13px;transition:all .2s;white-space:nowrap;min-height:40px;display:inline-flex;align-items:center}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover;flex:none}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.capf:empty{display:none}.capf{margin-left:auto}.capf+nav.tb{margin-left:0}
+nav.tb{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+nav.tb::-webkit-scrollbar{display:none}
+nav.tb button{border:0;border-radius:999px;background:transparent;color:var(--muted);padding:8px 15px;min-height:40px;font:600 13px var(--font);cursor:pointer;white-space:nowrap;transition:all .18s}
+nav.tb button:hover{color:var(--text)}
+nav.tb button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+main{padding:22px 24px 48px;max-width:1360px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.6vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 20px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s cubic-bezier(.2,.8,.2,1) both;min-width:0}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.pk .l{font-size:11.5px;color:var(--muted)}
+.pk .v{font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .s{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.up{color:var(--up)}.dn{color:var(--dn)}.am{color:var(--amber)}.mut{color:var(--muted)}.dimc{color:var(--dim)}
+.sec{margin-top:22px}
+.sec>h2{font-size:18px;letter-spacing:-.01em;margin:0 0 4px}
+.sec>.sub{color:var(--muted);font-size:13px;margin:0 0 12px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0;position:relative;
+ animation:rise .55s cubic-bezier(.2,.8,.2,1) both;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s}
+.box.hov:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35)}
+.box h3{margin:0 0 2px;font-size:15px;font-weight:650;letter-spacing:-.1px;line-height:1.35}
+.box .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.verdict{font-size:15px;font-weight:650;line-height:1.35;margin:0 0 8px}
+.verdict b{color:var(--acc)}
+.chart{height:300px;margin-top:6px;touch-action:pan-y}
+.chart.sm{height:220px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;min-height:40px;font:500 13px var(--font);cursor:pointer;transition:all .18s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+.chip.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:650;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+details.how{margin-top:10px;border-top:1px dashed var(--line2);padding-top:8px;color:var(--muted);font-size:12.5px}
+details.how summary{cursor:pointer;color:var(--acc2);font-weight:600;min-height:40px;display:flex;align-items:center;list-style:none}
+details.how summary::before{content:"+";display:inline-block;width:16px;font-weight:700}
+details.how[open] summary::before{content:"−"}
+details.how p{margin:6px 0}
+.src{color:var(--dim);font-size:11.5px;margin-top:8px}
+.icard{cursor:pointer}
+.icard .nm{font-size:12.5px;color:var(--muted)}
+.icard .px{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.icard .rets{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px;font-size:12px}
+@media (max-width:560px){.icard .rets{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:6px}}
+.icard .rets span{display:block;color:var(--dim);font-size:10.5px}
+.icard svg{display:block;width:100%;margin-top:6px}
+.mood{font-size:16px;font-weight:600;line-height:1.45}
+.state{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.dot{width:14px;height:14px;border-radius:50%;flex:none;box-shadow:0 0 0 6px rgba(47,227,181,.12)}
+.st-up{background:var(--acc)}.st-press{background:var(--amber);box-shadow:0 0 0 6px rgba(224,166,74,.14)}.st-rally{background:var(--sky);box-shadow:0 0 0 6px rgba(90,169,240,.14)}.st-corr{background:var(--dn);box-shadow:0 0 0 6px rgba(255,92,108,.14)}
+.tag{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line2);white-space:nowrap}
+.tag.up{color:var(--acc);border-color:rgba(47,227,181,.4)}.tag.press{color:var(--amber);border-color:rgba(224,166,74,.45)}.tag.rally{color:var(--sky);border-color:rgba(90,169,240,.45)}.tag.corr{color:var(--dn);border-color:rgba(255,92,108,.45)}
+.big{font-size:clamp(24px,3vw,32px);font-weight:750;letter-spacing:-.02em}
+table.mini{width:100%;border-collapse:collapse;font-size:13px}
+table.mini th,table.mini td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.mini th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+table.mini th:first-child,table.mini td:first-child{text-align:left}
+table.mini tbody tr:hover{background:rgba(47,227,181,.06)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.gauge{display:flex;justify-content:center}
+.gauge svg{width:100%;max-width:340px;height:auto}
+.legend2{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:4px 0}
+.legend2 i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.skel{height:220px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+.skel.s{height:110px}
+.unavail{border:1px dashed var(--line2);border-radius:12px;padding:14px;color:var(--muted);font-size:13px;background:rgba(10,23,19,.5)}
+.sym b{font-weight:650}.sym .nm2{display:block;color:var(--dim);font-size:11.5px;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.stg{display:inline-block;min-width:24px;text-align:center;border-radius:6px;padding:1px 5px;font-size:11.5px;font-weight:700}
+.stg.s1{background:rgba(138,150,144,.18);color:#C9D6D0}.stg.s2{background:rgba(47,227,181,.16);color:var(--acc)}.stg.s3{background:rgba(224,166,74,.16);color:var(--amber)}.stg.s4{background:rgba(255,92,108,.16);color:var(--dn)}
+.ddl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ddl span{font-size:12px;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;color:var(--muted)}
+.ddl span b{color:var(--text)}
+.bars{display:grid;gap:6px}
+.hb{display:grid;grid-template-columns:120px 1fr 64px;gap:8px;align-items:center;font-size:12.5px}
+.hb .t{background:rgba(47,227,181,.06);height:14px;border-radius:999px;overflow:hidden;position:relative}
+.hb .f{height:100%;border-radius:999px;background:linear-gradient(90deg,#10B981,#2FE3B5)}
+.hb .f.neg{background:linear-gradient(90deg,#C93A4B,#FF5C6C)}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+[data-panel][hidden]{display:none!important}
+.stagger>*{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.g5{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:8px 16px;gap:8px 10px}.back span{display:none}.back{padding:0 13px}.capf{margin-left:auto;flex:none}.me{flex:1 1 0;min-width:0}.me>div{min-width:0}.me .h{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.me img{width:32px;height:32px}nav.tb{margin-left:0;width:100%}nav.tb button{flex:1 0 auto;padding:8px 12px}
+ main{padding:16px 16px 40px}.g2,.g3{grid-template-columns:minmax(0,1fr)}.g5{grid-template-columns:repeat(2,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .pk:last-child{grid-column:span 2}.pk .v{font-size:21px}.chart{height:260px}.hb{grid-template-columns:92px 1fr 58px}
+ .box{padding:14px}.verdict{font-size:14px}}
+@media (pointer:coarse),(max-width:760px){.pk-chip,.pk-btn,.pk-capbtn{min-height:40px;padding-top:8px;padding-bottom:8px}}
+@media (max-width:420px){.back{padding:6px 10px;font-size:12px}.me .t{font-size:15px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="https://prathamgupta9004-lab.github.io/market-dashboards/" aria-label="All dashboards">←<span>&nbsp;All dashboards</span></a>
+  <div class="me"><img src="https://prathamgupta9004-lab.github.io/market-dashboards/assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Market Pulse</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div id="capf" class="capf"></div>
+  <nav class="tb" id="tabs" aria-label="Sections">
+    <button data-tab="today" class="on">Today</button><button data-tab="breadth">Breadth</button><button data-tab="status">Market Status</button><button data-tab="flows">Flows</button><button data-tab="valuation">Valuation</button>
+  </nav>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">NSE · end of day · whole market</div>
+  <h1>Is the market healthy, <em>right now?</em></h1>
+  <div class="asof" id="asof">Loading…</div></div>
+  <span class="live"><i></i>Refreshed every weekday evening</span>
+</div>
+<div class="kpis" id="kpis"><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div></div>
+
+<!-- ============================== TODAY -->
+<section data-panel="today" id="p-today">
+  <div class="grid g5 stagger" id="cards"><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div></div>
+  <div class="box sec" id="moodbox"><div class="k">Market mood</div><div class="mood" id="mood"></div></div>
+  <div class="box sec">
+    <div class="k">Movers</div>
+    <p class="verdict" id="mv-verdict"></p>
+    <div class="row"><span class="lbl">List</span><div class="chips" id="mv-list">
+      <button class="chip on" data-v="gain">Top gainers</button><button class="chip" data-v="lose">Top losers</button><button class="chip" data-v="hi">New 52W highs</button><button class="chip" data-v="lo">New 52W lows</button><button class="chip" data-v="vol">Volume shockers</button></div></div>
+    <div class="row"><span class="lbl">Min market cap</span><div class="chips" id="mv-mc">
+      <button class="chip" data-v="100">₹100 Cr</button><button class="chip on" data-v="500">₹500 Cr</button><button class="chip" data-v="1000">₹1,000 Cr</button><button class="chip" data-v="5000">₹5,000 Cr</button><button class="chip" data-v="20000">₹20,000 Cr</button></div>
+      <span class="lbl" style="margin-left:6px">Min 20D median turnover</span><div class="chips" id="mv-tv">
+      <button class="chip" data-v="0.5">₹0.5 Cr</button><button class="chip on" data-v="2">₹2 Cr</button><button class="chip" data-v="10">₹10 Cr</button></div></div>
+    <div id="mv-table"></div>
+    <details class="how"><summary>How to read this</summary>
+      <p><b>Gainers / losers</b>: today's % change (adjusted for splits and bonuses). <b>52-week high / low</b>: today's close is at or beyond every close of the previous year (closing prices only, at least 200 sessions of history). <b>Volume shockers</b>: today's traded value is at least 3× the median of the previous 20 sessions.</p>
+      <p>Default quality filter: market cap ≥ ₹500 Cr, 20-day median turnover ≥ ₹2 Cr, mainboard (EQ/BE) only, ETFs excluded. <b>Stage</b> (Weinstein 1–4) and <b>RS</b> (1–99 relative-strength rating) come from the Stage 2 scanner; badges flag NSE surveillance lists, F&amp;O ban, deals and upcoming results.</p>
+    </details>
+    <div class="src" id="src-today"></div>
+  </div>
+</section>
+
+<!-- ============================== BREADTH -->
+<section data-panel="breadth" id="p-breadth" hidden>
+  <div class="row"><span class="lbl">Universe</span><div class="chips" id="b-univ"></div><span class="dimc" style="font-size:12px">Whole market: the header market-cap filter applies to stock lists only.</span></div>
+  <div class="grid g2">
+    <div class="box"><div class="k">Trend participation</div><p class="verdict" id="v-ma"></p>
+      <div class="chips" id="ma-pick"><button class="chip on" data-v="ma10">10D</button><button class="chip on" data-v="ma20">20D</button><button class="chip on" data-v="ma50">50D</button><button class="chip on" data-v="ma200">200D</button></div>
+      <div class="chart" id="c-ma"></div><div id="r-ma"></div>
+      <details class="how"><summary>How to read this</summary><p>Share of stocks closing above their own 10, 20, 50 and 200-day moving averages. Above 70% on the 50-day is a broad, strong market; below 30% is washed out. Rising lines from low levels are what new uptrends usually look like.</p></details>
+      <div class="src">Source: NSE daily bhavcopy, adjusted closes · <span class="asofx"></span></div></div>
+    <div class="box"><div class="k">Advance / decline</div><p class="verdict" id="v-ad"></p>
+      <div class="chart" id="c-ad"></div><div id="r-ad"></div>
+      <details class="how"><summary>How to read this</summary><p>The line adds up (advancers − decliners) every day since March 2021; the bars show each day's net. A rising line means most stocks are participating. Index highs with a falling A/D line mean a narrow rally led by a few large stocks.</p></details>
+      <div class="src">Source: NSE daily bhavcopy · <span class="asofx"></span></div></div>
+    <div class="box"><div class="k">New 52-week highs minus lows</div><p class="verdict" id="v-hl"></p>
+      <div class="chart" id="c-hl"></div><div id="r-hl"></div>
+      <details class="how"><summary>How to read this</summary><p>Each bar is the number of stocks closing at a new 52-week high minus those at a new 52-week low (closing prices). Persistent positive bars confirm an uptrend; expanding new lows warn of broad weakness even if the index holds up.</p></details>
+      <div class="src">Source: NSE daily bhavcopy, adjusted closes · <span class="asofx"></span></div></div>
+    <div class="box"><div class="k">Momentum thrust (±4% days)</div><p class="verdict" id="v-th"></p>
+      <div class="chart" id="c-th"></div><div id="r-th"></div>
+      <details class="how"><summary>How to read this</summary><p>Number of stocks up at least 4% (mint) and down at least 4% (red) each day. Sudden bursts of 4% gainers after a decline (a "thrust") often mark the start of new rallies; clusters of 4% losers show forced selling.</p></details>
+      <div class="src">Source: NSE daily bhavcopy · <span class="asofx"></span></div></div>
+    <div class="box"><div class="k">Return distribution</div><p class="verdict" id="v-dist"></p>
+      <div class="chips" id="dist-pick"><button class="chip on" data-v="1D">1 day</button><button class="chip" data-v="1W">1 week</button><button class="chip" data-v="1M">1 month</button></div>
+      <div id="c-dist" style="margin-top:8px"></div>
+      <details class="how"><summary>How to read this</summary><p>How many stocks in the universe fell into each return bucket over the chosen period. A healthy market has its bulk on the right; a lopsided left side means selling is broad, not just in a few names.</p></details>
+      <div class="src">Source: NSE daily bhavcopy · <span class="asofx"></span></div></div>
+    <div class="box"><div class="k">Equal weight vs cap weight</div><p class="verdict" id="v-ew"></p>
+      <div class="chart" id="c-ew"></div><div id="r-ew"></div>
+      <details class="how"><summary>How to read this</summary><p>Nifty 50 Equal Weight divided by Nifty 50 (rebased to 100 in March 2021). Rising = the average Nifty stock is beating the heavyweights (broad rally); falling = a few large stocks are carrying the index.</p></details>
+      <div class="src">Source: NSE index closes (NIFTY50 EQL Wgt, Nifty 50) · <span class="asofx"></span></div></div>
+  </div>
+  <p class="src">Index universes use current NSE constituents applied back in time (survivorship bias: stocks that left the index are not counted). "All NSE" covers every mainboard stock traded in the last 10 sessions, ETFs excluded.</p>
+</section>
+
+<!-- ============================== STATUS -->
+<section data-panel="status" id="p-status" hidden>
+  <div class="grid g2">
+    <div class="box" id="st-main"><div class="skel"></div></div>
+    <div class="box"><div class="k">Distribution days · Nifty 50</div><p class="verdict" id="v-dd"></p><div class="ddl" id="ddl"></div>
+      <div class="k" style="margin-top:14px">Status by index</div>
+      <div class="scroll"><table class="mini" id="st-idx"></table></div>
+    </div>
+  </div>
+  <div class="box sec"><div class="k">Nifty 50 coloured by market status</div><p class="verdict" id="v-sth"></p>
+    <div class="legend2"><span><i style="background:var(--acc)"></i>Confirmed uptrend</span><span><i style="background:var(--amber)"></i>Under pressure</span><span><i style="background:var(--sky)"></i>Rally attempt</span><span><i style="background:var(--dn)"></i>Correction</span></div>
+    <div class="chart" id="c-sth"></div><div id="r-sth"></div></div>
+  <div class="grid g2 sec">
+    <div class="box"><div class="k">The rules</div>
+      <div class="mut" style="font-size:13px">
+      <p><b class="up">Distribution day</b>: Nifty closes down 0.2% or more on higher turnover than the previous session (turnover = traded value of its constituents). It expires after 25 sessions, or once the index closes 5% above that day's close.</p>
+      <p><b class="am">Downgrade to Under Pressure</b>: 5 or more live distribution days while in a confirmed uptrend.</p>
+      <p><b class="dn">Downgrade to Correction</b>: 7+ distribution days, or the index falls 10% from its peak, or it is below its 50-day average and 7% off the peak with 4+ distribution days, or it undercuts the low that the last rally started from.</p>
+      <p><b style="color:var(--sky)">Rally Attempt</b>: the first up day after a new correction low. It resets if the index makes a lower low.</p>
+      <p><b class="up">Upgrade to Confirmed Uptrend (follow-through day)</b>: on day 4 or later of a rally attempt, the index gains 1.25%+ on higher turnover. Distribution days are cleared. From Under Pressure, the trend is re-confirmed once distribution days fall to 3 or fewer and the index is back above its 50-day average.</p>
+      <p class="dimc">Sessions with turnover below half the 20-day median (special / Muhurat sessions) are skipped. These are mechanical O'Neil-style rules, the same ones the Stage 2 scanner uses.</p></div></div>
+    <div class="box"><div class="k">What happened next</div><p class="verdict" id="v-avg"></p>
+      <div class="scroll"><table class="mini" id="st-avg"></table></div>
+      <details class="how"><summary>How to read this</summary><p>Average Nifty 50 return 1 month (21 sessions) and 3 months (63 sessions) after the status flipped into each state, since 2021. "Up after 3M" is the share of those changes where Nifty was higher three months later. Small samples: treat as context, not a forecast.</p></details></div>
+  </div>
+  <div class="box sec"><div class="k">Every status change since 2021 · Nifty 50</div>
+    <div class="row"><div class="chips" id="ch-filter"><button class="chip on" data-v="all">All changes</button><button class="chip" data-v="up">Into uptrend</button><button class="chip" data-v="corr">Into correction</button><button class="chip" data-v="press">Under pressure</button></div></div>
+    <div id="ch-table"></div>
+    <div class="src">Computed by running the state machine over Nifty 50 closes from the NSE daily files (Jan 2021 onward; first 60 sessions are warm-up) · <span class="asofx"></span></div>
+  </div>
+</section>
+
+<!-- ============================== FLOWS -->
+<section data-panel="flows" id="p-flows" hidden>
+  <div class="grid g2">
+    <div class="box"><div class="k">FII / DII cash · provisional</div><p class="verdict" id="v-prov"></p>
+      <div class="scroll"><table class="mini" id="prov-roll"></table></div>
+      <div class="chips" style="margin-top:10px" id="prov-pick"><button class="chip on" data-v="fii">FII / FPI</button><button class="chip" data-v="dii">DII</button></div>
+      <div id="c-prov" style="margin-top:8px"></div>
+      <details class="how"><summary>How to read this</summary><p>NSE's provisional end-of-day figures for the cash market (NSE + BSE + MSEI), ₹ Cr. NSE publishes only the latest day, so this history grows by one day each evening. Rolling sums show the recent direction; the streak counts consecutive net-buy or net-sell days.</p></details>
+      <div class="src" id="src-prov"></div></div>
+    <div class="box"><div class="k">Who bought · NSE category-wise turnover</div><p class="verdict" id="v-who"></p>
+      <div class="chips" id="who-pick"><button class="chip" data-v="1D">1 day</button><button class="chip" data-v="1W">1 week</button><button class="chip on" data-v="1M">1 month</button><button class="chip" data-v="3M">3 months</button><button class="chip" data-v="1Y">1 year</button></div>
+      <div id="c-who" style="margin-top:10px"></div>
+      <details class="how"><summary>How to read this</summary><p>Net buying (buy − sell value, ₹ Cr) on NSE's cash market by client category. FPI figures are as reported by NSDL; "Others" covers corporates, trusts, NPS, DFIs, NBFCs and proprietary trades (NSE notes it can also include some FPI flows, so it may overlap the FPI bar). NSE publishes this with a lag of a day or more.</p></details>
+      <div class="src" id="src-who"></div></div>
+  </div>
+  <div class="box sec"><div class="k">Cumulative FPI net buying vs Nifty 50</div><p class="verdict" id="v-cum"></p>
+    <div class="legend2"><span><i style="background:var(--acc)"></i>Cumulative FPI net, ₹ Cr (left)</span><span><i style="background:var(--amber)"></i>Nifty 50 (right)</span></div>
+    <div class="chart" id="c-cum"></div><div id="r-cum"></div>
+    <details class="how"><summary>How to read this</summary><p>Running total of daily FPI net buying in the NSE category file since the start of 2023, against Nifty 50. Falling FPI line with a rising Nifty = domestic money is absorbing foreign selling.</p></details>
+    <div class="src" id="src-cum"></div></div>
+  <div class="grid g2 sec">
+    <div class="box"><div class="k">Monthly net by category</div><p class="verdict" id="v-mon"></p>
+      <div class="chips" id="mon-pick"></div>
+      <div id="c-mon" style="margin-top:8px"></div>
+      <div class="src">Source: NSE category-wise turnover (cat_turnover files), summed by month</div></div>
+    <div class="box"><div class="k">FPI net equity investment · NSDL monthly</div><p class="verdict" id="v-nsdl"></p>
+      <div id="c-nsdl"></div>
+      <div class="src">Source: NSDL FPI monitor (via the Macro Lens data store), all markets incl. primary</div></div>
+  </div>
+  <div class="box sec" id="nsdl-sec-box" hidden><div class="k">FPI sector allocation · NSDL fortnightly</div><p class="verdict" id="v-nsec"></p><div class="chips" id="nsec-pick"></div><div id="c-nsec" style="margin-top:8px"></div>
+    <details class="how"><summary>How to read this</summary><p>Net FPI investment in listed equity by sector (₹ Cr) from NSDL's fortnightly report, which includes primary-market (IPO) money. It shows where foreign money is rotating, not just how much is moving.</p></details>
+    <div class="src">Source: NSDL fortnightly sector-wise FPI investment</div></div>
+</section>
+
+<!-- ============================== VALUATION -->
+<section data-panel="valuation" id="p-valuation" hidden>
+  <div id="val-unavail"></div>
+  <div class="grid g2" id="val-top">
+    <div class="box"><div class="k">Market temperature</div><p class="verdict" id="v-temp"></p><div class="gauge" id="gauge"></div>
+      <details class="how"><summary>How to read this</summary><p>For each broad index: the percentile of today's P/E and P/B within its own history since 2005 (or launch), and the inverse percentile of its dividend yield, averaged. The temperature averages Nifty 50, Nifty 500, Midcap 150, Smallcap 250 and Microcap 250. 0 = cheapest ever, 100 = dearest ever; 50 = typical.</p></details></div>
+    <div class="box"><div class="k">Broad indices vs own history</div><div class="scroll"><table class="mini" id="val-tbl"></table></div>
+      <div class="src" id="src-val"></div></div>
+  </div>
+  <div class="box sec"><div class="k">Valuation history with 20th / 80th percentile bands</div><p class="verdict" id="v-vh"></p>
+    <div class="row"><div class="chips" id="vh-idx"></div></div>
+    <div class="row"><div class="chips" id="vh-m"><button class="chip on" data-v="pe">P/E</button><button class="chip" data-v="pb">P/B</button><button class="chip" data-v="dy">Dividend yield</button></div></div>
+    <div class="chart" id="c-vh"></div><div id="r-vh"></div>
+    <details class="how"><summary>How to read this</summary><p>Weekly trailing P/E (or P/B, dividend yield) published by NSE Indices. The dashed lines are the long-run median and the 20th / 80th percentiles of the index's own history. Note: from April 2021 NSE moved index P/E to consolidated earnings. Before that, standalone P/Es of Midcap 150 and Smallcap 250 were distorted by loss-making members (prints above 100, even in the thousands), so their P/E history here starts in April 2021; their P/B and dividend-yield history is used in full.</p></details></div>
+  <div class="grid g2 sec">
+    <div class="box"><div class="k">Small and mid caps vs Nifty 50 (P/E ratio)</div><p class="verdict" id="v-rel"></p>
+      <div class="chips" id="rel-pick"></div>
+      <div class="chart sm" id="c-rel"></div>
+      <details class="how"><summary>How to read this</summary><p>Index P/E divided by Nifty 50 P/E. Above the long-run median = the smaller index trades at a richer premium than usual.</p></details></div>
+    <div class="box"><div class="k">Equity earnings yield minus 10-year G-sec</div><p class="verdict" id="v-ey"></p>
+      <div class="chart sm" id="c-ey"></div><div id="ey-note"></div>
+      <details class="how"><summary>How to read this</summary><p>Nifty 50 earnings yield (100 ÷ P/E) minus the India 10-year government bond yield, month-end. More negative than usual = equities offer less earnings per rupee relative to risk-free bonds than they typically have.</p></details></div>
+  </div>
+  <div class="box sec"><div class="k">Sector indices · cheapest and dearest vs own history</div><p class="verdict" id="v-sec"></p>
+    <div id="c-sec"></div>
+    <details class="how"><summary>How to read this</summary><p>Each bar is where today's sector-index P/E sits within that index's own history (percentile; 0 = cheapest ever). Sectors have very different "normal" P/Es, so each is only compared with itself.</p></details>
+    <div class="src" id="src-sec"></div></div>
+</section>
+
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span>Source: NSE end-of-day prices, NSE FII/DII provisional and category-wise turnover, NSE Indices valuation data, NSDL, RBI/FRED 10Y yield · Stage &amp; RS from the Stage 2 scanner</span></footer>
+</main>
+
+<script src="../assets/badges.js?v=202611281536"></script>
+<script src="../assets/universe.js?v=202611281536"></script>
+<script src="../assets/kit.js?v=202611281536"></script>
+<script src="pulse.js?v=202611281536"></script>
+<script>
+(function () {
+'use strict';
+/* ------------------------------------------------------------ PK fallbacks (page works without the kit) */
+var PK = window.PK = window.PK || {};
+var LWC_URL = PK.LWC_URL || 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js';
+function esc(s) { return s == null ? '' : String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function num(v) { return typeof v === 'number' && isFinite(v); }
+var RM = false; try { RM = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+PK.haptic = PK.haptic || function () {};
+PK.press = PK.press || function () {};
+PK.badges = PK.badges || function () { return ''; };
+PK.countUp = PK.countUp || function (el, v, o) { el.textContent = (o && o.fmt) ? o.fmt(v) : v; };
+PK.tip = PK.tip || { show: function () {}, hide: function () {} };
+PK.loadLWC = PK.loadLWC || function () {
+  if (window.LightweightCharts) return Promise.resolve(window.LightweightCharts);
+  return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = LWC_URL; s.onload = function () { res(window.LightweightCharts); }; s.onerror = rej; document.head.appendChild(s); });
+};
+PK.chart = PK.chart || function (el, opts) {
+  return PK.loadLWC().then(function (L) {
+    var c = L.createChart(el, { autoSize: true, layout: { background: { type: 'solid', color: 'transparent' }, textColor: 'rgba(238,245,242,.62)', fontFamily: 'Inter' },
+      grid: { vertLines: { color: 'rgba(47,227,181,.05)' }, horzLines: { color: 'rgba(47,227,181,.05)' } }, rightPriceScale: { borderColor: '#16302A' }, leftPriceScale: { borderColor: '#16302A' }, timeScale: { borderColor: '#16302A' } });
+    c.__pkSeries = []; return c;
+  });
+};
+PK.lineSeries = PK.lineSeries || function (chart, data, o) {
+  o = o || {}; var L = window.LightweightCharts;
+  var s = chart.addSeries(L.LineSeries, { color: o.color || '#2FE3B5', lineWidth: o.width || 2, priceLineVisible: false, lineStyle: o.dashed ? 2 : 0, priceScaleId: o.priceScaleId }, o.pane || 0);
+  s.setData(data); chart.__pkSeries.push(s); return s;
+};
+PK.histSeries = PK.histSeries || function (chart, data, o) {
+  o = o || {}; var L = window.LightweightCharts;
+  var s = chart.addSeries(L.HistogramSeries, { priceLineVisible: false, priceScaleId: o.priceScaleId }, o.pane || 0);
+  s.setData(data.map(function (d) { return d.color ? d : { time: d.time, value: d.value, color: d.value >= 0 ? 'rgba(47,227,181,.75)' : 'rgba(255,92,108,.75)' }; }));
+  chart.__pkSeries.push(s); return s;
+};
+PK.legend = PK.legend || function () { return {}; };
+PK.rangeChips = PK.rangeChips || function () { return { set: function () {} }; };
+PK.spark = PK.spark || function () { return ''; };
+PK.svgBars = PK.svgBars || function (el, items, o) {
+  o = o || {}; var mx = Math.max.apply(null, items.map(function (i) { return Math.abs(+i.value || 0); }).concat([1]));
+  el.innerHTML = '<div class="bars">' + items.map(function (it) { var v = +it.value || 0;
+    return '<div class="hb"><span class="mut">' + esc(it.label) + '</span><div class="t"><div class="f' + (v < 0 ? ' neg' : '') + '" style="width:' + (Math.abs(v) / mx * 100) + '%"></div></div><b>' + esc(o.fmt ? o.fmt(v, it) : v) + '</b></div>'; }).join('') + '</div>';
+  return { update: function (n) { PK.svgBars(el, n, o); } };
+};
+PK.table = PK.table || function (el, cfg) {
+  var st = { rows: cfg.rows || [], key: cfg.sortKey, dir: cfg.sortDir === 'asc' ? 1 : -1 };
+  function paint() {
+    var v = st.rows.slice(); if (st.key) v.sort(function (a, b) { var x = a[st.key], y = b[st.key]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * st.dir; });
+    el.innerHTML = '<div class="scroll"><table class="mini"><thead><tr>' + cfg.columns.map(function (c) { return '<th>' + (c.label || c.key) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      v.slice(0, 100).map(function (r) { return '<tr>' + cfg.columns.map(function (c) { var x = r[c.key]; return '<td>' + (c.fmt ? c.fmt(x, r) : esc(x == null ? '–' : x)) + '</td>'; }).join('') + '</tr>'; }).join('') +
+      '</tbody></table></div>';
+  }
+  paint();
+  return { update: function (r) { st.rows = r; paint(); }, sort: function (k, d) { st.key = k; st.dir = d === 'asc' ? 1 : -1; paint(); } };
+};
+PK.tabs = PK.tabs || function (el, o) {
+  var btns = [].slice.call(el.querySelectorAll('[data-tab]'));
+  function set(n, user) { btns.forEach(function (b) { b.classList.toggle('on', b.dataset.tab === n); });
+    [].forEach.call(document.querySelectorAll('[data-panel]'), function (p) { p.hidden = p.dataset.panel !== n; });
+    try { localStorage.setItem(o.storeKey, n); } catch (e) {} if (o.onChange) o.onChange(n); }
+  el.addEventListener('click', function (e) { var b = e.target.closest('[data-tab]'); if (b) set(b.dataset.tab, true); });
+  var start = (/tab=(\w+)/.exec(location.hash) || [])[1]; try { start = start || localStorage.getItem(o.storeKey); } catch (e) {}
+  set(btns.some(function (b) { return b.dataset.tab === start; }) ? start : btns[0].dataset.tab);
+  return { set: set };
+};
+
+/* ------------------------------------------------------------ formatting */
+var fmtN = function (v, d) { return num(v) ? v.toLocaleString('en-IN', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }) : '–'; };
+var pct = function (v, d) { return num(v) ? (v > 0 ? '+' : '') + v.toFixed(d == null ? 1 : d) + '%' : '–'; };
+var cls = function (v) { return num(v) ? (v > 0 ? 'up' : v < 0 ? 'dn' : '') : ''; };
+var cr = function (v) { return num(v) ? (v < 0 ? '−' : v > 0 ? '+' : '') + '₹' + fmtN(Math.abs(Math.round(v))) + ' Cr' : '–'; };
+var crs = function (v) { if (!num(v)) return '–'; var a = Math.abs(v), s = v < 0 ? '−' : '+'; return s + (a >= 1e5 ? '₹' + (a / 1e5).toFixed(2) + ' L Cr' : a >= 1000 ? '₹' + (a / 1000).toFixed(1) + 'k Cr' : '₹' + Math.round(a) + ' Cr'); };
+var D = function (s) { if (!s) return '–'; var d = new Date(s + 'T00:00:00'); return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); };
+var Ds = function (s) { if (!s) return '–'; var d = new Date(s + 'T00:00:00'); return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); };
+var STN = { up: 'Confirmed Uptrend', press: 'Uptrend Under Pressure', rally: 'Rally Attempt', corr: 'Market in Correction' };
+var STC = { up: '#2FE3B5', press: '#E0A64A', rally: '#5AA9F0', corr: '#FF5C6C' };
+var COL = ['#2FE3B5', '#5AA9F0', '#A78BFA', '#E0A64A', '#8A9690', '#3E6B5E'];
+function $(id) { return document.getElementById(id); }
+function ord(n) { var s = ['th', 'st', 'nd', 'rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+function chips(id, fn) {
+  var el = $(id); if (!el) return;
+  el.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select');
+    if (el.dataset.multi) { b.classList.toggle('on'); } else { [].forEach.call(el.children, function (x) { x.classList.toggle('on', x === b); }); }
+    fn(b.dataset.v, b); });
+}
+function onv(id) { var b = $(id).querySelector('.chip.on'); return b && b.dataset.v; }
+function unavailable(el, msg) { el.innerHTML = '<div class="unavail">' + esc(msg || 'Source unavailable for now. It will fill in after the next successful nightly fetch.') + '</div>'; }
+
+var MP = window.MP;
+if (!MP) { $('asof').textContent = 'Data file missing. Run MarketPulse/run.bat.'; return; }
+var MPH = null, histP = null;
+function loadHist() {
+  if (histP) return histP;
+  histP = new Promise(function (res) {
+    if (window.MPH) return res(window.MPH);
+    var s = document.createElement('script'); s.src = 'pulse_hist.js?v=' + encodeURIComponent(MP.built || '');
+    s.onload = function () { MPH = window.MPH; res(MPH); }; s.onerror = function () { res(null); }; document.head.appendChild(s);
+  });
+  return histP;
+}
+[].forEach.call(document.querySelectorAll('.asofx'), function (e) { e.textContent = 'as of ' + D(MP.asof); });
+
+/* ------------------------------------------------------------ hero + KPIs */
+$('asof').innerHTML = 'Data as of <b>' + D(MP.asof) + '</b> close · built ' + esc(MP.built) + ' IST';
+var c0 = MP.cards[0] || {}, BA = MP.breadth.all || {}, S0 = MP.status[0] || {}, F = MP.flows || {}, V = MP.val || {};
+var pv = F.prov || { d: [], fii: [], dii: [] };
+var kp = [
+  { l: 'Nifty 50 today', v: c0.r ? c0.r['1D'] : null, f: function (x) { return pct(x, 2); }, c: cls(c0.r && c0.r['1D']), s: fmtN(c0.c, 1) + ' · ' + pct(c0.r && c0.r['1M']) + ' in a month' },
+  { l: 'Stocks above 50-day avg', v: BA.last ? BA.last.ma50 : null, f: function (x) { return Math.round(x) + '%'; }, s: 'All NSE · ' + (BA.m1 && num(BA.m1.ma50) ? (BA.last.ma50 >= BA.m1.ma50 ? 'up' : 'down') + ' from ' + Math.round(BA.m1.ma50) + '% a month ago' : '') },
+  { l: 'Market status · Nifty 50', txt: ({ up: 'Uptrend', press: 'Under pressure', rally: 'Rally attempt', corr: 'Correction' })[S0.s] || '–', c: { up: 'up', press: 'am', rally: '', corr: 'dn' }[S0.s] || '', s: S0.dd + ' distribution day' + (S0.dd === 1 ? '' : 's') + ' · since ' + Ds(S0.since) },
+  { l: 'FII net · ' + (pv.d.length ? Ds(pv.d[pv.d.length - 1]) : 'latest'), v: pv.fii.length ? pv.fii[pv.fii.length - 1] : null, f: cr, c: cls(pv.fii[pv.fii.length - 1]), s: pv.dii.length ? 'DII ' + cr(pv.dii[pv.dii.length - 1]) : 'source unavailable' },
+  { l: 'Market temperature', v: V.ok ? V.temp : null, f: function (x) { return Math.round(x) + ' / 100'; }, c: V.ok && num(V.temp) ? (V.temp >= 70 ? 'dn' : V.temp <= 30 ? 'up' : 'am') : '', s: V.ok ? tempWord(V.temp) + ' vs own history' : 'valuation source unavailable' }
+];
+function tempWord(t) { return !num(t) ? '–' : t >= 85 ? 'Very expensive' : t >= 65 ? 'Expensive' : t >= 35 ? 'Around normal' : t >= 15 ? 'Cheap' : 'Very cheap'; }
+$('kpis').innerHTML = kp.map(function (k, i) { return '<div class="pk" style="animation-delay:' + i * 45 + 'ms"><div class="l">' + esc(k.l) + '</div><div class="v ' + (k.c || '') + '" data-i="' + i + '">' + (k.txt ? esc(k.txt) : '–') + '</div><div class="s">' + esc(k.s || '') + '</div></div>'; }).join('');
+kp.forEach(function (k, i) { if (num(k.v)) PK.countUp(document.querySelector('.kpis .v[data-i="' + i + '"]'), k.v, { fmt: k.f, dur: 900 }); });
+
+/* ------------------------------------------------------------ tabs */
+var built = {}, moversView = null;
+var tabsReady = false;   // PK.tabs fires onChange while it is being built; later vars are not set yet then
+var tabs = PK.tabs($('tabs'), { storeKey: 'mp_tab', onChange: function (n) { if (tabsReady) { PK.haptic('select'); render(n); } } });
+function render(n) {
+  if (built[n]) return; built[n] = true;
+  try { ({ today: buildToday, breadth: buildBreadth, status: buildStatus, flows: buildFlows, valuation: buildValuation })[n](); }
+  catch (e) { console.error(e); }
+}
+var cur = tabs && tabs.get ? tabs.get() : (document.querySelector('nav.tb .on') || {}).dataset.tab;
+setTimeout(function () { tabsReady = true; render(cur || 'today'); if (cur !== 'today') render('today'); }, 0);
+PK.press(document.body);
+if (typeof PK.capFilter === 'function') { try { PK.capFilter($('capf'), { compact: innerWidth < 760, onChange: function () { if (moversView) moversView(); } }); } catch (e) { console.warn('capFilter', e); } }
+setTimeout(loadHist, 1200);
+
+/* ------------------------------------------------------------ chart helper */
+function tsData(d, v, from) { var o = []; for (var i = 0; i < d.length; i++) if (num(v[i]) && (!from || d[i] >= from)) o.push({ time: d[i], value: v[i] }); return o; }
+function mkChart(id, opts) {
+  var el = $(id); el.innerHTML = '';
+  return PK.chart(el, Object.assign({ height: el.clientHeight || 300 }, opts || {})).catch(function (e) { unavailable(el, 'Chart library could not load (offline?).'); throw e; });
+}
+function ranges(id, chart, list, act) { var el = $(id); if (el) PK.rangeChips(el, chart, list || ['3M', '6M', '1Y', '3Y', 'Max'], { active: act || '1Y' }); }
+
+/* ============================================================ TODAY */
+function buildToday() {
+  $('cards').innerHTML = MP.cards.map(function (c, i) {
+    var rr = ['1D', '1W', '1M', '1Y'].map(function (k) { return '<div><span>' + k + '</span><b class="' + cls(c.r[k]) + '">' + pct(c.r[k], k === '1D' ? 2 : 1) + '</b></div>'; }).join('');
+    return '<div class="box hov icard" style="animation-delay:' + i * 45 + 'ms" data-k="' + c.k + '"><div class="nm">' + esc(c.n) + '</div><div class="px">' + fmtN(c.c, 1) + '</div>' +
+      '<div class="dimc" style="font-size:11.5px">' + (num(c.h52) ? (c.h52 >= -0.5 ? 'at its 52-week high' : pct(c.h52) + ' from 52-week high') : '') + '</div>' +
+      PK.spark(c.sp, { w: 240, h: 40 }) + '<div class="rets">' + rr + '</div></div>';
+  }).join('');
+  $('cards').addEventListener('click', function (e) { var c = e.target.closest('.icard'); if (c) { PK.haptic('tap'); var x = MP.cards.filter(function (q) { return q.k === c.dataset.k; })[0];
+    if (x) PK.tip.show('<b>' + esc(x.n) + '</b><br>Last 90 sessions: ' + pct((x.sp[x.sp.length - 1] / x.sp[0] - 1) * 100) + '<br>Data ' + D(x.d), e.clientX, e.clientY); } });
+  $('mood').textContent = MP.mood;
+  var C = MP.rows_cols, rows = MP.rows.map(function (a) { var o = {}; C.forEach(function (k, i) { o[k] = a[i]; }); return o; });
+  var colsBase = [
+    { key: 'sym', label: 'Stock', fmt: function (v, r) { return '<span class="sym"><b>' + esc(v) + '</b> ' + PK.badges(v, { max: 3 }) + '<span class="nm2">' + esc(r.name) + '</span></span>'; }, csvVal: function (r) { return r.sym; } },
+    { key: 'px', label: 'Price', num: true, fmt: function (v) { return fmtN(v, 2); } },
+    { key: 'r1d', label: '1D', num: true, fmt: function (v) { return '<span class="' + cls(v) + '">' + pct(v, 2) + '</span>'; } },
+    { key: 'r1w', label: '1W', num: true, fmt: function (v) { return '<span class="' + cls(v) + '">' + pct(v) + '</span>'; } },
+    { key: 'r1m', label: '1M', num: true, fmt: function (v) { return '<span class="' + cls(v) + '">' + pct(v) + '</span>'; } },
+    { key: 'vx', label: 'Vol ×', num: true, title: 'Today\'s turnover ÷ 20-day median', fmt: function (v) { return num(v) ? v.toFixed(1) + '×' : '–'; } },
+    { key: 'tov', label: 'Turnover', num: true, title: '₹ Cr today', fmt: function (v) { return num(v) ? '₹' + fmtN(v, v < 10 ? 1 : 0) + ' Cr' : '–'; } },
+    { key: 'mcap', label: 'M-cap', num: true, fmt: function (v) { return '₹' + fmtN(v) + ' Cr'; } },
+    { key: 'stage', label: 'Stage', num: true, title: 'Weinstein stage from the Stage 2 scanner', fmt: function (v) { return num(v) ? '<span class="stg s' + v + '">' + v + '</span>' : '<span class="dimc">–</span>'; } },
+    { key: 'rs', label: 'RS', num: true, title: 'RS rating 1-99', fmt: function (v) { return num(v) ? '<b class="' + (v >= 80 ? 'up' : v <= 30 ? 'dn' : '') + '">' + v + '</b>' : '–'; } },
+    { key: 'sec', label: 'Sector', fmt: function (v) { return '<span class="dimc">' + esc(v || '') + '</span>'; } }
+  ];
+  var tbl = null;
+  function view() {
+    var L = onv('mv-list'), mc = +onv('mv-mc'), tv = +onv('mv-tv');
+    var capOK = typeof PK.capOK === 'function' ? PK.capOK : null;
+    var q = rows.filter(function (r) { return r.mcap >= mc && (r.med20 || 0) >= tv && (r.series === 'EQ' || r.series === 'BE') && (!capOK || capOK(r.sym) !== false); });
+    var sel, key, dir;
+    if (L === 'gain') { sel = q.filter(function (r) { return r.r1d > 0; }); key = 'r1d'; dir = 'desc'; }
+    else if (L === 'lose') { sel = q.filter(function (r) { return r.r1d < 0; }); key = 'r1d'; dir = 'asc'; }
+    else if (L === 'hi') { sel = q.filter(function (r) { return r.hl === 1; }); key = 'r1d'; dir = 'desc'; }
+    else if (L === 'lo') { sel = q.filter(function (r) { return r.hl === -1; }); key = 'r1d'; dir = 'asc'; }
+    else { sel = q.filter(function (r) { return r.vx >= 3; }); key = 'vx'; dir = 'desc'; }
+    if (L === 'gain' || L === 'lose') sel = sel.sort(function (a, b) { return L === 'gain' ? b.r1d - a.r1d : a.r1d - b.r1d; }).slice(0, 50);
+    var nh = q.filter(function (r) { return r.hl === 1; }).length, nl = q.filter(function (r) { return r.hl === -1; }).length, nv = q.filter(function (r) { return r.vx >= 3; }).length;
+    var adv = q.filter(function (r) { return r.r1d > 0; }).length, dec = q.filter(function (r) { return r.r1d < 0; }).length;
+    $('mv-verdict').innerHTML = 'Of <b>' + fmtN(q.length) + '</b> liquid stocks, ' + fmtN(adv) + ' rose and ' + fmtN(dec) + ' fell; <b>' + nh + '</b> made new 52-week highs vs <b>' + nl + '</b> new lows, and ' + nv + ' traded at 3×+ their usual value.';
+    if (!tbl) tbl = PK.table($('mv-table'), { columns: colsBase, rows: sel, symbolKey: 'sym', sortKey: key, sortDir: dir, csvName: 'market_pulse_' + L + '_' + MP.asof, placeholder: 'Search stock or sector…', countLabel: 'stocks', pageSize: 50,
+      rowClick: function (r, e) { PK.tip.show('<b>' + esc(r.sym) + '</b> · ' + esc(r.name) + '<br>Stage ' + (r.stage || '–') + ' · RS ' + (r.rs || '–') + '<br>20-day median turnover ₹' + fmtN(r.med20, 1) + ' Cr', e.clientX, e.clientY); } });
+    else { tbl.update(sel); if (tbl.sort) tbl.sort(key, dir); }
+    if (tbl && tbl.__csv !== L) tbl.__csv = L;
+  }
+  ['mv-list', 'mv-mc', 'mv-tv'].forEach(function (id) { chips(id, view); });
+  moversView = view; document.addEventListener('pk:cap', function () { view(); });
+  view();
+  $('src-today').textContent = 'Source: NSE bhavcopy ' + D(MP.asof) + ', market caps from NSE · Stage & RS: Stage 2 scanner' + (MP.s2 ? ' (as of ' + D(MP.s2asof) + ')' : ' (unavailable)') + ' · badges: NSE surveillance & event lists';
+}
+
+/* ============================================================ BREADTH */
+var bU = 'all', bCharts = {};
+function buildBreadth() {
+  var U = MP.univ; $('b-univ').innerHTML = U.map(function (u, i) { return '<button class="chip' + (u[0] === bU ? ' on' : '') + '" data-v="' + u[0] + '">' + esc(u[1]) + ' <span class="dimc">' + u[2] + '</span></button>'; }).join('');
+  chips('b-univ', function (v) { bU = v; drawBreadth(); });
+  ['c-ma', 'c-ad', 'c-hl', 'c-th', 'c-ew'].forEach(function (id) { $(id).innerHTML = '<div class="skel" style="height:100%"></div>'; });
+  chips('ma-pick', function () { drawMA(); }); $('ma-pick').dataset.multi = '1';
+  chips('dist-pick', function () { drawDist(); });
+  loadHist().then(function (H) { if (!H) { ['c-ma', 'c-ad', 'c-hl', 'c-th', 'c-ew'].forEach(function (id) { unavailable($(id), 'History file did not load.'); }); return; } drawBreadth(); });
+  drawDist();
+}
+function drawBreadth() { drawMA(); drawAD(); drawHL(); drawTH(); drawEW(); drawDist(); }
+function bh() { return MPH.breadth[bU]; }
+function vMA() {
+  var b = MP.breadth[bU], L = b.last, M = b.m1, nm = MP.univ.filter(function (u) { return u[0] === bU; })[0][1];
+  var up = L.ma50 >= (M.ma50 || 0);
+  var word = L.ma50 >= 70 ? 'Broad strength' : L.ma50 <= 30 ? 'Washed out' : up ? 'Breadth improving' : 'Breadth fading';
+  $('v-ma').innerHTML = word + ': <b>' + Math.round(L.ma50) + '%</b> of ' + esc(nm) + ' stocks are above their 50-day average, ' + (up ? 'up' : 'down') + ' from ' + Math.round(M.ma50) + '% a month ago; ' + Math.round(L.ma200) + '% are above the 200-day.';
+}
+function lineChart(id, series, opts) {
+  if (bCharts[id]) { try { bCharts[id].remove(); } catch (e) {} }
+  return mkChart(id, opts).then(function (ch) { bCharts[id] = ch; var ss = series(ch); PK.legend($(id), ch, ss, opts && opts.lfmt); ranges('r-' + id.slice(2), ch, opts && opts.ranges, opts && opts.act); return ch; });
+}
+function drawMA() {
+  if (!MPH) return; vMA(); var h = bh(), d = MPH.breadth.d;
+  var on = [].map.call($('ma-pick').querySelectorAll('.chip.on'), function (b) { return b.dataset.v; });
+  lineChart('c-ma', function (ch) { return ['ma10', 'ma20', 'ma50', 'ma200'].filter(function (k) { return on.indexOf(k) >= 0; }).map(function (k, i) {
+    return PK.lineSeries(ch, tsData(d, h[k]), { color: { ma10: COL[4], ma20: COL[1], ma50: COL[0], ma200: COL[3] }[k], width: k === 'ma50' ? 2.4 : 1.6, title: k.replace('ma', '') + 'D' }); }); },
+    { lfmt: function (v) { return v.toFixed(0) + '%'; } });
+}
+function drawAD() {
+  if (!MPH) return; var h = bh(), d = MPH.breadth.d, b = MP.breadth[bU];
+  var net = h.adv.map(function (a, i) { return a - h.dec[i]; });
+  var n = h.adl.length, ch1 = h.adl[n - 1] - h.adl[Math.max(0, n - 22)];
+  $('v-ad').innerHTML = (ch1 >= 0 ? 'More stocks rising than falling' : 'More stocks falling than rising') + ' over the past month: net <b>' + (ch1 >= 0 ? '+' : '') + fmtN(ch1) + '</b> advances in 21 sessions; today ' + fmtN(b.last.adv) + ' up vs ' + fmtN(b.last.dec) + ' down.';
+  lineChart('c-ad', function (ch) { var a = PK.lineSeries(ch, tsData(d, h.adl), { color: COL[0], title: 'A/D line', area: true });
+    var hs = PK.histSeries(ch, tsData(d, net), { title: 'Daily net' }); return [a, hs]; }, { lfmt: function (v) { return fmtN(v); } });
+}
+function drawHL() {
+  if (!MPH) return; var h = bh(), d = MPH.breadth.d, b = MP.breadth[bU];
+  var net = h.hi.map(function (a, i) { return a - h.lo[i]; });
+  var sum10 = b.hl10;
+  $('v-hl').innerHTML = (sum10 >= 0 ? 'New highs outnumber new lows' : 'New lows outnumber new highs') + ': <b>' + b.last.hi + '</b> highs vs <b>' + b.last.lo + '</b> lows today, net <b>' + (sum10 >= 0 ? '+' : '') + sum10 + '</b> over 10 sessions.';
+  lineChart('c-hl', function (ch) { return [PK.histSeries(ch, tsData(d, net).filter(function (x) { return x.time >= '2022-03-01'; }), { title: 'Highs − lows', priceScaleId: 'right' })]; }, { lfmt: function (v) { return fmtN(v); } });
+}
+function drawTH() {
+  if (!MPH) return; var h = bh(), d = MPH.breadth.d, b = MP.breadth[bU], t = b.thrust10;
+  $('v-th').innerHTML = (t[0] >= t[1] ? 'Upside momentum leads' : 'Downside momentum leads') + ': <b>' + t[0] + '</b> stock-days up 4%+ vs <b>' + t[1] + '</b> down 4%+ over the last 10 sessions (today ' + b.last.up4 + ' vs ' + b.last.dn4 + ').';
+  lineChart('c-th', function (ch) { return [PK.lineSeries(ch, tsData(d, h.up4), { color: COL[0], title: 'Up ≥4%', width: 1.6 }), PK.lineSeries(ch, tsData(d, h.dn4), { color: '#FF5C6C', title: 'Down ≥4%', width: 1.6 })]; },
+    { lfmt: function (v) { return fmtN(v); }, act: '6M' });
+}
+function drawEW() {
+  if (!MPH || !MPH.breadth.ew) { unavailable($('c-ew')); return; } var d = MPH.breadth.d, e = MP.breadth.ew || {};
+  $('v-ew').innerHTML = (e['1M'] >= 0 ? 'The average Nifty stock is beating the heavyweights' : 'Heavyweights are carrying Nifty') + ': equal weight ' + (e['1M'] >= 0 ? 'ahead' : 'behind') + ' by <b>' + pct(Math.abs(e['1M'])).replace('+', '') + '</b> over a month, ' + pct(e['1Y']) + ' over a year.';
+  lineChart('c-ew', function (ch) { return [PK.lineSeries(ch, tsData(d, MPH.breadth.ew), { color: COL[0], title: 'EW ÷ CW', area: true })]; }, { lfmt: function (v) { return v.toFixed(1); } });
+}
+var distBars = null;
+function drawDist() {
+  var p = onv('dist-pick') || '1D', b = MP.breadth[bU], x = b.dist[p];
+  var neg = x.b[0] + x.b[1] + x.b[2], pos = x.b[3] + x.b[4] + x.b[5], tot = neg + pos || 1;
+  $('v-dist').innerHTML = (pos >= neg ? 'Most stocks gained' : 'Most stocks fell') + ' over ' + { '1D': 'the day', '1W': 'the week', '1M': 'the month' }[p] + ': <b>' + Math.round(pos / tot * 100) + '%</b> positive, median ' + pct(x.med, 2) + '; ' + x.b[5] + ' rose more than 5% and ' + x.b[0] + ' fell more than 5%.';
+  var items = MP.buckets.map(function (l, i) { return { label: l, value: x.b[i], color: i < 3 ? (i === 0 ? '#FF5C6C' : i === 1 ? '#E0717D' : 'rgba(255,92,108,.55)') : (i === 5 ? '#2FE3B5' : i === 4 ? '#3fc9a0' : 'rgba(47,227,181,.55)'),
+    tip: '<b>' + esc(l) + '</b><br>' + x.b[i] + ' stocks (' + Math.round(x.b[i] / tot * 100) + '%)' }; });
+  if (distBars && distBars.update) distBars.update(items); else distBars = PK.svgBars($('c-dist'), items, { vertical: true, height: 230, fmt: function (v) { return fmtN(v); }, valueLabel: 'Stocks' });
+}
+
+/* ============================================================ STATUS */
+function buildStatus() {
+  var s = MP.status[0]; if (!s) { unavailable($('st-main')); return; }
+  var dd = s.dd_list || [];
+  var desc = { up: 'Buyers are in control. Distribution is light enough to keep the uptrend intact.', press: 'The uptrend is intact but institutions are selling into strength. Be selective.', rally: 'The index is trying to bottom. A follow-through day would confirm a new uptrend.', corr: 'The market is in a downtrend. New buying usually waits for a rally attempt and a follow-through day.' }[s.s];
+  $('st-main').innerHTML = '<div class="k">Current market status · Nifty 50</div><div class="state"><span class="dot st-' + s.s + '"></span><div><div class="big">' + esc(s.state) + '</div><div class="mut">since ' + D(s.since) + '</div></div></div>' +
+    '<p class="verdict" style="margin-top:12px">' + esc(desc) + '</p>' +
+    '<div class="grid g3" style="margin-top:6px"><div><div class="k">Distribution days</div><div class="big">' + s.dd + '</div></div><div><div class="k">Last follow-through</div><div style="font-size:16px;font-weight:650">' + (s.ftd ? D(s.ftd) : '–') + '</div></div>' +
+    '<div><div class="k">vs 50-day avg</div><div style="font-size:16px;font-weight:650" class="' + cls(s.px - s.ma50) + '">' + pct((s.px / s.ma50 - 1) * 100) + '</div></div></div>' +
+    (s.ftd_all && s.ftd_all.length ? '<div class="src">Recent follow-through days: ' + s.ftd_all.map(D).join(' · ') + '</div>' : '');
+  $('v-dd').innerHTML = dd.length ? '<b>' + dd.length + '</b> live distribution day' + (dd.length === 1 ? '' : 's') + '; ' + (dd.length >= 5 ? 'enough to put the uptrend under pressure.' : (5 - dd.length) + ' more would put the uptrend under pressure.') :
+    'No live distribution days: the slate is clean.' + (s.s === 'up' ? ' It takes 5 to put the uptrend under pressure.' : '');
+  $('ddl').innerHTML = dd.map(function (x) { return '<span><b>' + Ds(x.d) + '</b> ' + pct(x.chg, 2) + ' · expires in ' + x.left + ' sessions or above ' + fmtN(x.kill, 0) + '</span>'; }).join('') || '<span>None in the last 25 sessions</span>';
+  $('st-idx').innerHTML = '<thead><tr><th>Index</th><th>Status</th><th>Dist. days</th><th>Since</th></tr></thead><tbody>' + MP.status.map(function (x) {
+    return '<tr><td>' + esc(x.n) + '</td><td><span class="tag ' + x.s + '">' + esc(x.state.replace('Market in ', '')) + '</span></td><td>' + x.dd + '</td><td>' + Ds(x.since) + '</td></tr>'; }).join('') + '</tbody>';
+  var A = MP.avg, best = Object.keys(A).filter(function (k) { return num(A[k].f3); }).sort(function (a, b) { return A[b].f3 - A[a].f3; });
+  $('v-avg').innerHTML = best.length ? 'Since 2021, Nifty did best after flips into <b>' + esc(STN[best[0]]) + '</b> (avg ' + pct(A[best[0]].f3) + ' over 3 months) and worst after <b>' + esc(STN[best[best.length - 1]]) + '</b> (' + pct(A[best[best.length - 1]].f3) + ').' : '';
+  $('st-avg').innerHTML = '<thead><tr><th>Changed into</th><th>Times</th><th>Avg 1M</th><th>Avg 3M</th><th>Up after 3M</th></tr></thead><tbody>' + ['up', 'press', 'rally', 'corr'].map(function (k) { var a = A[k] || {};
+    return '<tr><td><span class="tag ' + k + '">' + esc(STN[k].replace('Market in ', '')) + '</span></td><td>' + (a.n || 0) + '</td><td class="' + cls(a.f1) + '">' + pct(a.f1) + '</td><td class="' + cls(a.f3) + '">' + pct(a.f3) + '</td><td>' + (num(a.hit3) ? a.hit3 + '%' : '–') + '</td></tr>'; }).join('') + '</tbody>';
+  var rows = MP.changes.slice().reverse();
+  var cols = [{ key: 'd', label: 'Date', fmt: function (v) { return D(v); } },
+    { key: 'from', label: 'From', fmt: function (v) { return '<span class="tag ' + v + '">' + esc(STN[v].replace('Market in ', '')) + '</span>'; }, csvVal: function (r) { return STN[r.from]; } },
+    { key: 'to', label: 'To', fmt: function (v) { return '<span class="tag ' + v + '">' + esc(STN[v].replace('Market in ', '')) + '</span>'; }, csvVal: function (r) { return STN[r.to]; } },
+    { key: 'px', label: 'Nifty', num: true, fmt: function (v) { return fmtN(v, 0); } },
+    { key: 'dd', label: 'Dist. days', num: true },
+    { key: 'f1', label: 'Next 1M', num: true, fmt: function (v) { return num(v) ? '<span class="' + cls(v) + '">' + pct(v) + '</span>' : '<span class="dimc">pending</span>'; } },
+    { key: 'f3', label: 'Next 3M', num: true, fmt: function (v) { return num(v) ? '<span class="' + cls(v) + '">' + pct(v) + '</span>' : '<span class="dimc">pending</span>'; } }];
+  var t = PK.table($('ch-table'), { columns: cols, rows: rows, sortKey: 'd', sortDir: 'desc', csvName: 'market_status_changes', tvExport: false, search: false, countLabel: 'changes', pageSize: 25 });
+  chips('ch-filter', function (v) { t.update(v === 'all' ? rows : rows.filter(function (r) { return r.to === v; })); });
+  $('c-sth').innerHTML = '<div class="skel" style="height:100%"></div>';
+  loadHist().then(function (H) {
+    if (!H || !H.status.n50) { unavailable($('c-sth')); return; }
+    var h = H.status.n50, map = { U: 'up', P: 'press', R: 'rally', C: 'corr' }, data = [];
+    for (var i = 0; i < h.d.length; i++) data.push({ time: h.d[i], value: h.c[i], color: STC[map[h.s[i]]] });
+    var cnt = { up: 0, press: 0, rally: 0, corr: 0 }; for (i = Math.max(0, h.s.length - 252); i < h.s.length; i++) cnt[map[h.s[i]]]++;
+    var tot = Math.min(252, h.s.length);
+    $('v-sth').innerHTML = 'Over the last year Nifty spent <b>' + Math.round(cnt.up / tot * 100) + '%</b> of sessions in a confirmed uptrend, ' + Math.round(cnt.press / tot * 100) + '% under pressure and ' + Math.round((cnt.corr + cnt.rally) / tot * 100) + '% in correction or rally attempts.';
+    mkChart('c-sth').then(function (ch) { var s = PK.lineSeries(ch, data, { color: STC.up, width: 2.2, title: 'Nifty 50' });
+      PK.legend($('c-sth'), ch, [s], function (v) { return fmtN(v, 0); }); ranges('r-sth', ch, ['6M', '1Y', '3Y', 'Max'], '1Y'); });
+  });
+}
+
+/* ============================================================ FLOWS */
+function buildFlows() {
+  var F = MP.flows || {}, p = F.prov || { d: [] };
+  if (!p.d.length) { unavailable($('c-prov')); $('v-prov').textContent = 'FII/DII provisional source unavailable.'; }
+  else {
+    var last = p.d.length - 1, sk = F.streak || {};
+    var w = function (n) { return n > 0 ? 'bought' : 'sold'; };
+    $('v-prov').innerHTML = 'FIIs <b class="' + cls(p.fii[last]) + '">' + w(p.fii[last]) + ' ' + cr(Math.abs(p.fii[last])).replace('+', '') + '</b> on ' + Ds(p.d[last]) + (Math.abs(sk.fii) > 1 ? ', their <b>' + Math.abs(sk.fii) + '-day</b> ' + (sk.fii > 0 ? 'buying' : 'selling') + ' streak' : '') +
+      '; DIIs ' + w(p.dii[last]) + ' ' + cr(Math.abs(p.dii[last])).replace('+', '') + (Math.abs(sk.dii) > 1 ? ' (' + Math.abs(sk.dii) + ' days in a row)' : '') + '.';
+    var R = F.prov_rolling || {};
+    $('prov-roll').innerHTML = '<thead><tr><th>Net, ₹ Cr</th><th>Latest</th><th>5 days</th><th>10 days</th><th>20 days</th></tr></thead><tbody>' + ['fii', 'dii'].map(function (k) {
+      return '<tr><td>' + (k === 'fii' ? 'FII / FPI' : 'DII') + '</td><td class="' + cls(p[k][last]) + '">' + crs(p[k][last]) + '</td>' + [5, 10, 20].map(function (n) { var v = R[k] && R[k][n]; return '<td class="' + cls(v) + '">' + (num(v) ? crs(v) : '<span class="dimc" title="Not enough history yet">–</span>') + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody>';
+    var drawP = function () { var k = onv('prov-pick'), n = Math.min(30, p.d.length);
+      var items = p.d.slice(-n).map(function (d, i) { var v = p[k][p.d.length - n + i]; return { label: Ds(d), value: v, tip: '<b>' + D(d) + '</b><br>' + (k === 'fii' ? 'FII' : 'DII') + ' net ' + cr(v) }; });
+      PK.svgBars($('c-prov'), items, { vertical: true, height: 200, fmt: function (v) { return Math.abs(v) >= 1000 ? (v / 1000).toFixed(1) + 'k' : Math.round(v); } }); };
+    chips('prov-pick', function () { $('c-prov').innerHTML = ''; drawP(); }); drawP();
+    $('src-prov').textContent = 'Source: ' + (F.prov_src || 'NSE') + ' · ' + p.d.length + ' days collected, ' + D(p.d[0]) + ' to ' + D(p.d[last]);
+  }
+  // who bought
+  var P = F.periods || {}, cats = F.cats || [];
+  var catName = { FPI: 'FPI', MF: 'Mutual funds', Insurance: 'Insurance', Banks: 'Banks', AIFs: 'AIFs', PMS: 'PMS', Retail: 'Retail', Others: 'Others' };
+  var whoBars = null;
+  function drawWho() {
+    var k = onv('who-pick'), x = P[k]; if (!x) { unavailable($('c-who')); return; }
+    var items = cats.map(function (c) { return { label: catName[c] || c, value: x[c] || 0, tip: '<b>' + esc(catName[c] || c) + '</b><br>Net ' + cr(x[c]) + '<br>' + D(x.from) + ' to ' + D(F.cat_last) }; }).sort(function (a, b) { return b.value - a.value; });
+    var top = items[0], bot = items[items.length - 1];
+    $('v-who').innerHTML = '<b>' + esc(top.label) + '</b> were the biggest net buyers (' + crs(top.value) + ') and <b>' + esc(bot.label) + '</b> the biggest sellers (' + crs(bot.value) + ') over ' + { '1D': 'the latest day', '1W': 'the past week', '1M': 'the past month', '3M': 'three months', '1Y': 'the past year' }[k] + '.';
+    if (whoBars && whoBars.update) whoBars.update(items); else whoBars = PK.svgBars($('c-who'), items, { fmt: function (v) { return crs(v).replace(' Cr', ''); }, labelW: 96 });
+  }
+  if (cats.length && F.cat_last) { chips('who-pick', drawWho); drawWho(); $('src-who').textContent = 'Source: NSE category-wise turnover (cat_turnover), ' + D(F.cat_first) + ' to ' + D(F.cat_last); }
+  else { unavailable($('c-who')); }
+  // monthly by category
+  var M = F.monthly || {};
+  if (M.m && M.m.length) {
+    $('mon-pick').innerHTML = cats.map(function (c, i) { return '<button class="chip' + (c === 'FPI' ? ' on' : '') + '" data-v="' + c + '">' + esc(catName[c] || c) + '</button>'; }).join('');
+    var mb = null;
+    var drawM = function () { var c = onv('mon-pick'), items = M.m.map(function (m, i) { return { label: m.slice(2).replace('-', '/'), value: M[c][i], tip: '<b>' + esc(catName[c]) + ' · ' + m + '</b><br>Net ' + cr(M[c][i]) }; });
+      var n12 = M[c].slice(-12).reduce(function (a, b) { return a + b; }, 0), pos = M[c].slice(-12).filter(function (v) { return v > 0; }).length;
+      $('v-mon').innerHTML = esc(catName[c]) + ' were net ' + (n12 >= 0 ? 'buyers' : 'sellers') + ' of <b>' + crs(Math.abs(n12)).replace('+', '') + '</b> over the last 12 months, buying in ' + pos + ' of them.';
+      if (mb && mb.update) mb.update(items); else mb = PK.svgBars($('c-mon'), items, { vertical: true, height: 220, fmt: function (v) { return (v / 1000).toFixed(0) + 'k'; } }); };
+    chips('mon-pick', drawM); drawM();
+  } else unavailable($('c-mon'));
+  // NSDL monthly
+  if (F.nsdl_m && F.nsdl_m.length) {
+    var nm = F.nsdl_m.slice(-36), s12 = nm.slice(-12).reduce(function (a, b) { return a + b[1]; }, 0);
+    $('v-nsdl').innerHTML = 'FPIs ' + (s12 >= 0 ? 'invested' : 'pulled out') + ' a net <b>' + crs(Math.abs(s12)).replace('+', '') + '</b> of Indian equity over the last 12 reported months (latest: ' + nm[nm.length - 1][0] + ', ' + crs(nm[nm.length - 1][1]) + ').';
+    PK.svgBars($('c-nsdl'), nm.map(function (x) { return { label: x[0].slice(2).replace('-', '/'), value: x[1], tip: '<b>' + x[0] + '</b><br>FPI equity ' + cr(x[1]) }; }), { vertical: true, height: 220, fmt: function (v) { return (v / 1000).toFixed(0) + 'k'; } });
+  } else { unavailable($('c-nsdl')); }
+  // NSDL sector (optional, from helper)
+  var NS = F.nsdl_sec;
+  if (NS && NS.rows && NS.rows.length) {
+    $('nsdl-sec-box').hidden = false;
+    $('nsec-pick').innerHTML = '<button class="chip on" data-v="net">Latest fortnight</button><button class="chip" data-v="net6">Last 6 fortnights</button>';
+    var nsb = null;
+    var drawNS = function () {
+      var k = onv('nsec-pick'), rr = NS.rows.filter(function (r) { return num(r[k]); }).slice().sort(function (a, b) { return b[k] - a[k]; });
+      if (!rr.length) return;
+      var top = rr.slice(0, 2).map(function (r) { return r.sector; }), bot = rr.slice(-2).reverse().map(function (r) { return r.sector; });
+      $('v-nsec').innerHTML = (k === 'net' ? 'In the fortnight to ' + D(NS.period) : 'Over the 6 fortnights since ' + D(NS.from6)) + ', FPIs bought most in <b>' + esc(top.join(', ')) + '</b> and sold most in <b>' + esc(bot.join(', ')) + '</b>.';
+      var items = rr.map(function (r) { return { label: r.sector, value: r[k], tip: '<b>' + esc(r.sector) + '</b><br>Net ' + cr(r[k]) + (num(r.auc) ? '<br>FPI holdings ₹' + fmtN(r.auc) + ' Cr' : '') }; });
+      if (nsb && nsb.update) nsb.update(items); else nsb = PK.svgBars($('c-nsec'), items, { fmt: function (v) { return crs(v).replace(' Cr', ''); }, labelW: 160, barH: 14, gap: 6 });
+    };
+    chips('nsec-pick', drawNS); drawNS();
+  }
+  // cumulative
+  $('c-cum').innerHTML = '<div class="skel" style="height:100%"></div>';
+  loadHist().then(function (H) {
+    var h = H && H.flows; if (!h || !h.d || !h.d.length) { unavailable($('c-cum')); return; }
+    var cum = 0, cd = [], nd = [];
+    for (var i = 0; i < h.d.length; i++) { cum += h.FPI[i] || 0; cd.push({ time: h.d[i], value: Math.round(cum) }); if (num(h.n50[i])) nd.push({ time: h.d[i], value: h.n50[i] }); }
+    var j = Math.max(0, cd.length - 64), d3 = cd[cd.length - 1].value - cd[j].value, n3 = nd.length > 64 ? (nd[nd.length - 1].value / nd[nd.length - 64].value - 1) * 100 : null;
+    $('v-cum').innerHTML = 'Over the last 3 months FPIs were net ' + (d3 >= 0 ? 'buyers' : 'sellers') + ' of <b>' + crs(Math.abs(d3)).replace('+', '') + '</b> on NSE while Nifty moved ' + pct(n3) + '; cumulative since ' + Ds(h.d[0]) + ' ' + h.d[0].slice(0, 4) + ': ' + crs(cum) + '.';
+    $('src-cum').textContent = 'Source: NSE category-wise turnover (FPI row, as reported by NSDL) and Nifty 50 closes · ' + D(h.d[0]) + ' to ' + D(h.d[h.d.length - 1]);
+    mkChart('c-cum').then(function (ch) {
+      var a = PK.lineSeries(ch, cd, { color: COL[0], title: 'FPI cum.', priceScaleId: 'left', area: true });
+      ch.applyOptions({ leftPriceScale: { visible: true } });
+      var b = PK.lineSeries(ch, nd, { color: COL[3], title: 'Nifty 50', priceScaleId: 'right', width: 1.6 });
+      PK.legend($('c-cum'), ch, [a, b], function (v) { return fmtN(v, 0); }); ranges('r-cum', ch, ['3M', '6M', '1Y', 'Max'], 'Max');
+    });
+  });
+}
+
+/* ============================================================ VALUATION */
+function buildValuation() {
+  var V = MP.val || {};
+  if (!V.ok) { unavailable($('val-unavail'), V.note || 'Valuation source unavailable.'); $('val-top').hidden = true;
+    ['c-vh', 'c-rel', 'c-ey', 'c-sec'].forEach(function (id) { unavailable($(id), 'Valuation source unavailable.'); }); return; }
+  // gauge
+  var t = V.temp;
+  $('v-temp').innerHTML = num(t) ? 'Indian equities look <b>' + tempWord(t).toLowerCase() + '</b> against their own history: temperature <b>' + Math.round(t) + '</b> / 100.' : 'Temperature unavailable.';
+  $('gauge').innerHTML = gauge(t);
+  // table
+  $('val-tbl').innerHTML = '<thead><tr><th>Index</th><th>P/E</th><th>Pctl</th><th>Median</th><th>P/B</th><th>Div. yld</th><th>Temp</th></tr></thead><tbody>' + V.broad.map(function (b) {
+    var pe = b.pe || {}, pb = b.pb || {}, dy = b.dy || {};
+    return '<tr title="P/E 20th–80th pct: ' + pe.p20 + '–' + pe.p80 + ' · P/E history since ' + (b.pe_since || b.since) + '"><td>' + esc(b.n) + '</td><td><b>' + fmtN(pe.cur, 1) + '</b></td><td class="' + (pe.pct >= 80 ? 'dn' : pe.pct <= 20 ? 'up' : '') + '">' + (num(pe.pct) ? Math.round(pe.pct) + '%' : '–') + '</td><td>' + fmtN(pe.med, 1) + '</td><td>' + fmtN(pb.cur, 2) + '</td><td>' + (num(dy.cur) ? dy.cur.toFixed(2) + '%' : '–') + '</td><td><b>' + (num(b.temp) ? Math.round(b.temp) : '–') + '</b></td></tr>'; }).join('') + '</tbody>';
+  $('src-val').textContent = 'Source: NSE Indices (niftyindices.com) daily P/E, P/B, dividend yield · latest ' + D((V.broad[0] || {}).d) + '. Percentile = share of past trading days with a lower value.';
+  // history chart
+  var names = V.broad.map(function (b) { return b.n; });
+  $('vh-idx').innerHTML = names.map(function (n, i) { return '<button class="chip' + (i === 0 ? ' on' : '') + '" data-v="' + esc(n) + '">' + esc(n) + '</button>'; }).join('');
+  var rels = Object.keys(V.rel || {});
+  $('rel-pick').innerHTML = rels.map(function (n, i) { return '<button class="chip' + (i === 0 ? ' on' : '') + '" data-v="' + esc(n) + '">' + esc(n) + '</button>'; }).join('');
+  ['c-vh', 'c-rel', 'c-ey'].forEach(function (id) { $(id).innerHTML = '<div class="skel" style="height:100%"></div>'; });
+  var vch = null, rch = null;
+  loadHist().then(function (H) {
+    var VH = H && H.val; if (!VH) { ['c-vh', 'c-rel', 'c-ey'].forEach(function (id) { unavailable($(id)); }); return; }
+    function drawVH() {
+      var n = onv('vh-idx'), m = onv('vh-m'), h = VH[n], b = V.broad.filter(function (x) { return x.n === n; })[0], st = b && b[m];
+      if (!h || !h[m] || !st) { unavailable($('c-vh')); return; }
+      var lab = { pe: 'P/E', pb: 'P/B', dy: 'dividend yield' }[m], f = m === 'dy' ? function (v) { return v.toFixed(2) + '%'; } : function (v) { return v.toFixed(m === 'pb' ? 2 : 1); };
+      var rich = m === 'dy' ? 100 - st.pct : st.pct;
+      $('v-vh').innerHTML = esc(n) + ' ' + lab + ' is <b>' + f(st.cur) + '</b>, ' + (st.cur >= st.med ? 'above' : 'below') + ' its median of ' + f(st.med) + ' and higher than <b>' + Math.round(st.pct) + '%</b> of days since ' + (m === 'pe' ? (b.pe_since || b.since) : b.since).slice(0, 4) + ' (' + (rich >= 80 ? 'expensive zone' : rich <= 20 ? 'cheap zone' : 'normal band') + ').' + (m === 'pe' && b.pe_since && b.pe_since > '2010' ? ' <span class="dimc" style="font-weight:400">P/E history from ' + D(b.pe_since) + '.</span>' : '');
+      if (vch) { try { vch.remove(); } catch (e) {} }
+      mkChart('c-vh').then(function (ch) { vch = ch; var s = PK.lineSeries(ch, tsData(h.d, h[m]), { color: COL[0], title: lab.toUpperCase(), area: true });
+        [[st.med, 'Median', '#C9D6D0'], [st.p20, '20th pct', COL[1]], [st.p80, '80th pct', COL[3]]].forEach(function (L) { if (num(L[0])) s.createPriceLine({ price: L[0], color: L[2], lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: L[1] }); });
+        PK.legend($('c-vh'), ch, [s], f); ranges('r-vh', ch, ['1Y', '3Y', '5Y', '10Y', 'Max'], 'Max'); });
+    }
+    chips('vh-idx', function () { drawVH(); }); chips('vh-m', function () { drawVH(); }); drawVH();
+    function drawRel() {
+      var n = onv('rel-pick'), h = VH['rel_' + n], st = V.rel[n]; if (!h || !st) { unavailable($('c-rel')); return; }
+      $('v-rel').innerHTML = esc(n) + ' trades at <b>' + st.cur.toFixed(2) + '×</b> Nifty 50\'s P/E vs a median of ' + st.med.toFixed(2) + '× since ' + st.since.slice(0, 4) + ': ' + (st.pct >= 80 ? 'a rich premium' : st.pct <= 20 ? 'unusually cheap relative to large caps' : 'within its normal range') + ' (' + ord(Math.round(st.pct)) + ' percentile).';
+      if (rch) { try { rch.remove(); } catch (e) {} }
+      mkChart('c-rel').then(function (ch) { rch = ch; var s = PK.lineSeries(ch, tsData(h.d, h.v), { color: COL[2], title: 'Relative P/E' });
+        s.createPriceLine({ price: st.med, color: '#C9D6D0', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: 'Median' }); PK.legend($('c-rel'), ch, [s], function (v) { return v.toFixed(2) + '×'; }); ch.timeScale().fitContent(); });
+    }
+    if (rels.length) { chips('rel-pick', drawRel); drawRel(); } else unavailable($('c-rel'));
+    var E = V.ey, eh = VH.ey;
+    if (E && eh) {
+      $('v-ey').innerHTML = 'Nifty earns <b>' + E.ey.toFixed(2) + '%</b> vs a ' + E.g10.toFixed(2) + '% 10-year G-sec: a gap of <b>' + pct(E.gap, 2).replace('%', ' pts') + '</b>, ' + (E.gap >= E.med ? 'better for equities than' : 'worse for equities than') + ' the median ' + E.med.toFixed(2) + ' pts since ' + E.since.slice(0, 4) + '.';
+      mkChart('c-ey').then(function (ch) { var s = PK.lineSeries(ch, tsData(eh.d, eh.v), { color: COL[0], title: 'EY − 10Y', area: true });
+        s.createPriceLine({ price: E.med, color: '#C9D6D0', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: 'Median' }); PK.legend($('c-ey'), ch, [s], function (v) { return v.toFixed(2) + ' pts'; }); ch.timeScale().fitContent(); });
+      $('ey-note').innerHTML = '<div class="src">10Y yield as of ' + D(E.g10_d) + ' (monthly) · Source: ' + esc(V.g10_src || 'RBI / FRED') + '</div>';
+    } else { unavailable($('c-ey'), V.ey_note || 'India 10-year G-sec yield unavailable.'); $('v-ey').textContent = ''; }
+  });
+  // sectors
+  var S = (V.sectors || []).slice();
+  if (S.length) {
+    var ch = S.slice(0, 3).map(function (x) { return x.n; }), de = S.slice(-3).reverse().map(function (x) { return x.n; });
+    $('v-sec').innerHTML = 'Cheapest vs own history: <b>' + esc(ch.join(', ')) + '</b>; dearest: <b>' + esc(de.join(', ')) + '</b>.';
+    PK.svgBars($('c-sec'), S.map(function (x) { return { label: x.n.replace(/^Nifty /i, ''), value: x.pct, color: x.pct >= 80 ? '#FF5C6C' : x.pct <= 20 ? '#2FE3B5' : x.pct >= 50 ? '#E0A64A' : '#5AA9F0',
+      tip: '<b>' + esc(x.n) + '</b><br>P/E ' + x.pe + ' vs median ' + x.med + ' (' + pct(x.prem, 0) + ')<br>Percentile ' + Math.round(x.pct) + ' since ' + x.since + (num(x.pb) ? '<br>P/B ' + x.pb : '') }; }),
+      { max: 100, min: 0, fmt: function (v) { return ord(Math.round(v)); }, labelW: 130, valueLabel: 'Percentile' });
+    $('src-sec').textContent = 'Source: NSE Indices sector index P/E history · ' + S.length + ' indices';
+  } else unavailable($('c-sec'));
+}
+function gauge(t) {
+  var W = 300, H = 180, cx = 150, cy = 160, r = 120, seg = [['#2FE3B5', 0, 20], ['#6EE7B7', 20, 40], ['#C9D6D0', 40, 60], ['#E0A64A', 60, 80], ['#FF5C6C', 80, 100]];
+  function pt(v, rr) { var a = Math.PI * (1 - v / 100); return [cx + rr * Math.cos(a), cy - rr * Math.sin(a)]; }
+  var arcs = seg.map(function (s) { var a = pt(s[1], r), b = pt(s[2], r); return '<path d="M' + a[0].toFixed(1) + ',' + a[1].toFixed(1) + ' A' + r + ',' + r + ' 0 0 1 ' + b[0].toFixed(1) + ',' + b[1].toFixed(1) + '" stroke="' + s[0] + '" stroke-width="18" fill="none" opacity=".85"/>'; }).join('');
+  var v = num(t) ? t : 50, p = pt(v, r - 30);
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Market temperature ' + Math.round(v) + ' of 100">' + arcs +
+    '<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '" stroke="#EEF5F2" stroke-width="3" stroke-linecap="round"' + (RM ? '' : ' style="transform-origin:' + cx + 'px ' + cy + 'px;animation:needle 1.1s cubic-bezier(.2,.8,.2,1) both"') + '/>' +
+    '<circle cx="' + cx + '" cy="' + cy + '" r="7" fill="#EEF5F2"/><text x="' + cx + '" y="' + (cy - 44) + '" text-anchor="middle" fill="#EEF5F2" font-size="34" font-weight="750">' + (num(t) ? Math.round(t) : '–') + '</text>' +
+    '<text x="22" y="176" fill="rgba(238,245,242,.5)" font-size="11">Cheap</text><text x="278" y="176" text-anchor="end" fill="rgba(238,245,242,.5)" font-size="11">Expensive</text>' +
+    '<style>@keyframes needle{from{transform:rotate(-' + (v * 1.8) + 'deg)}to{transform:none}}</style></svg>';
+}
+})();
+</script>
+</body>
+</html>

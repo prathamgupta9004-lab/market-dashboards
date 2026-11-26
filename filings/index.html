@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Filings Radar · Pratham Gupta</title>
+<meta name="description" content="Every NSE company announcement sorted into about 60 triggers in 6 groups: results, orders, corporate actions, ownership, guidance and red flags. Order sizes vs revenue, special situations, investor meets and surveillance changes. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<link rel="icon" href="https://prathamgupta9004-lab.github.io/market-dashboards/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kit.css?v=202611281537">
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sage:#8EC3A9;--sky:#5AA9F0;--lav:#A78BFA;--slate:#8A9690;--teal:#3E6B5E;
+--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--text);font:13.5px/1.45 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#1c3a31;border-radius:10px}::-webkit-scrollbar-track{background:transparent}
+header{display:flex;align-items:center;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px;transition:all .2s;white-space:nowrap}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px;white-space:nowrap}.me .h{font-size:12px;color:var(--acc)}
+.tabs{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;overflow-x:auto;max-width:100%;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{border:0;border-radius:999px;background:transparent;padding:6px 13px;min-height:34px}
+.tabs button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 18px rgba(47,227,181,.25)}
+main{padding:22px 24px 48px;max-width:1500px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.4vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.pulse{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 12px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s ease both}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.pk .l{font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+.pk .v{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.noise{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:0 0 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 14px}
+.noise b{color:var(--text)}.noise svg{display:block}
+button,.btn{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font:inherit;cursor:pointer;transition:all .18s ease;white-space:nowrap;min-height:32px}
+button:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:600;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:10px;padding:7px 10px;font:inherit}
+input:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(47,227,181,.15)}
+input[type=search]{width:200px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:10px}
+.grp{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 3px 0 2px}
+.up{color:var(--up)}.dn{color:var(--dn)}.am{color:var(--amber)}.mu{color:var(--muted)}
+.box{background:linear-gradient(170deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;padding:14px;animation:rise .5s ease both;min-width:0;margin-bottom:14px}
+.vt{margin:0 0 4px;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.vt .hl{color:var(--acc)}.vt .hr{color:var(--dn)}
+.sub{color:var(--muted);font-size:12px;margin:0 0 10px}
+details.how{margin:0 0 10px;font-size:12.5px;color:var(--muted)}
+details.how summary{cursor:pointer;color:var(--acc);list-style:none;display:inline-flex;align-items:center;gap:6px;min-height:28px}
+details.how summary::before{content:"ⓘ"}
+details.how[open] summary{margin-bottom:6px}
+details.how div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;line-height:1.55}
+.foot{color:var(--dim);font-size:11.5px;margin-top:8px}
+.split{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px}
+.chip{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:999px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.g-results{color:var(--sky);background:rgba(90,169,240,.12);border-color:transparent}
+.g-orders{color:var(--acc);background:rgba(47,227,181,.12);border-color:transparent}
+.g-corporate{color:var(--lav);background:rgba(167,139,250,.13);border-color:transparent}
+.g-ownership{color:var(--amber);background:rgba(224,166,74,.13);border-color:transparent}
+.g-guidance{color:var(--slate);background:rgba(138,150,144,.15);border-color:transparent}
+.g-redflag{color:var(--dn);background:rgba(255,92,108,.12);border-color:transparent}
+/* feed */
+.day{position:sticky;top:62px;z-index:2;background:rgba(3,8,6,.88);backdrop-filter:blur(8px);padding:8px 4px 6px;font-size:12px;font-weight:600;color:var(--acc);letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between;border-bottom:1px solid var(--line)}
+.day span{color:var(--dim);font-weight:500;text-transform:none;letter-spacing:0}
+.it{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;padding:10px 6px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;border-radius:8px;animation:rise .45s ease both}
+.it:hover{background:rgba(47,227,181,.05)}
+.it .tm{color:var(--dim);font-size:11.5px;padding-top:2px}
+.it .top{display:flex;gap:6px;align-items:center;flex-wrap:wrap;min-width:0}
+.it .sy{font-weight:700;letter-spacing:-.1px}
+.it .nm{color:var(--dim);font-size:11.5px;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it .hd{margin-top:3px;font-size:13.5px;line-height:1.4;overflow-wrap:anywhere}
+.it .det{display:none;margin-top:6px;color:var(--muted);font-size:12.5px;line-height:1.5;overflow-wrap:anywhere}
+.it.open .det{display:block}
+.it .rt{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.it a.pdf{color:var(--acc);font-size:12px;text-decoration:none;border:1px solid var(--line2);border-radius:999px;padding:4px 10px;min-height:30px;display:inline-flex;align-items:center;white-space:nowrap}
+.it a.pdf:hover{border-color:var(--acc)}
+.it.new{box-shadow:inset 3px 0 0 var(--acc)}
+.newdot{width:7px;height:7px;border-radius:50%;background:var(--acc);display:inline-block;box-shadow:0 0 8px var(--acc)}
+.cf{font-size:10px;color:var(--dim);border:1px solid var(--line2);border-radius:6px;padding:0 4px}
+.cf.H{color:var(--acc);border-color:rgba(47,227,181,.4)}.cf.L{color:var(--amber);border-color:rgba(224,166,74,.4)}
+.starb{color:#FFD166;font-size:13px;letter-spacing:-2px}
+.lastvisit{display:flex;align-items:center;gap:10px;color:var(--acc);font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin:6px 0}
+.lastvisit::before,.lastvisit::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent)}
+.more{display:flex;justify-content:center;padding:12px}
+.empty{color:var(--muted);padding:30px;text-align:center}
+.capnote{font-size:12px;color:var(--muted);margin:0 0 8px;padding:5px 10px;border:1px dashed rgba(47,227,181,.35);border-radius:10px;background:rgba(47,227,181,.04)}
+.capnote b{color:var(--acc);font-weight:600}
+.linkbtn{background:none;border:0;padding:0;color:var(--acc);text-decoration:underline;cursor:pointer;font:inherit;box-shadow:none;min-height:0}
+.linkbtn:hover{transform:none;color:var(--acc2)}
+.capagg{font-size:11px;font-weight:400;color:var(--amber);border:1px solid rgba(224,166,74,.35);border-radius:999px;padding:1px 8px;white-space:nowrap}
+/* board */
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:16px}
+.tile{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:14px;padding:11px 12px;cursor:pointer;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s;animation:rise .5s ease both;min-height:44px}
+.tile:hover,.tile.sel{transform:translateY(-3px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35)}
+.tile.neg:hover,.tile.neg.sel{border-color:rgba(255,92,108,.55);box-shadow:0 18px 40px -18px rgba(255,92,108,.3)}
+.tile .tl{font-weight:600;font-size:13px;display:flex;justify-content:space-between;gap:6px}
+.tile .nums{display:flex;gap:12px;margin-top:6px;align-items:flex-end}
+.tile .nums div{font-size:11px;color:var(--dim)}.tile .nums b{display:block;font-size:17px;color:var(--text);font-weight:700}
+.tile .nums .sp{margin-left:auto}
+.gh{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:6px 0 8px;display:flex;gap:8px;align-items:center}
+/* lists */
+.li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--line);cursor:pointer;border-radius:8px;min-height:44px}
+.li:hover{background:rgba(47,227,181,.06)}
+.li .a{min-width:0}.li .a b{font-weight:600}.li .a div{color:var(--dim);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px}
+.li .b{text-align:right;white-space:nowrap}
+.kv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 12px}
+.kv div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 11px}.kv span{display:block;font-size:11px;color:var(--muted)}.kv b{font-size:18px}
+.skel{height:200px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite;margin-top:10px}
+.modal{position:fixed;inset:0;background:rgba(2,6,4,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;justify-content:flex-end;z-index:20}
+.modal.open{display:flex;animation:fade .2s ease both}
+.drawer{background:linear-gradient(170deg,#0E1F19,#08130F 50%);border-left:1px solid var(--line2);width:min(860px,100%);height:100%;overflow:auto;padding:18px 20px 30px;animation:slide .32s cubic-bezier(.2,.9,.25,1.05) both}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.mhead h2{margin:0;font-size:22px;letter-spacing:-.02em}
+.x{font-size:18px;background:none;border:0;box-shadow:none;min-width:40px;min-height:40px}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+.capslot{flex:0 0 auto;display:flex;align-items:center;min-width:0}
+.capslot:empty{display:none}
+.fund{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;background:rgba(90,169,240,.1);color:var(--sky);margin:2px 3px 0 0;cursor:pointer}
+.stg{font-size:11px;color:var(--amber)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes slide{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.pulse{grid-template-columns:repeat(3,minmax(0,1fr))}.split{grid-template-columns:minmax(0,1fr)}}
+.split>*{min-width:0}section,.box{min-width:0;max-width:100%}
+@media (max-width:760px){header{flex-wrap:wrap;padding:10px 16px;gap:10px}.tabs{margin-left:0;width:100%;order:3}.capslot{margin-left:auto;order:2}.me{flex:1 1 auto}.back{display:none}
+ main{padding:16px}.pulse{grid-template-columns:repeat(2,minmax(0,1fr))}.pk .v{font-size:21px}.kv{grid-template-columns:repeat(2,minmax(0,1fr))}
+ input[type=search]{width:100%}.it{grid-template-columns:40px minmax(0,1fr)}.it .rt{grid-column:2;flex-direction:row;justify-content:flex-start}.day{top:104px}
+ .drawer{padding:14px 16px}.li .a div{max-width:220px}.bgrid{grid-template-columns:1fr 1fr}.tile .nums .sp{display:none}}
+@media (max-width:420px){.bgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../">← All dashboards</a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Filings Radar</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div class="tabs" id="tabs"><button data-tab="feed" class="on">Today's Feed</button><button data-tab="board">Triggers Board</button><button data-tab="red">Red Flags</button><button data-tab="special">Special Situations</button><button data-tab="meets">Investor Meets</button><button data-tab="surv">Surveillance</button></div>
+  <div class="capslot" id="capslot"></div>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">NSE corporate announcements · rules-based triggers</div>
+  <h1>Every filing, sorted into <em>what actually matters.</em></h1>
+  <div class="asof" id="asof">Loading…</div></div>
+  <span class="live"><i></i>Refreshed every evening · safe to re-run intraday</span>
+</div>
+<div class="pulse" id="pulse"><div class="skel" style="height:86px;margin:0"></div><div class="skel" style="height:86px;margin:0"></div><div class="skel" style="height:86px;margin:0"></div><div class="skel" style="height:86px;margin:0"></div><div class="skel" style="height:86px;margin:0"></div></div>
+<div class="noise" id="noise"></div>
+
+<section data-panel="feed">
+  <div class="box">
+    <h3 class="vt" id="feed-vt">Loading the feed…</h3>
+    <p class="sub" id="feed-sub"></p>
+    <details class="how"><summary>How to read this</summary><div>Each row is one NSE filing that fired a trigger, with a one-line headline written by rules (amounts pulled from the filing text). <b>Confidence</b>: <span class="cf H">H</span> the exchange's own category and the text agree, <span class="cf">M</span> matched on the subject or NSE's summary only, <span class="cf L">L</span> matched only inside the PDF or the text sends mixed signals. <span class="starb">★</span> marks an order worth 10% or more of the company's trailing-12-month revenue (<span class="starb">★★</span> 25%+). Same company + trigger + day is folded into one row (the count shows as ×N). The green bar marks filings that arrived since your last visit on this device. Tap a row for the detail; "NSE ↗" opens the exchange PDF.</div></details>
+    <div class="filters" id="feed-f"></div>
+    <div id="feed-cap"></div>
+    <div id="feed"><div class="skel"></div></div>
+    <div class="foot" id="feed-foot"></div>
+  </div>
+</section>
+
+<section data-panel="board" hidden>
+  <div class="box">
+    <h3 class="vt" id="board-vt">Triggers board</h3>
+    <p class="sub">Count of filings per trigger over the last 7, 30 and 60 days. The sparkline is weekly (oldest → newest). Tap a tile to list its filings.</p>
+    <details class="how"><summary>How to read this</summary><div>Every trigger is a transparent keyword rule on NSE's category and the filing text (the full rule list is at the bottom of this tab). Counts follow the market-cap filter once the 60-day history has loaded. A rising red-flag tile is worth a look; results tiles naturally spike in results season.</div></details>
+    <div id="board-cap"></div>
+    <div id="board"><div class="skel"></div></div>
+    <div class="box" id="drill" hidden style="margin-top:6px"></div>
+    <details class="how"><summary>See every rule</summary><div id="rules" style="max-height:420px;overflow:auto;font-size:11.5px"></div></details>
+    <div class="foot" id="board-foot"></div>
+  </div>
+</section>
+
+<section data-panel="red" hidden>
+  <div class="box">
+    <h3 class="vt" id="red-vt">Red flags</h3>
+    <p class="sub">Auditor / KMP / independent-director exits, regulator and tax actions, ED/CBI searches, defaults and insolvency, fraud, delayed results, rating downgrades, USFDA warnings, litigation, disruptions and pledge invocations · last 30 days.</p>
+    <details class="how"><summary>How to read this</summary><div>Sentiment-aware rules: a tax or legal order that the text says was <i>quashed, set aside, dropped or decided in the company's favour</i> is moved to "Favourable order / relief" instead. Retirements, completion of tenure and deaths are not counted as resignations. "% of mcap" sizes a demand or penalty against market value. Always read the filing; small penalties are routine for banks and NBFCs.</div></details>
+    <div class="split">
+      <div><div class="filters" id="red-f"></div><div id="red-t"><div class="skel"></div></div></div>
+      <div class="box" style="margin:0"><h4 style="margin:0 0 8px">Repeat names · 2+ red flags in 30 days</h4><div id="red-rep"></div></div>
+    </div>
+    <div class="foot">Source: NSE corporate announcements, SEBI SAST Reg 31 (pledge invocations).</div>
+  </div>
+</section>
+
+<section data-panel="special" hidden>
+  <div class="box">
+    <h3 class="vt" id="sp-vt">Special situations</h3>
+    <p class="sub">Buybacks, open offers, delistings, demergers, rights, preferential issues, QIPs, bonus and splits, with prices, ratios and record dates where the filing or NSE's corporate-action list states them.</p>
+    <details class="how"><summary>How to read this</summary><div>One row per company and event type, combining the filings (last 60 days) with NSE's corporate-action calendar (record / ex dates up to 60 days ahead). Price and ratio are pulled from the text by pattern ("at ₹112 per share", "1:1", "3 for every 8"), so check the filing before acting. "Size" is the issue or buyback amount; "% mcap" compares it to market value.</div></details>
+    <div id="sp-t"><div class="skel"></div></div>
+    <div class="foot">Source: NSE corporate announcements + NSE corporate actions.</div>
+  </div>
+</section>
+
+<section data-panel="meets" hidden>
+  <div class="box">
+    <h3 class="vt" id="mt-vt">Investor meets</h3>
+    <p class="sub">Analyst and institutional-investor meeting intimations: a footprint of which funds are spending time with which managements. Last 30 days.</p>
+    <details class="how"><summary>How to read this</summary><div>Fund names are read from NSE's summary and the first pages of the intimation PDF, then normalised (e.g. "SBI Funds Management Ltd" → SBI Mutual Fund). Brokers hosting a conference count too. Meeting a company is not buying it, but repeated meetings across a sector show where institutional attention is going. Tap a fund to filter the table.</div></details>
+    <div class="split">
+      <div class="box" style="margin:0"><h4 style="margin:0 0 8px" id="mt-fh">Most active funds · companies met (30D)</h4><div id="mt-funds"></div></div>
+      <div class="box" style="margin:0"><h4 style="margin:0 0 8px">Upcoming earnings calls</h4><div id="mt-calls" style="max-height:420px;overflow:auto"></div></div>
+    </div>
+    <div class="filters" id="mt-f" style="margin-top:12px"></div>
+    <div id="mt-t"><div class="skel"></div></div>
+    <div class="foot">Source: NSE corporate announcements ("Analysts/Institutional Investor Meet/Con. Call Updates").</div>
+  </div>
+</section>
+
+<section data-panel="surv" hidden>
+  <div class="box">
+    <h3 class="vt" id="sv-vt">Surveillance</h3>
+    <p class="sub">NSE ASM (short / long term), GSM and ESM entries, exits and stage changes, plus price-band revisions.</p>
+    <details class="how"><summary>How to read this</summary><div>Surveillance lists are snapshotted every night into this dashboard's own dated history, so entries, exits and stage moves are found by comparing consecutive snapshots (history starts on <b id="sv-start"></b>). Being on a list means extra margins or trade-for-trade settlement, not wrongdoing. Price-band files come from NSE archives for the last ~60 sessions; a band cut (e.g. 20% → 5%) usually follows a sharp move.</div></details>
+    <div class="kv" id="sv-kv"></div>
+    <div class="split">
+      <div><h4 style="margin:4px 0 8px">Entries, exits and stage changes</h4><div id="sv-ev"></div></div>
+      <div><h4 style="margin:4px 0 8px">Price-band revisions</h4><div id="sv-bd"></div></div>
+    </div>
+    <h4 style="margin:14px 0 8px">Currently under surveillance</h4>
+    <div id="sv-cur"></div>
+    <div class="foot">Source: NSE reportASM / reportGSM / reportESM, NSE eq_band_changes files.</div>
+  </div>
+</section>
+
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span id="srcline">Source: NSE corporate announcements, corporate actions, SEBI PIT / SAST disclosures, surveillance lists and price-band files · results from NSE XBRL · market cap from NSE</span></footer>
+</main>
+
+<div class="modal" id="modal"><div class="drawer" id="drawer"></div></div>
+
+<script src="data.js?v=202611281537"></script>
+<script src="../assets/universe.js?v=202611281537"></script>
+<script src="../assets/badges.js?v=202611281537"></script>
+<script src="../assets/kit.js?v=202611281537"></script>
+<script>
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const HASPK=!!window.PK;
+const capOK=s=>{try{return HASPK&&PK.capOK?PK.capOK(String(s)):true}catch(e){return true}};
+const capOn=()=>{try{return HASPK&&PK.capIsDefault?!PK.capIsDefault():false}catch(e){return false}};
+const capNote=()=>capOn()?`<div class="capnote">Filtered to <b>${esc(PK.capSummary())}</b> · <button type="button" class="linkbtn" data-capreset>reset</button></div>`:'';
+const badges=s=>{try{return HASPK&&PK.badges?PK.badges(String(s),{max:3})||'':''}catch(e){return ''}};
+const haptic=k=>{try{HASPK&&PK.haptic&&PK.haptic(k)}catch(e){}};
+const fd=s=>{if(!s)return'–';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})};
+const fdy=s=>{if(!s)return'–';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric'})};
+const cr=v=>v==null?'–':v>=100?'₹'+Math.round(v).toLocaleString('en-IN')+' Cr':v>=1?'₹'+v.toFixed(1)+' Cr':'₹'+Math.round(v*100)+' L';
+const pc=v=>v==null?'–':(v>=100?(v/100).toFixed(1)+'x':v.toFixed(1)+'%');
+const D=window.FR; let H=null, histP=null;
+const NM=s=>(D&&D.names[s])||(H&&H.names[s])||'';
+const M=t=>D.meta[t]||{g:'guidance',label:t,tone:0};
+const GORD=['results','orders','corporate','ownership','guidance','redflag'];
+function ago(n){const d=new Date(D.asof+'T00:00:00');d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)}
+function loadHist(){if(H)return Promise.resolve(H);if(histP)return histP;
+  histP=new Promise((res,rej)=>{const s=document.createElement('script');s.src='hist.js';s.onload=()=>{H=window.FR_HIST;res(H)};s.onerror=()=>rej(new Error('hist.js'));document.head.appendChild(s)});return histP}
+function count(el,v,fmt){if(HASPK&&PK.countUp)PK.countUp(el,v,{fmt:fmt||(x=>Math.round(x).toLocaleString('en-IN'))});else el.textContent=(fmt||(x=>Math.round(x).toLocaleString('en-IN')))(v)}
+function spark(vals,o){if(HASPK&&PK.spark)return PK.spark(vals,o);return ''}
+
+
+function init(){
+  $('#asof').innerHTML=`Filings up to <b>${fdy(D.asof)}</b> · built ${esc(D.built)} · ${D.window}-day window · ${D.sources.raw_days} days cached`;
+  const K=D.kpi;
+  const tiles=[
+    ['Filings on '+fd(D.asof),K.filings,`→ ${K.kept} kept after noise filter`],
+    ['Red flags · '+fd(D.asof),K.red,'auditor, KMP, regulator, default…'],
+    ['Order filings · '+fd(D.asof),K.orders,'wins, LoA/L1, cancellations'],
+    ['★ Big orders · 7D',K.stars7,'≥10% of TTM revenue'],
+    ['Investor meets · 7D',K.meets7,'analyst / institutional intimations'],
+  ];
+  $('#pulse').innerHTML=tiles.map((t,i)=>`<div class="pk" style="animation-delay:${i*45}ms"><div class="l">${t[0]}</div><div class="v" data-v="${t[1]}">0</div><div class="s">${t[2]}</div></div>`).join('');
+  $$('#pulse .v').forEach(el=>count(el,+el.dataset.v));
+  // noise strip
+  const N=D.noise.slice(-30); const mx=Math.max(1,...N.map(r=>r[1]));
+  const w=Math.min(300,N.length*9), bw=w/N.length;
+  const bars=N.map((r,i)=>`<g data-tip="${fd(r[0])}: ${r[1]} filings → ${r[3]} kept"><rect x="${i*bw+1}" y="${30-30*r[1]/mx}" width="${bw-2}" height="${30*r[1]/mx}" fill="#21443A" rx="1"/><rect x="${i*bw+1}" y="${30-30*r[3]/mx}" width="${bw-2}" height="${30*r[3]/mx}" fill="#2FE3B5" rx="1"/></g>`).join('');
+  const share=K.filings?Math.round(100*(1-K.kept/K.filings)):0;
+  $('#noise').innerHTML=`<svg width="${w}" height="30" viewBox="0 0 ${w} 30" role="img" aria-label="Daily filings vs kept">${bars}</svg>
+   <span><b>${K.filings.toLocaleString('en-IN')}</b> filings on ${fd(D.asof)} → <b>${K.kept}</b> kept (${share}% noise filtered: newspaper ads, trading-window notices, certificates, routine updates)</span>
+   <span>${D.window} days: <b>${K.total60.toLocaleString('en-IN')}</b> → <b>${K.kept60.toLocaleString('en-IN')}</b> · ${K.dups.toLocaleString('en-IN')} duplicates folded</span>`;
+  $$('#noise g').forEach(g=>{g.addEventListener('pointerenter',e=>tip(e,g.dataset.tip));g.addEventListener('click',e=>tip(e,g.dataset.tip))});
+  if(HASPK){try{PK.capFilter($('#capslot'),{onChange:rerender})}catch(e){} try{PK.press(document)}catch(e){}}
+  document.addEventListener('pk:cap',rerender);
+  document.addEventListener('click',e=>{if(e.target.closest('[data-capreset]')){PK.capSet(null)}});
+  const tabs=HASPK&&PK.tabs?PK.tabs($('#tabs'),{onChange:show,storeKey:'fr_tab'}):null;
+  if(!tabs){$$('#tabs button').forEach(b=>b.onclick=()=>{$$('#tabs button').forEach(x=>x.classList.toggle('on',x===b));$$('section[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==b.dataset.tab);show(b.dataset.tab)});show('feed')}
+  else show(tabs.get());
+  $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeM()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+  loadHist().then(()=>{if(F.win>7)renderFeed(); if(CUR==='board')renderBoard()}).catch(()=>{});
+  setTimeout(saveVisit,4000);
+}
+function tip(e,html){try{PK.tip.show(esc(html),e.clientX,e.clientY)}catch(x){}}
+let CUR='feed'; const done={};
+function show(name){CUR=name;({feed:renderFeed,board:renderBoard,red:renderRed,special:renderSpecial,meets:renderMeets,surv:renderSurv}[name]||(()=>{}))();done[name]=1}
+function rerender(){Object.keys(done).forEach(k=>{if(k===CUR)show(k);else delete done[k]})}
+
+// ---------------------------------------------------------------- last visit
+let LAST=null; try{LAST=localStorage.getItem('fr_lastvisit')}catch(e){}
+const itemTs=i=>i.d+' '+(i.tm||'00:00');
+function saveVisit(){try{const mx=D.feed.reduce((m,i)=>itemTs(i)>m?itemTs(i):m,'');if(mx)localStorage.setItem('fr_lastvisit',mx)}catch(e){}}
+
+// ---------------------------------------------------------------- feed
+const F={g:'all',win:1,star:false,hi:false,q:'',shown:120};
+function feedRows(){
+  const src=F.win>7&&H?H.items:D.feed;
+  const from=ago(F.win-1>0?F.win-1:0);
+  const q=F.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  return src.filter(i=>i.d>=(F.win===1?D.asof:from)&&(F.g==='all'||M(i.t).g===F.g)&&(!F.star||i.star)&&(!F.hi||i.c==='H')&&capOK(i.s)&&
+    (!q.length||q.every(w=>(i.s+' '+NM(i.s)+' '+i.h+' '+M(i.t).label).toLowerCase().includes(w))));
+}
+function feedFilters(){
+  const gs=[['all','All']].concat(GORD.map(g=>[g,D.groups[g]]));
+  const ws=[[1,'Latest day'],[3,'3D'],[7,'7D'],[30,'30D'],[60,'60D']];
+  $('#feed-f').innerHTML=`<span class="grp"><span class="lbl">Group</span>${gs.map(g=>`<button data-g="${g[0]}" class="${F.g===g[0]?'on':''}">${g[1]}</button>`).join('')}</span>
+   <span class="grp"><span class="lbl">Window</span>${ws.map(w=>`<button data-w="${w[0]}" class="${F.win===w[0]?'on':''}">${w[1]}</button>`).join('')}</span>
+   <span class="grp"><button data-star class="${F.star?'on':''}">★ Big orders</button><button data-hi class="${F.hi?'on':''}">High confidence</button></span>
+   <input type="search" id="feed-q" placeholder="Search stock, trigger, text…" value="${esc(F.q)}">`;
+  $('#feed-f').onclick=e=>{const b=e.target.closest('button');if(!b)return;haptic('select');
+    if(b.dataset.g)F.g=b.dataset.g; if(b.dataset.w){F.win=+b.dataset.w; if(F.win>7&&!H){$('#feed').innerHTML='<div class="skel"></div>';loadHist().then(renderFeed).catch(()=>{$('#feed').innerHTML='<div class="empty">History file unavailable.</div>'});}}
+    if(b.hasAttribute('data-star'))F.star=!F.star; if(b.hasAttribute('data-hi'))F.hi=!F.hi; F.shown=120; renderFeed()};
+  let t=null;$('#feed-q').oninput=e=>{clearTimeout(t);t=setTimeout(()=>{F.q=e.target.value;F.shown=120;renderFeedList()},180)};
+}
+function renderFeed(){feedFilters();renderFeedList()}
+function itemHTML(i,k,isNew){
+  const m=M(i.t);const st=i.star?`<span class="starb" title="Order ≥${i.star>1?25:10}% of TTM revenue">${'★'.repeat(i.star)}</span>`:'';
+  const tags=(i.tags||[]).map(t=>`<span class="chip">${esc(M(t).label)}</span>`).join(' ');
+  const sz=[i.a?`Amount ${cr(i.a)}`:'',i.pr?`${pc(i.pr)} of TTM revenue`:'',i.pm?`${pc(i.pm)} of market cap`:'',i.cp?`Counterparty: ${esc(i.cp)}`:''].filter(Boolean).join(' · ');
+  return `<div class="it ${isNew?'new':''}" data-k="${k}" style="animation-delay:${Math.min(k,12)*35}ms">
+   <div class="tm">${esc(i.tm||'')}${isNew?'<br><span class="newdot" title="New since your last visit"></span>':''}</div>
+   <div><div class="top"><span class="sy linkbtn" data-sym="${esc(i.s)}" style="text-decoration:none;color:var(--text)">${esc(i.s)}</span>${badges(i.s)}<span class="nm">${esc(NM(i.s))}</span>
+   <span class="chip g-${m.g}">${esc(m.label)}</span><span class="cf ${i.c}" title="Confidence">${i.c}</span>${i.dup?`<span class="chip" title="Similar filings folded">×${i.dup+1}</span>`:''}${st}</div>
+   <div class="hd">${esc(i.h)}</div>
+   <div class="det">${i.x?esc(i.x):''}${sz?`<div style="margin-top:4px;color:var(--text)">${sz}</div>`:''}${tags?`<div style="margin-top:4px">Also: ${tags}</div>`:''}<div style="margin-top:4px;color:var(--dim)">${esc(i.src||'NSE')} · ${fd(i.d)} ${esc(i.tm||'')}</div></div></div>
+   <div class="rt">${i.u?`<a class="pdf" href="${esc(i.u)}" target="_blank" rel="noopener">${/\.pdf$/i.test(i.u)?'NSE PDF ↗':'NSE ↗'}</a>`:''}</div></div>`;
+}
+let FEEDV=[];
+function renderFeedList(){
+  FEEDV=feedRows();
+  const all=F.win>7&&H?H.items:D.feed;
+  const lv=LAST; let html='',day='',marked=false;
+  const vis=FEEDV.slice(0,F.shown);
+  vis.forEach((i,k)=>{
+    if(i.d!==day){day=i.d;const n=FEEDV.filter(x=>x.d===day).length;const st=D.noise.find(r=>r[0]===day);html+=`<div class="day">${fdy(day)}<span>${n} shown${st?` · ${st[1]} filed → ${st[3]} kept`:''}</span></div>`}
+    const isNew=lv&&itemTs(i)>lv;
+    if(lv&&!isNew&&!marked&&k>0&&itemTs(vis[k-1])>lv){html+='<div class="lastvisit">since your last visit</div>';marked=true}
+    html+=itemHTML(i,k,isNew);
+  });
+  $('#feed-cap').innerHTML=capNote();
+  $('#feed').innerHTML=vis.length?html+(FEEDV.length>F.shown?`<div class="more"><button id="feed-more">Show ${Math.min(150,FEEDV.length-F.shown)} more of ${FEEDV.length-F.shown}</button></div>`:''):'<div class="empty">No filings match these filters.</div>';
+  const mo=$('#feed-more');if(mo)mo.onclick=()=>{F.shown+=150;renderFeedList()};
+  $('#feed').onclick=e=>{const sy=e.target.closest('[data-sym]');if(sy){e.stopPropagation();openSym(sy.dataset.sym);return}
+    if(e.target.closest('a'))return;const r=e.target.closest('.it');if(r){r.classList.toggle('open');haptic('tap')}};
+  // verdict
+  const by=g=>FEEDV.filter(i=>M(i.t).g===g).length;
+  const stars=FEEDV.filter(i=>i.star).length, nnew=lv?FEEDV.filter(i=>itemTs(i)>lv).length:0;
+  const span=F.win===1?fd(D.asof):`last ${F.win} days`;
+  $('#feed-vt').innerHTML=FEEDV.length?`${esc(span)}: <span class="hl">${by('orders')} order filings</span>${stars?` (${stars} ★ big vs size)`:''}, <span class="hr">${by('redflag')} red flags</span>, ${by('results')} results and ${by('corporate')} corporate actions`:`${esc(span)}: nothing matches these filters`;
+  $('#feed-sub').textContent=`${FEEDV.length.toLocaleString('en-IN')} kept filings${nnew?` · ${nnew} new since your last visit`:''}${F.win>7&&!H?' · loading history…':''}`;
+  $('#feed-foot').textContent=`Source: NSE corporate announcements (attachment text + NSE summary), SEBI PIT / SAST Reg 29 / Reg 31 disclosures · revenue: NSE XBRL results (TTM) · market cap: NSE ${D.sources.mcap||''} · as of ${fd(D.asof)}`;
+}
+
+// ---------------------------------------------------------------- board
+let BSEL=null;
+function boardCounts(){
+  if(!H||!capOn())return D.board;
+  const a7=ago(7),a30=ago(30);const m={};
+  D.board.forEach(b=>m[b.t]={...b,c7:0,c30:0,c60:0,wk:new Array(9).fill(0)});
+  H.items.forEach(i=>{if(!capOK(i.s))return;const b=m[i.t];if(!b)return;b.c60++;if(i.d>a7)b.c7++;if(i.d>a30)b.c30++;
+    const w=Math.floor((new Date(D.asof)-new Date(i.d))/864e5/7);if(w>=0&&w<9)b.wk[8-w]++});
+  return Object.values(m);
+}
+function renderBoard(){
+  const B=boardCounts();
+  const top=[...B].sort((a,b)=>b.c30-a.c30)[0];
+  const rf=B.filter(b=>b.g==='redflag'), r7=rf.reduce((s,b)=>s+b.c7,0), r30=rf.reduce((s,b)=>s+b.c30,0);
+  const pace=r30?r7/(r30/30*7):0;
+  const hot=[...B].filter(b=>b.c30>=4).map(b=>({b,r:b.c7/(b.c30/30*7)})).sort((x,y)=>y.r-x.r)[0];
+  $('#board-vt').innerHTML=`Busiest trigger in 30 days: <span class="hl">${esc(top.label)}</span> (${top.c30.toLocaleString('en-IN')}); red flags are running at <span class="${pace>1.15?'hr':'hl'}">${pace.toFixed(1)}x</span> their 30-day pace this week`+(hot&&hot.r>1.5?`; ${esc(hot.b.label)} is heating up (${hot.r.toFixed(1)}x)`:'');
+  $('#board-cap').innerHTML=capOn()?(H?capNote():`<div class="capnote">Counts use all stocks until the history loads · <button class="linkbtn" data-capreset>reset filter</button></div>`):'';
+  let html='';
+  GORD.forEach(g=>{
+    const xs=B.filter(b=>b.g===g).sort((a,b)=>b.c30-a.c30);
+    html+=`<div class="gh"><span class="chip g-${g}">${esc(D.groups[g])}</span><span class="mu" style="font-weight:500;letter-spacing:0;text-transform:none">${xs.reduce((s,b)=>s+b.c30,0).toLocaleString('en-IN')} in 30D</span></div><div class="bgrid">`;
+    xs.forEach((b,k)=>{html+=`<div class="tile ${b.tone<0?'neg':''} ${BSEL===b.t?'sel':''}" data-t="${b.t}" style="animation-delay:${k*30}ms" role="button" tabindex="0">
+      <div class="tl"><span>${esc(b.label)}</span>${b.tone>0?'<span class="up">▲</span>':b.tone<0?'<span class="dn">▼</span>':''}</div>
+      <div class="nums"><div><b>${b.c7}</b>7D</div><div><b>${b.c30}</b>30D</div><div><b>${b.c60}</b>60D</div><span class="sp">${spark(b.wk,{w:70,h:22,color:b.tone<0?'#FF5C6C':'#2FE3B5'})}</span></div></div>`});
+    html+='</div>';
+  });
+  $('#board').innerHTML=html;
+  $('#board').onclick=e=>{const t=e.target.closest('.tile');if(!t)return;haptic('select');BSEL=t.dataset.t;$$('.tile').forEach(x=>x.classList.toggle('sel',x===t));drill(BSEL)};
+  $('#board').onkeydown=e=>{if(e.key==='Enter'){const t=e.target.closest('.tile');if(t)t.click()}};
+  $('#rules').innerHTML='<table class="pk-table" style="width:100%"><thead><tr><th>Trigger</th><th>Group</th><th>NSE category regex</th><th>Text regex</th><th>Mode</th><th>Veto</th></tr></thead><tbody>'+
+    D.rules.map(r=>`<tr><td>${esc(r.label)}</td><td>${esc(D.groups[r.g])}</td><td style="white-space:normal;max-width:200px;word-break:break-all">${esc(r.desc||'–')}</td><td style="white-space:normal;max-width:360px;word-break:break-all">${esc(r.body||'–')}</td><td>${esc(r.mode)}</td><td style="white-space:normal;max-width:240px;word-break:break-all">${esc(r.veto||'–')}</td></tr>`).join('')+'</tbody></table>'+
+    '<p>Computed triggers: results labels come from the quarter in NSE XBRL filed within 4 days (Strong / Weak, loss↔profit vs the same quarter a year ago); promoter buys/sells from SEBI PIT market trades; pledges from SAST Reg 31; stake changes from SAST Reg 29. Mode d = category alone, b = text alone, db = both, d|b = either.</p>';
+  $('#board-foot').textContent=`Source: NSE corporate announcements, ${D.window}-day window to ${fd(D.asof)}.`;
+  if(BSEL)drill(BSEL);
+}
+function drill(t){
+  const el=$('#drill');el.hidden=false;el.innerHTML='<div class="skel"></div>';
+  loadHist().then(()=>{
+    const xs=H.items.filter(i=>i.t===t&&capOK(i.s));
+    el.innerHTML=`<h4 style="margin:0 0 8px;display:flex;justify-content:space-between;gap:8px"><span>${esc(M(t).label)} · ${xs.length} filings in ${D.window} days</span><button onclick="document.getElementById('drill').hidden=true">Close</button></h4>${capNote()}<div id="drill-t"></div>`;
+    mkTable('#drill-t',xs.map(i=>({...i,n:NM(i.s)})),'filings_'+t,[]);
+    el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  }).catch(()=>{el.innerHTML='<div class="empty">History unavailable.</div>'});
+}
+function mkTable(sel,rows,name,presets,extraCols){
+  const cols=[{key:'d',label:'Date',fmt:(v,r)=>fd(v)+(r.tm?`<span class="sub">${esc(r.tm)}</span>`:'')},
+    {key:'s',label:'Stock',fmt:(v,r)=>`<b class="linkbtn" data-sym="${esc(v)}" style="text-decoration:none;color:var(--text)">${esc(v)}</b> ${badges(v)}<span class="sub">${esc(r.n||NM(v))}</span>`},
+    {key:'t',label:'Trigger',fmt:v=>`<span class="chip g-${M(v).g}">${esc(M(v).label)}</span>`,sortVal:r=>M(r.t).label,csvVal:r=>M(r.t).label},
+    {key:'h',label:'Headline',fmt:(v,r)=>`<span style="white-space:normal;display:block;min-width:240px;max-width:520px">${r.star?'<span class="starb">'+'★'.repeat(r.star)+'</span> ':''}${esc(v)}</span>`},
+    {key:'a',label:'₹ Cr',num:true,fmt:v=>v==null?'–':cr(v)},
+    {key:'pm',label:'% mcap',num:true,fmt:v=>v==null?'–':pc(v)},
+    {key:'c',label:'Conf',align:'c',fmt:v=>`<span class="cf ${v}">${v}</span>`},
+    {key:'u',label:'Link',sortable:false,fmt:v=>v?`<a href="${esc(v)}" target="_blank" rel="noopener" style="color:var(--acc)">↗</a>`:'',csvVal:r=>r.u}].concat(extraCols||[]);
+  if(!HASPK||!PK.table){$(sel).innerHTML='<div class="empty">Table component unavailable.</div>';return}
+  const t=PK.table($(sel),{columns:cols,rows,sortKey:'d',sortDir:'desc',search:true,pageSize:60,csvName:name,symbolKey:'s',capKey:'s',presets,countLabel:'filings',placeholder:'Search…'});
+  $(sel).addEventListener('click',e=>{const s=e.target.closest('[data-sym]');if(s)openSym(s.dataset.sym)});
+  return t;
+}
+
+// ---------------------------------------------------------------- red flags
+let REDF='all';
+function renderRed(){
+  const rows=D.red.filter(i=>capOK(i.s)).map(i=>({...i,n:NM(i.s)}));
+  const cnt={};rows.forEach(i=>cnt[i.t]=(cnt[i.t]||0)+1);
+  const types=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]);
+  const wk=rows.filter(i=>i.d>ago(7)).length;
+  const serious=['rf_auditor','rf_fraud','rf_default','rf_ed','rf_usfda','rf_rating_dn','rf_resdelay','rf_invoke','rf_qualified'];
+  const ns=rows.filter(i=>serious.includes(i.t)).length;
+  $('#red-vt').innerHTML=rows.length?`<span class="hr">${rows.length} red flags</span> in 30 days (${wk} this week); ${ns} are the serious kind (auditor exits, fraud, defaults, searches, downgrades, USFDA, delayed results)`:'No red flags in the last 30 days for this filter';
+  const presets=[{label:'Serious only',filter:r=>serious.includes(r.t)},{label:'This week',filter:r=>r.d>ago(7)},{label:'Sized ≥0.5% mcap',filter:r=>(r.pm||0)>=0.5}]
+    .concat(types.slice(0,8).map(t=>({label:`${M(t).label} (${cnt[t]})`,filter:r=>r.t===t})));
+  $('#red-f').innerHTML=capNote()||'<span class="note mu" style="font-size:12px">Tap a preset to narrow by flag type.</span>';
+  mkTable('#red-t',rows,'red_flags',presets);
+  const by={};rows.forEach(i=>{(by[i.s]=by[i.s]||[]).push(i)});
+  const rep=Object.entries(by).filter(([s,v])=>v.length>=2).sort((a,b)=>b[1].length-a[1].length).slice(0,25);
+  $('#red-rep').innerHTML=rep.length?rep.map(([s,v])=>`<div class="li" data-sym="${esc(s)}"><div class="a"><b>${esc(s)}</b> ${badges(s)}<div>${esc([...new Set(v.map(i=>M(i.t).label))].join(' · '))}</div></div><div class="b dn">${v.length}</div></div>`).join(''):'<div class="empty">No stock has more than one red flag.</div>';
+  $('#red-rep').onclick=e=>{const l=e.target.closest('[data-sym]');if(l)openSym(l.dataset.sym)};
+}
+
+// ---------------------------------------------------------------- special situations
+function renderSpecial(){
+  const today=new Date().toISOString().slice(0,10);
+  const rows=D.specials.filter(g=>capOK(g.s)).map(g=>({...g,n:g.n||NM(g.s),stat:g.status}));
+  const up=rows.filter(g=>g.rec&&g.rec>=today&&g.rec<=new Date(Date.now()+30*864e5).toISOString().slice(0,10));
+  const bb=rows.filter(g=>g.t==='corp_buyback').length;
+  $('#sp-vt').innerHTML=`<span class="hl">${up.length}</span> special situations have a record date in the next 30 days; ${bb} buybacks and ${rows.filter(g=>g.t==='own_openoffer'||g.t==='own_delist').length} open offers / delistings in the window`;
+  const cols=[{key:'s',label:'Stock',fmt:(v,r)=>`<b class="linkbtn" data-sym="${esc(v)}" style="text-decoration:none;color:var(--text)">${esc(v)}</b> ${badges(v)}<span class="sub">${esc(r.n)}</span>`},
+    {key:'label',label:'Type',fmt:(v,r)=>`<span class="chip g-${M(r.t).g}">${esc(v)}</span>`},
+    {key:'ratio',label:'Ratio',align:'c'},{key:'px',label:'Price ₹',num:true,fmt:v=>v==null?'–':'₹'+v.toLocaleString('en-IN')},
+    {key:'a',label:'Size',num:true,fmt:v=>v==null?'–':cr(v)},{key:'pm',label:'% mcap',num:true,fmt:v=>v==null?'–':pc(v)},
+    {key:'rec',label:'Record date',fmt:(v,r)=>v?`<span class="${v>=today?'up':'mu'}">${fd(v)}</span>`:'–'},
+    {key:'stat',label:'Status',fmt:v=>`<span class="chip ${v==='upcoming'?'g-orders':''}">${esc(v)}</span>`},
+    {key:'h',label:'Latest filing',fmt:(v,r)=>`<span style="white-space:normal;display:block;min-width:220px;max-width:440px">${esc(v)}${r.ca?`<span class="sub">NSE action: ${esc(r.ca)}</span>`:''}</span>`},
+    {key:'last',label:'Filed',fmt:v=>fd(v)},{key:'u',label:'Link',sortable:false,fmt:v=>v?`<a href="${esc(v)}" target="_blank" rel="noopener" style="color:var(--acc)">↗</a>`:''}];
+  const types=[...new Set(rows.map(r=>r.label))];
+  if(!HASPK||!PK.table){$('#sp-t').innerHTML='<div class="empty">Table component unavailable.</div>';return}
+  PK.table($('#sp-t'),{columns:cols,rows,sortKey:'rec',sortDir:'desc',pageSize:60,csvName:'special_situations',capKey:'s',symbolKey:'s',countLabel:'situations',
+    presets:[{label:'Upcoming record date',filter:r=>r.rec&&r.rec>=today}].concat(types.map(t=>({label:t,filter:r=>r.label===t})))});
+  $('#sp-t').onclick=e=>{const s=e.target.closest('[data-sym]');if(s)openSym(s.dataset.sym)};
+}
+
+// ---------------------------------------------------------------- investor meets
+let FUNDSEL=null;
+function renderMeets(){
+  const rows=D.meets.rows.filter(m=>capOK(m.s));
+  const fm={};rows.forEach(m=>m.funds.forEach(f=>{(fm[f]=fm[f]||new Set()).add(m.s)}));
+  const funds=Object.entries(fm).map(([f,s])=>({f,n:s.size,cos:[...s]})).sort((a,b)=>b.n-a.n);
+  const top=funds[0];
+  const named=rows.filter(m=>m.funds.length).length;
+  $('#mt-vt').innerHTML=top?`<span class="hl">${esc(top.f)}</span> met the most managements: ${top.n} companies in 30 days · ${rows.length} intimations, ${named} name the investors`:`${rows.length} meet intimations in 30 days`;
+  const items=funds.slice(0,15).map(f=>({label:f.f,value:f.n,tip:`${f.f}: ${f.n} companies · ${f.cos.slice(0,12).join(', ')}${f.cos.length>12?'…':''}`}));
+  if(HASPK&&PK.svgBars&&items.length)PK.svgBars($('#mt-funds'),items,{fmt:v=>v+' cos',labelW:170,barH:20,gap:6,onClick:it=>{FUNDSEL=FUNDSEL===it.label?null:it.label;haptic('select');meetTable(rows)}});
+  else $('#mt-funds').innerHTML=funds.slice(0,15).map(f=>`<div class="li"><div class="a"><b>${esc(f.f)}</b></div><div class="b">${f.n}</div></div>`).join('')||'<div class="empty">No named funds yet.</div>';
+  const today=new Date().toISOString().slice(0,10);
+  const calls=D.meets.concalls.filter(c=>capOK(c.s));
+  $('#mt-calls').innerHTML=calls.length?calls.map(c=>`<div class="li" data-sym="${esc(c.s)}"><div class="a"><b>${esc(c.s)}</b> ${badges(c.s)}<div>${esc(NM(c.s)||c.n)}</div></div><div class="b ${c.md>=today?'up':'mu'}">${fd(c.md)}</div></div>`).join(''):'<div class="empty">No upcoming calls announced.</div>';
+  $('#mt-calls').onclick=e=>{const l=e.target.closest('[data-sym]');if(l)openSym(l.dataset.sym)};
+  meetTable(rows);
+}
+function meetTable(rows){
+  const v=FUNDSEL?rows.filter(m=>m.funds.includes(FUNDSEL)):rows;
+  $('#mt-f').innerHTML=(FUNDSEL?`<span>Showing meetings with <b class="up">${esc(FUNDSEL)}</b></span><button id="mt-clear">Show all</button>`:'<span class="mu" style="font-size:12px">Tap a fund bar or a fund chip to filter.</span>')+capNote();
+  const c=$('#mt-clear');if(c)c.onclick=()=>{FUNDSEL=null;meetTable(rows)};
+  const cols=[{key:'d',label:'Filed',fmt:v=>fd(v)},{key:'md',label:'Meet date',fmt:v=>v?fd(v):'–'},
+    {key:'s',label:'Stock',fmt:(v,r)=>`<b class="linkbtn" data-sym="${esc(v)}" style="text-decoration:none;color:var(--text)">${esc(v)}</b> ${badges(v)}<span class="sub">${esc(NM(v)||r.n)}</span>`},
+    {key:'t',label:'Type',fmt:v=>v==='g_concall'?'<span class="chip g-results">Earnings call</span>':'<span class="chip g-guidance">Meet</span>',csvVal:r=>r.t==='g_concall'?'call':'meet'},
+    {key:'fs',label:'Investors named',fmt:(v,r)=>`<span style="white-space:normal;display:block;min-width:200px;max-width:520px">${r.funds.length?r.funds.map(f=>`<span class="fund" data-fund="${esc(f)}">${esc(f)}</span>`).join(''):'<span class="mu">not named</span>'}</span>`,csvVal:r=>r.funds.join('; '),sortVal:r=>r.funds.length},
+    {key:'mode',label:'Mode',fmt:v=>esc(v||'–')},{key:'u',label:'Link',sortable:false,fmt:v=>v?`<a href="${esc(v)}" target="_blank" rel="noopener" style="color:var(--acc)">↗</a>`:''}];
+  if(!HASPK||!PK.table)return;
+  PK.table($('#mt-t'),{columns:cols,rows:v.map(m=>({...m,fs:m.funds.join(' ')})),sortKey:'d',sortDir:'desc',pageSize:60,csvName:'investor_meets',capKey:'s',symbolKey:'s',countLabel:'meets',
+    presets:[{label:'Investors named',filter:r=>r.funds.length>0},{label:'Earnings calls',filter:r=>r.t==='g_concall'},{label:'Upcoming',filter:r=>r.md&&r.md>=new Date().toISOString().slice(0,10)}]});
+  $('#mt-t').onclick=e=>{const f=e.target.closest('[data-fund]');if(f){FUNDSEL=f.dataset.fund;haptic('select');meetTable(rows);return}const s=e.target.closest('[data-sym]');if(s)openSym(s.dataset.sym)};
+}
+
+// ---------------------------------------------------------------- surveillance
+function renderSurv(){
+  const S=D.surv; const L=S.lists;
+  $('#sv-start').textContent=S.snap_dates.length?fdy(S.snap_dates[0]):'–';
+  const cur=S.current.filter(c=>capOK(c.s));
+  const per={};cur.forEach(c=>per[c.l]=(per[c.l]||0)+1);
+  $('#sv-kv').innerHTML=Object.keys(L).map(l=>`<div><span>${esc(L[l])}</span><b data-v="${per[l]||0}">0</b></div>`).join('');
+  $$('#sv-kv b').forEach(b=>count(b,+b.dataset.v));
+  const ev=S.events.filter(e=>capOK(e.s));
+  const last=S.snap_dates[S.snap_dates.length-1], prev=S.snap_dates[S.snap_dates.length-2];
+  const evl=ev.filter(e=>e.d===last);
+  const bd5=S.bands.filter(b=>capOK(b.s)&&b.d>=(S.band_dates[S.band_dates.length-5]||''));
+  const cuts=bd5.filter(b=>b.to<b.from).length;
+  $('#sv-vt').innerHTML=prev?`Since ${fd(prev)}: <span class="hr">${evl.filter(e=>e.ev==='entry').length} entries</span>, <span class="hl">${evl.filter(e=>e.ev==='exit').length} exits</span>, ${evl.filter(e=>e.ev==='stage').length} stage changes · ${bd5.length} price-band revisions in 5 sessions (${cuts} cuts)`
+    :`${cur.length} stocks under surveillance today · ${bd5.length} price-band revisions in 5 sessions (${cuts} cuts) · entry/exit history builds from ${fd(S.snap_dates[0])}`;
+  const ecols=[{key:'d',label:'Date',fmt:v=>fd(v)},{key:'s',label:'Stock',fmt:v=>`<b class="linkbtn" data-sym="${esc(v)}" style="text-decoration:none;color:var(--text)">${esc(v)}</b> ${badges(v)}`},
+    {key:'l',label:'List',fmt:v=>esc(L[v]||v)},{key:'ev',label:'Event',fmt:(v,r)=>`<span class="${v==='entry'?'dn':v==='exit'?'up':'am'}">${v==='stage'?esc(r.from||'')+' → '+esc(r.st):esc(v)}</span>`},
+    {key:'st',label:'Stage',fmt:v=>esc(v||'–')}];
+  if(HASPK&&PK.table){
+    if(ev.length)PK.table($('#sv-ev'),{columns:ecols,rows:ev,sortKey:'d',sortDir:'desc',pageSize:40,csvName:'surveillance_events',capKey:'s',countLabel:'events',presets:[{label:'Entries',filter:r=>r.ev==='entry'},{label:'Exits',filter:r=>r.ev==='exit'},{label:'Stage changes',filter:r=>r.ev==='stage'}]});
+    else $('#sv-ev').innerHTML=`<div class="empty">Only ${S.snap_dates.length} snapshot${S.snap_dates.length===1?'':'s'} so far. Entries and exits appear from the next nightly run.</div>`;
+    const bcols=[{key:'d',label:'Effective',fmt:v=>fd(v)},{key:'s',label:'Stock',fmt:(v,r)=>`<b class="linkbtn" data-sym="${esc(v)}" style="text-decoration:none;color:var(--text)">${esc(v)}</b> ${badges(v)}<span class="sub">${esc(r.ser)}</span>`},
+      {key:'from',label:'From',num:true,fmt:v=>v+'%'},{key:'to',label:'To',num:true,fmt:(v,r)=>`<span class="${v<r.from?'dn':'up'}">${v}%</span>`},
+      {key:'n',label:'Revisions 60D',num:true}];
+    const bn={};S.bands.forEach(b=>bn[b.s]=(bn[b.s]||0)+1);
+    PK.table($('#sv-bd'),{columns:bcols,rows:S.bands.map(b=>({...b,n:bn[b.s]})),sortKey:'d',sortDir:'desc',pageSize:40,csvName:'price_bands',capKey:'s',countLabel:'revisions',
+      presets:[{label:'Cuts',filter:r=>r.to<r.from},{label:'Raises',filter:r=>r.to>r.from},{label:'3+ revisions',filter:r=>r.n>=3}]});
+    const ccols=[{key:'s',label:'Stock',fmt:v=>`<b class="linkbtn" data-sym="${esc(v)}" style="text-decoration:none;color:var(--text)">${esc(v)}</b> ${badges(v)}<span class="sub">${esc(NM(v))}</span>`},
+      {key:'l',label:'List',fmt:v=>esc(L[v]||v)},{key:'st',label:'Stage',fmt:v=>`<span class="stg">${esc(v||'–')}</span>`},{key:'since',label:'Since (our history)',fmt:v=>fd(v)},
+      {key:'hist',label:'Stage history',fmt:(v,r)=>`<span style="white-space:normal;font-size:11.5px;color:var(--muted)">${esc(((S.hist[r.s]||[]).map(h=>fd(h[0])+' '+(L[h[1]]||h[1])+' '+h[2])).join(' → ')||'–')}</span>`,csvVal:r=>((S.hist[r.s]||[]).map(h=>h.join(' '))).join(' > ')}];
+    PK.table($('#sv-cur'),{columns:ccols,rows:S.current.map(c=>({...c,hist:''})),sortKey:'l',sortDir:'asc',pageSize:60,csvName:'surveillance_current',capKey:'s',countLabel:'entries',
+      presets:Object.keys(L).map(l=>({label:L[l],filter:r=>r.l===l})).concat([{label:'Stage II+',filter:r=>/II|III|IV/.test(r.st||'')}])});
+  }
+  ['#sv-ev','#sv-bd','#sv-cur'].forEach(s=>$(s).onclick=e=>{const x=e.target.closest('[data-sym]');if(x)openSym(x.dataset.sym)});
+}
+
+// ---------------------------------------------------------------- per-stock drawer
+function openSym(s){
+  haptic('tap');
+  $('#drawer').innerHTML=`<div class="mhead"><div><div class="eb" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)">${D.window}-day filing history</div><h2>${esc(s)} ${badges(s)}</h2><div class="mu">${esc(NM(s))}</div></div><button class="x" aria-label="Close" onclick="closeM()">✕</button></div><div id="dr-b"><div class="skel"></div></div>`;
+  $('#modal').classList.add('open');
+  loadHist().then(()=>{
+    const xs=H.items.filter(i=>i.s===s);
+    const by={};xs.forEach(i=>{const g=M(i.t).g;by[g]=(by[g]||0)+1});
+    $('#dr-b').innerHTML=`<div class="kv">${GORD.map(g=>`<div><span>${esc(D.groups[g])}</span><b class="${g==='redflag'&&by[g]?'dn':''}">${by[g]||0}</b></div>`).join('')}</div>`+
+      (xs.length?xs.map((i,k)=>itemHTML(i,k,false)).join(''):'<div class="empty">No classified filings in the window.</div>');
+    $('#dr-b').onclick=e=>{if(e.target.closest('a'))return;const r=e.target.closest('.it');if(r)r.classList.toggle('open')};
+  }).catch(()=>{$('#dr-b').innerHTML='<div class="empty">History unavailable.</div>'});
+}
+function closeM(){$('#modal').classList.remove('open')}
+if(!D){$('#asof').textContent='Data unavailable: data.js did not load.';$('#feed').innerHTML='<div class="empty">Source unavailable.</div>'}
+else init();
+</script>
+</body>
+</html>

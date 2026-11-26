@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Watchlist · Pratham Gupta</title>
+<meta name="description" content="Your own watchlist, saved only in your browser: stage, RS, APEX, risk badges and the latest events for your stocks, a private portfolio health check and a weekly digest. Nothing is uploaded. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<meta name="theme-color" content="#030806">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kit.css?v=202611281537">
+<style>
+:root{--bg:#030806;--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sage:#8EC3A9;
+--sky:#5AA9F0;--lav:#A78BFA;--slate:#8A9690;--teal:#3E6B5E;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--text);font:14px/1.5 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+a{color:var(--acc2)}
+header{display:flex;align-items:center;gap:16px;padding:10px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:20}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:8px 13px;transition:all .2s;white-space:nowrap;min-height:40px;display:inline-flex;align-items:center}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover;flex:none}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.capf:empty{display:none}.capf{margin-left:auto}.capf+nav.tb{margin-left:0}
+nav.tb{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+nav.tb::-webkit-scrollbar{display:none}
+nav.tb button{border:0;border-radius:999px;background:transparent;color:var(--muted);padding:8px 15px;min-height:40px;font:600 13px var(--font);cursor:pointer;white-space:nowrap;transition:all .18s}
+nav.tb button:hover{color:var(--text)}
+nav.tb button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+main{padding:22px 24px 48px;max-width:1360px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.6vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 20px}
+.kp{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s cubic-bezier(.2,.8,.2,1) both;min-width:0}
+.kp::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.kp .l{font-size:11.5px;color:var(--muted)}
+.kp .v{font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kp .s{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.up{color:var(--up)}.dn{color:var(--dn)}.am{color:var(--amber)}.mut{color:var(--muted)}.dim{color:var(--dim)}
+.sec{margin-top:18px}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0;position:relative;
+ animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+.box .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.verdict{font-size:15px;font-weight:650;line-height:1.35;margin:0 0 8px}
+.verdict b{color:var(--acc)}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+.chip{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;min-height:40px;font:500 13px var(--font);cursor:pointer;transition:all .18s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+.chip.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:650;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+.chip .n{opacity:.7;margin-left:5px;font-size:11.5px}
+.btn{background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:999px;padding:8px 14px;min-height:40px;font:600 13px var(--font);cursor:pointer;transition:all .18s;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--acc);transform:translateY(-1px)}
+.btn.pri{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;border-color:transparent;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+.btn.ghost{background:transparent;color:var(--muted)}
+.btn.sm{min-height:34px;padding:5px 11px;font-size:12px}
+details.how{margin-top:10px;border-top:1px dashed var(--line2);padding-top:8px;color:var(--muted);font-size:12.5px}
+details.how summary{cursor:pointer;color:var(--acc2);font-weight:600;min-height:40px;display:flex;align-items:center;list-style:none}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary::before{content:"+";display:inline-block;width:16px;font-weight:700}
+details.how[open] summary::before{content:"−"}
+details.how p{margin:6px 0}
+.src{color:var(--dim);font-size:11.5px;margin-top:10px}
+.skel{height:110px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+.skel.tall{height:320px}
+.unavail{border:1px dashed var(--line2);border-radius:12px;padding:14px;color:var(--muted);font-size:13px;background:rgba(10,23,19,.5)}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+[data-panel][hidden]{display:none!important}
+/* add box */
+.addwrap{position:relative;flex:1 1 320px;min-width:0}
+.addin{width:100%;background:#07110D;border:1px solid var(--line2);border-radius:999px;color:var(--text);font:500 15px var(--font);padding:11px 18px 11px 42px;min-height:46px;outline:none;transition:border-color .2s,box-shadow .2s}
+.addin:focus{border-color:var(--acc);box-shadow:0 0 0 4px rgba(47,227,181,.12)}
+.addwrap .ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--acc);font-size:16px;pointer-events:none}
+.ac{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#08130F;border:1px solid var(--line2);border-radius:14px;box-shadow:0 24px 60px -20px rgba(0,0,0,.8);z-index:30;overflow:hidden;animation:pop .16s ease both}
+.ac[hidden]{display:none}
+.ac button{display:flex;width:100%;align-items:center;gap:10px;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--text);padding:10px 14px;min-height:48px;cursor:pointer;font:500 13.5px var(--font)}
+.ac button:last-child{border-bottom:0}
+.ac button.sel,.ac button:hover{background:rgba(47,227,181,.08)}
+.ac .sy{font-weight:700;min-width:96px}.ac .nm{flex:1;min-width:0;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac .px{color:var(--muted);font-size:12px;white-space:nowrap}
+.ac .have{color:var(--acc);font-size:12px}
+.ac mark{background:none;color:var(--acc)}
+.addbtn{position:relative;overflow:visible}
+.burst{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--acc);pointer-events:none;animation:burst .6s ease-out forwards}
+@keyframes burst{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,#0E2A21,#0A1713);border:1px solid rgba(47,227,181,.5);color:var(--text);border-radius:999px;padding:11px 18px;font-weight:600;box-shadow:0 18px 40px -12px rgba(47,227,181,.35);z-index:60;opacity:0;transition:all .28s cubic-bezier(.2,.8,.2,1);max-width:calc(100% - 32px);display:flex;gap:10px;align-items:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast .star{color:var(--acc);font-size:18px;display:inline-block;animation:spin .6s ease}
+.toast button{background:none;border:0;color:var(--acc2);font:600 13px var(--font);cursor:pointer;min-height:32px}
+@keyframes spin{from{transform:scale(.2) rotate(-120deg)}to{transform:none}}
+tr.flash td{animation:flash 1.6s ease}
+@keyframes flash{0%{background:rgba(47,227,181,.32)}100%{background:transparent}}
+.lists{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.stk{display:flex;flex-direction:column;min-width:0}
+.stk a.sy{font-weight:700;color:var(--text);text-decoration:none}
+.stk a.sy:hover{color:var(--acc)}
+.stk .nm2{color:var(--dim);font-size:11.5px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stg{display:inline-block;min-width:24px;text-align:center;border-radius:6px;padding:1px 6px;font-size:11.5px;font-weight:700}
+.stg.s1{background:rgba(138,150,144,.18);color:#C9D6D0}.stg.s2{background:rgba(47,227,181,.16);color:var(--acc)}.stg.s3{background:rgba(224,166,74,.16);color:var(--amber)}.stg.s4{background:rgba(255,92,108,.16);color:var(--dn)}
+.ev1{font-size:12px;color:var(--muted);max-width:260px;white-space:normal;line-height:1.35;display:block}
+.ev1 .dt{color:var(--dim);margin-right:4px}
+.rm{background:transparent;border:1px solid var(--line2);color:var(--dim);border-radius:999px;width:34px;height:34px;cursor:pointer;font-size:15px;line-height:1}
+.rm:hover{color:var(--dn);border-color:var(--dn)}
+.empty{padding:36px 18px;text-align:center;color:var(--muted)}
+.empty .big{font-size:40px;color:var(--acc);display:block;margin-bottom:6px;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
+.ideas{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+textarea.in{width:100%;min-height:120px;background:#07110D;border:1px solid var(--line2);border-radius:12px;color:var(--text);font:13px/1.45 ui-monospace,Consolas,monospace;padding:12px;outline:none;resize:vertical}
+textarea.in:focus{border-color:var(--acc)}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(2,6,4,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal[hidden]{display:none}
+.modal .card{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line2);border-radius:18px;padding:18px;width:min(560px,100%);max-height:90vh;overflow:auto;animation:pop .22s cubic-bezier(.2,.8,.2,1) both}
+.modal h3{margin:0 0 6px;font-size:17px}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.flag{border:1px solid var(--line);border-radius:12px;padding:12px;background:rgba(7,17,13,.6)}
+.flag h4{margin:0 0 6px;font-size:13.5px}
+.flag ul{margin:0;padding:0;list-style:none}
+.flag li{display:flex;gap:8px;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid var(--line);font-size:13px}
+.flag li:first-child{border-top:0}
+.flag .why{color:var(--muted);font-size:12px;text-align:right}
+.wk{display:grid;gap:8px}
+.day{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:14px 0 2px}
+.evr{display:grid;grid-template-columns:110px 1fr auto;gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(7,17,13,.55);animation:rise .45s cubic-bezier(.2,.8,.2,1) both}
+.evr .s{font-weight:700}.evr .s a{color:var(--text);text-decoration:none}.evr .s a:hover{color:var(--acc)}
+.evr .t{font-size:13px;line-height:1.4}.evr .t a{color:inherit;text-decoration:none}.evr .t a:hover{color:var(--acc2)}
+.srcb{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid var(--line2);white-space:nowrap}
+.srcb.s2{color:var(--acc)}.srcb.ins{color:var(--lav)}.srcb.deal{color:var(--sky)}.srcb.ord{color:var(--amber)}.srcb.res{color:#C8FFE9}.srcb.fil{color:var(--sage)}.srcb.mf{color:#F0B5E0}
+.tone1{border-left:3px solid var(--acc)}.tone-1{border-left:3px solid var(--dn)}
+.hb{display:grid;grid-template-columns:150px 1fr 64px;gap:8px;align-items:center;font-size:12.5px;margin:5px 0}
+.hb .tr{background:rgba(47,227,181,.06);height:14px;border-radius:999px;overflow:hidden}
+.hb .f{height:100%;border-radius:999px;background:linear-gradient(90deg,#10B981,#2FE3B5);box-shadow:0 0 12px rgba(47,227,181,.35);transform-origin:left;animation:grow .8s cubic-bezier(.2,.8,.2,1) both}
+.hb .f.warn{background:linear-gradient(90deg,#B9822F,#E0A64A)}
+.hb .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes grow{from{transform:scaleX(0)}to{transform:none}}
+.pftbl{width:100%;border-collapse:collapse;font-size:13px}
+.pftbl th,.pftbl td{padding:8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.pftbl th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em;position:sticky;top:0;background:#08130F}
+.pftbl th:first-child,.pftbl td:first-child{text-align:left}
+.pftbl tbody tr:hover{background:rgba(47,227,181,.06)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.priv{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--acc2);border:1px solid rgba(47,227,181,.35);border-radius:999px;padding:4px 10px;background:rgba(47,227,181,.06)}
+.chk{display:inline-flex;gap:8px;align-items:center;color:var(--muted);font-size:13px;min-height:40px;cursor:pointer}
+.chk input{accent-color:#2FE3B5;width:18px;height:18px}
+.filtnote{font-size:12px;color:var(--muted);margin:4px 0 8px}
+.filtnote button{background:none;border:0;color:var(--acc2);cursor:pointer;font:600 12px var(--font);padding:0}
+.stagger>*{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.g3{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:8px 16px;gap:8px 10px}.back span{display:none}.back{padding:0 13px}.capf{margin-left:auto;flex:none}.me{flex:1 1 0;min-width:0}.me>div{min-width:0}.me .h{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.me img{width:32px;height:32px}nav.tb{margin-left:0;width:100%}nav.tb button{flex:1 0 auto;padding:8px 12px}
+ main{padding:16px 16px 40px}.g2,.g3{grid-template-columns:1fr}
+ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .kp:last-child{grid-column:span 2}.kp .v{font-size:21px}
+ .box{padding:14px}.verdict{font-size:14px}.evr{grid-template-columns:1fr auto}.evr .t{grid-column:1/-1;grid-row:2}.hb{grid-template-columns:100px 1fr 56px}
+ .ac .px{display:none}.ac .sy{min-width:80px}}
+@media (pointer:coarse),(max-width:760px){.pk-chip,.pk-btn,.pk-capbtn{min-height:40px;padding-top:8px;padding-bottom:8px}}
+@media (max-width:420px){.back{padding:6px 10px;font-size:12px}.me .t{font-size:15px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../" aria-label="All dashboards">←<span>&nbsp;All dashboards</span></a>
+  <div class="me"><img src="../assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">My Watchlist</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div id="capf" class="capf"></div>
+  <nav class="tb" id="tabs" aria-label="Sections">
+    <button data-tab="watch" class="on">Watchlist</button><button data-tab="portfolio">Portfolio Check</button><button data-tab="week">My Week</button>
+  </nav>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">Private · saved only in this browser</div>
+  <h1>Every stock you care about, <em>one glance.</em></h1>
+  <div class="asof" id="asof">Loading…</div></div>
+  <span class="priv" title="Your lists and holdings are stored in this browser's localStorage. Nothing is sent to any server.">🔒 Nothing is uploaded</span>
+</div>
+<div class="kpis" id="kpis"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+
+<!-- ============================== WATCHLIST -->
+<section data-panel="watch">
+  <div class="box">
+    <div class="row" style="margin-top:0">
+      <div class="lists" id="lists"></div>
+    </div>
+    <div class="row">
+      <div class="addwrap"><span class="ic">★</span>
+        <input id="addin" class="addin" type="text" autocomplete="off" spellcheck="false" placeholder="Add a stock: type a symbol or name (e.g. TCS, Polycab)" aria-label="Add a stock" aria-autocomplete="list" aria-controls="ac">
+        <div class="ac" id="ac" role="listbox" hidden></div>
+      </div>
+      <button class="btn pri addbtn" id="addbtn">★ Add</button>
+      <button class="btn" id="impbtn">Import</button>
+      <button class="btn" id="expbtn">Export / backup</button>
+    </div>
+    <p class="verdict" id="wl-verdict"></p>
+    <div id="wl-table"><div class="skel tall"></div></div>
+    <details class="how"><summary>How to read this</summary>
+      <p><b>Since added</b> compares today's close with the close on the day you added the stock (stored in your browser). <b>Stage</b> is the Weinstein stage on weekly closes (2 = advancing, 4 = declining) with weeks in that stage. <b>RS</b> is the RS Rating 1–99 (12-month weighted return ranked against all stocks), <b>EPS</b> the EPS Rating 1–99 and <b>APEX</b> the Stage 2 scanner's composite score (RS 30%, EPS 20%, industry group 20%, nearness to 52-week high 20%, A/D 10%). Badges flag ASM/GSM/ESM surveillance, F&amp;O ban, price-band changes, trade-to-trade, recent bulk/block deals, insider filings and results due. The sparkline shows the last 60 sessions.</p>
+      <p>Click a symbol to open its Stock 360 page. Lists live in this browser only: use <b>Export / backup</b> to move them to another device.</p>
+    </details>
+    <div class="src" id="wl-src"></div>
+  </div>
+</section>
+
+<!-- ============================== PORTFOLIO -->
+<section data-panel="portfolio" hidden>
+  <div class="box">
+    <div class="k">Your holdings · processed only in this browser</div>
+    <p class="verdict" style="font-weight:500;color:var(--muted)">Paste one holding per line as <b style="color:var(--text)">symbol, quantity, average cost</b>, or upload a broker CSV (columns named like Symbol / Instrument, Qty / Quantity, Avg cost / Average price are detected).</p>
+    <textarea class="in" id="pfin" placeholder="RELIANCE, 50, 1210&#10;TCS, 10, 3550&#10;HDFCBANK 25 1650"></textarea>
+    <div class="row">
+      <button class="btn pri" id="pfgo">Check portfolio</button>
+      <label class="btn" for="pffile" style="cursor:pointer">Upload CSV / TXT<input type="file" id="pffile" accept=".csv,.txt,text/csv,text/plain" hidden></label>
+      <button class="btn ghost" id="pfsample">Try a sample</button>
+      <button class="btn ghost" id="pfclear">Clear</button>
+      <label class="chk"><input type="checkbox" id="pfremember" checked> Remember on this device</label>
+    </div>
+    <div id="pfmsg" class="filtnote"></div>
+  </div>
+  <div id="pfout"></div>
+</section>
+
+<!-- ============================== MY WEEK -->
+<section data-panel="week" hidden>
+  <div class="box">
+    <div class="k">My week</div>
+    <p class="verdict" id="wk-verdict">Loading events…</p>
+    <div class="row"><span class="lbl">Stocks</span><div class="lists" id="wk-scope"></div></div>
+    <div class="row"><span class="lbl">Source</span><div class="lists" id="wk-src"></div></div>
+    <div class="row"><span class="lbl">Tone</span><div class="lists" id="wk-tone"></div></div>
+    <div id="wk-cap" class="filtnote"></div>
+    <div id="wk-movers"></div>
+    <div class="wk" id="wk-list"><div class="skel"></div><div class="skel"></div></div>
+    <details class="how"><summary>How to read this</summary>
+      <p>Everything that happened to the stocks in your lists and portfolio in the 7 days up to the latest data date, newest first: stage changes and RS-line highs (Stage 2 scanner), insider trades and pledges, bulk and block deals (InsiderDeals), order wins (Order Tracker / Filings Radar), quarterly results (Earnings Centre), other company filings and red flags (Filings Radar). Mutual fund holdings are monthly, so the latest month is shown separately. A mint left edge marks a positive event, red a negative one.</p>
+    </details>
+    <div class="src" id="wk-srcline"></div>
+  </div>
+</section>
+
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span id="ftsrc">Source: NSE/BSE end-of-day prices · Stage, RS, EPS &amp; APEX from the Stage 2 scanner · NSE surveillance &amp; deals (risk badges) · insider, deals, orders, results, filings and MF holdings from this site's dashboards (NSE/BSE filings, AMC disclosures)</span></footer>
+</main>
+
+<div class="modal" id="m-imp" hidden><div class="card" role="dialog" aria-modal="true" aria-labelledby="m-imp-h">
+  <h3 id="m-imp-h">Import stocks</h3>
+  <p class="mut" style="margin:0 0 10px;font-size:13px">Paste a TradingView watchlist export (<code>NSE:TCS,NSE:INFY</code>), a comma or line separated list, a CSV with a Symbol column, or a backup JSON from this page. Or pick a file.</p>
+  <textarea class="in" id="impt" placeholder="NSE:RELIANCE,NSE:TCS,BSE:500325&#10;or&#10;POLYCAB&#10;KAYNES"></textarea>
+  <div class="row"><label class="btn" style="cursor:pointer">Choose file<input type="file" id="impf" accept=".txt,.csv,.json,text/plain,text/csv,application/json" hidden></label>
+    <label class="chk"><input type="checkbox" id="impnew"> Into a new list</label></div>
+  <div class="filtnote" id="impmsg"></div>
+  <div class="row" style="justify-content:flex-end"><button class="btn ghost" data-close>Cancel</button><button class="btn pri" id="impgo">Import</button></div>
+</div></div>
+
+<div class="modal" id="m-exp" hidden><div class="card" role="dialog" aria-modal="true" aria-labelledby="m-exp-h">
+  <h3 id="m-exp-h">Export &amp; backup</h3>
+  <p class="mut" style="margin:0 0 12px;font-size:13px">Your lists exist only in this browser. Download a backup to move them to another phone or computer, then use Import there.</p>
+  <div class="grid" style="gap:8px">
+    <button class="btn" id="x-json">⬇ Backup all lists (JSON)</button>
+    <button class="btn" id="x-csv">⬇ This list as CSV (with today's numbers)</button>
+    <button class="btn" id="x-tv">⬇ This list for TradingView (files of 30)</button>
+    <button class="btn" id="x-copy">Copy symbols to clipboard</button>
+  </div>
+  <div class="filtnote" id="expmsg"></div>
+  <div class="row" style="justify-content:flex-end"><button class="btn ghost" data-close>Close</button></div>
+</div></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="../assets/universe.js?v=202611281537"></script>
+<script src="../assets/badges.js?v=202611281537"></script>
+<script src="../assets/kit.js?v=202611281537"></script>
+<script src="data.js?v=202611281537"></script>
+<script>
+(function () {
+'use strict';
+/* ------------------------------------------------------------ PK fallbacks (page still renders if the kit fails) */
+var PK = window.PK = window.PK || {};
+function esc(s) { return s == null ? '' : String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function isn(v) { return typeof v === 'number' && isFinite(v); }
+PK.haptic = PK.haptic || function () {};
+PK.press = PK.press || function () {};
+PK.badges = PK.badges || function () { return ''; };
+PK.badgeList = PK.badgeList || function () { return []; };
+PK.countUp = PK.countUp || function (el, v, o) { el.textContent = (o && o.fmt) ? o.fmt(v) : v; };
+PK.capOK = PK.capOK || function () { return true; };
+PK.capIsDefault = PK.capIsDefault || function () { return true; };
+PK.capSummary = PK.capSummary || function () { return 'All'; };
+PK.capSet = PK.capSet || function () {};
+PK.fmt = PK.fmt || {};
+PK.fmt.pct = PK.fmt.pct || function (v, dp) { if (!isn(v)) return '–'; dp = dp == null ? 1 : dp; var s = v.toFixed(dp); return (v > 0 && +s !== 0 ? '+' : '') + s + '%'; };
+PK.fmt.inr = PK.fmt.inr || function (v, dp) { return isn(v) ? '₹' + v.toLocaleString('en-IN', { maximumFractionDigits: dp == null ? 0 : dp, minimumFractionDigits: dp || 0 }) : '–'; };
+PK.fmt.num = PK.fmt.num || function (v, dp) { return isn(v) ? v.toLocaleString('en-IN', { maximumFractionDigits: dp == null ? 2 : dp }) : '–'; };
+PK.fmt.compact = PK.fmt.compact || function (v) { if (!isn(v)) return '–'; var a = Math.abs(v); return a >= 1e7 ? (v / 1e7).toFixed(2) + ' Cr' : a >= 1e5 ? (v / 1e5).toFixed(2) + ' L' : v.toFixed(0); };
+PK.spark = PK.spark || function () { return ''; };
+PK.download = PK.download || function (name, text, type) { var b = new Blob([text], { type: type || 'text/plain' }), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500); };
+PK.copy = PK.copy || function (t) { try { return navigator.clipboard.writeText(t).then(function () { return true; }, function () { return false; }); } catch (e) { return Promise.resolve(false); } };
+PK.tvSymbol = PK.tvSymbol || function (s) { s = String(s); return s.indexOf(':') > 0 ? s : 'NSE:' + s.replace(/[&-]/g, '_'); };
+PK.tvLists = PK.tvLists || function (syms, n) { var all = syms.map(PK.tvSymbol), ch = []; for (var i = 0; i < all.length; i += n) ch.push(all.slice(i, i + n)); return { all: all, chunks: ch }; };
+var $ = function (id) { return document.getElementById(id); };
+var fmtP = PK.fmt.pct;
+var RM = false; try { RM = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+var D = window.WL;
+if (!D || !D.s) {
+  $('asof').textContent = 'Data unavailable right now. Your saved lists are safe in this browser.';
+  $('kpis').innerHTML = '';
+  $('wl-table').innerHTML = '<div class="unavail">Source unavailable: tonight\'s data file did not load. Try again later.</div>';
+  return;
+}
+var F = {}; D.fields.forEach(function (k, i) { F[k] = i; });
+var UNI = (window.PK_UNIVERSE && window.PK_UNIVERSE.s) || null;
+var BMAP = (window.PK_UNIVERSE && window.PK_UNIVERSE.b) || {};
+var SRC = { s2: 'Stage', ins: 'Insider', deal: 'Deal', ord: 'Order win', res: 'Results', fil: 'Filing', mf: 'MF' };
+var EV = null; // filled by ev.js
+var REF = D.asof; // reference date for "this week"
+function g(sym, k) { var r = D.s[sym]; return r ? r[F[k]] : null; }
+function nameOf(sym) { return g(sym, 'name') || sym; }
+function secOf(sym) { var i = g(sym, 'sec'); return (i != null && D.sectors[i]) || ''; }
+function dispSym(sym) { return sym.indexOf('BSE:') === 0 ? sym.slice(4) : sym; }
+function link360(sym) { return '../stock/#' + encodeURIComponent(sym); }
+function addDays(iso, n) { var d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+function fdate(iso) { if (!iso) return '–'; var d = new Date(iso + 'T00:00:00Z'); return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'UTC' }) + (iso.slice(0, 4) !== REF.slice(0, 4) ? ' ' + iso.slice(2, 4) : ''); }
+function toast(html, undo) {
+  var t = $('toast'); t.innerHTML = html + (undo ? ' <button type="button" id="undo">Undo</button>' : '');
+  t.classList.add('on'); clearTimeout(toast.t);
+  if (undo) $('undo').onclick = function () { undo(); t.classList.remove('on'); };
+  toast.t = setTimeout(function () { t.classList.remove('on'); }, undo ? 5000 : 2600);
+}
+
+/* ------------------------------------------------------------ storage (localStorage, always try/catch) */
+var KEY = 'pk_watchlist_v1', PFKEY = 'pk_portfolio_v1';
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+function uid() { return 'l' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function loadState() {
+  var s = null; try { s = JSON.parse(lsGet(KEY) || 'null'); } catch (e) { s = null; }
+  if (!s || !Array.isArray(s.lists) || !s.lists.length) s = { v: 1, active: null, lists: [{ id: uid(), name: 'My watchlist', items: [] }] };
+  s.lists.forEach(function (l) { l.items = (l.items || []).filter(function (x) { return x && x.s; }); });
+  if (!s.lists.some(function (l) { return l.id === s.active; })) s.active = s.lists[0].id;
+  return s;
+}
+var S = loadState(), canStore = lsSet('pk_wl_probe', '1'); lsDel('pk_wl_probe');
+function save() { if (!lsSet(KEY, JSON.stringify(S)) && !save.warned) { save.warned = 1; toast('This browser is blocking storage: your list will not be kept after you close the page. Use Export to keep it.'); } }
+function cur() { for (var i = 0; i < S.lists.length; i++) if (S.lists[i].id === S.active) return S.lists[i]; return S.lists[0]; }
+window.addEventListener('storage', function (e) { if (e.key === KEY) { S = loadState(); renderAll(); } });
+
+/* ------------------------------------------------------------ symbol resolution + search */
+var KEYS = Object.keys(D.s).filter(function (k) { return !UNI || UNI[k] || k.indexOf('BSE:') !== 0; });
+var IDX = KEYS.map(function (k) { return [k, k.toLowerCase(), dispSym(k).toLowerCase(), String(nameOf(k)).toLowerCase()]; });
+function resolve(raw) {
+  if (raw == null) return null;
+  var s = String(raw).trim().toUpperCase().replace(/^["']|["']$/g, '');
+  if (!s) return null;
+  s = s.replace(/\s+/g, '');
+  var m = s.match(/^(NSE|BSE)[:_](.+)$/);
+  var ex = m ? m[1] : null; if (m) s = m[2];
+  s = s.replace(/-(EQ|BE|BZ|SM|ST)$/, '');
+  if (/^\d{5,6}$/.test(s)) { if (BMAP[s] && D.s[BMAP[s]]) return BMAP[s]; if (D.s['BSE:' + s]) return 'BSE:' + s; return null; }
+  if (D.s[s]) return s;
+  if (s.indexOf('_') >= 0) {
+    var c1 = s.replace(/_/g, '&'), c2 = s.replace(/_/g, '-');
+    if (D.s[c1]) return c1; if (D.s[c2]) return c2;
+  }
+  if (ex === 'BSE') { for (var c in BMAP) if (BMAP[c] === s && D.s[s]) return s; }
+  return null;
+}
+function search(q) {
+  q = q.trim().toLowerCase(); if (!q) return [];
+  var a = [], b = [], c = [];
+  for (var i = 0; i < IDX.length; i++) {
+    var x = IDX[i];
+    if (x[2] === q || x[1] === q) a.push(x[0]);
+    else if (x[2].indexOf(q) === 0) b.push(x[0]);
+    else if (x[3].indexOf(q) >= 0 || x[3].split(/\s+/).some(function (w) { return w.indexOf(q) === 0; })) c.push(x[0]);
+    if (a.length + b.length > 40) break;
+  }
+  var mc = function (k) { return g(k, 'mcap') || 0; };
+  b.sort(function (x, y) { return mc(y) - mc(x); }); c.sort(function (x, y) { return mc(y) - mc(x); });
+  return a.concat(b, c).slice(0, 8);
+}
+function hl(text, q) { var t = String(text), i = t.toLowerCase().indexOf(q.toLowerCase()); return i < 0 || !q ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); }
+
+/* ------------------------------------------------------------ sparkline shards (lazy) */
+var SP_LOADED = {}, SP_WAIT = {};
+function shardOf(sym) { var h = 0; for (var i = 0; i < sym.length; i++) h = (Math.imul(h, 31) + sym.charCodeAt(i)) >>> 0; return h % D.nshard; }
+function loadScript(src) { return new Promise(function (res) { var s = document.createElement('script'); s.src = src + '?v=' + D.ver; s.onload = function () { res(true); }; s.onerror = function () { res(false); }; document.head.appendChild(s); }); }
+function needSpark(syms) {
+  var need = {};
+  syms.forEach(function (s) { var k = shardOf(s); if (!SP_LOADED[k]) need[k] = 1; });
+  var ks = Object.keys(need);
+  if (!ks.length) return Promise.resolve(false);
+  return Promise.all(ks.map(function (k) { if (!SP_WAIT[k]) SP_WAIT[k] = loadScript('sp/' + k + '.js').then(function () { SP_LOADED[k] = 1; }); return SP_WAIT[k]; })).then(function () { return true; });
+}
+function sparkVals(sym) {
+  var d = window.WLSP && window.WLSP[sym]; if (!d) return null;
+  var out = [], v = 0; for (var i = 0; i < d.length; i++) { v += d[i]; out.push(v); } return out;
+}
+
+/* ------------------------------------------------------------ events (lazy ev.js) */
+function evOf(sym) {
+  if (!EV) return [];
+  return (EV.ev[sym] || []);
+}
+function evUrl(u) { if (!u) return '#'; var m = /^~(\d)/.exec(u); return m ? EV.pre[+m[1]] + u.slice(2) : u; }
+var evReady = loadScript('ev.js').then(function (ok) { EV = ok && window.WLEV ? window.WLEV : { ev: {}, pre: [] }; if (!ok) EV.failed = 1; });
+
+/* ------------------------------------------------------------ header bits */
+var nStocks = Object.keys(D.s).length;
+$('asof').innerHTML = 'Prices as of <b>' + fdate(D.asof) + ' ' + D.asof.slice(0, 4) + '</b> · ' + PK.fmt.num(nStocks, 0) + ' NSE &amp; BSE stocks covered · refreshed every weekday night' + (D.src_fail && D.src_fail.length ? ' · <span class="am">source unavailable tonight: ' + esc(D.src_fail.join(', ')) + '</span>' : '');
+if (PK.capFilter) PK.capFilter($('capf'), {});
+PK.press(document);
+
+/* ------------------------------------------------------------ list pills */
+function renderLists() {
+  var h = S.lists.map(function (l) { return '<button class="chip' + (l.id === S.active ? ' on' : '') + '" data-l="' + esc(l.id) + '">' + esc(l.name) + '<span class="n">' + l.items.length + '</span></button>'; }).join('');
+  h += '<button class="chip" data-act="new" title="New list">＋ New list</button>';
+  h += '<button class="btn sm ghost" data-act="ren" title="Rename this list">Rename</button>';
+  if (S.lists.length > 1) h += '<button class="btn sm ghost" data-act="del" title="Delete this list">Delete list</button>';
+  $('lists').innerHTML = h;
+}
+$('lists').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-l]');
+  if (b) { S.active = b.getAttribute('data-l'); save(); PK.haptic('select'); renderAll(); return; }
+  var a = e.target.closest('[data-act]'); if (!a) return;
+  var act = a.getAttribute('data-act');
+  if (act === 'new') {
+    var n = prompt('Name for the new list', 'List ' + (S.lists.length + 1)); if (n == null) return;
+    var l = { id: uid(), name: n.trim().slice(0, 40) || 'List ' + (S.lists.length + 1), items: [] };
+    S.lists.push(l); S.active = l.id; save(); PK.haptic('success'); renderAll(); $('addin').focus();
+  } else if (act === 'ren') {
+    var c = cur(), nn = prompt('Rename list', c.name); if (nn == null || !nn.trim()) return;
+    c.name = nn.trim().slice(0, 40); save(); renderLists(); renderWeekScope();
+  } else if (act === 'del') {
+    var c2 = cur();
+    if (!confirm('Delete the list "' + c2.name + '" with ' + c2.items.length + ' stocks? You can undo right after.')) return;
+    var at = S.lists.indexOf(c2); S.lists.splice(at, 1); S.active = S.lists[0].id; save(); PK.haptic('warn'); renderAll();
+    toast('Deleted "' + esc(c2.name) + '"', function () { S.lists.splice(at, 0, c2); S.active = c2.id; save(); renderAll(); });
+  }
+});
+
+/* ------------------------------------------------------------ add flow */
+var acSel = 0, acItems = [];
+function renderAC() {
+  var q = $('addin').value, ac = $('ac');
+  acItems = search(q);
+  if (!q.trim()) { ac.hidden = true; return; }
+  var have = {}; cur().items.forEach(function (x) { have[x.s] = 1; });
+  if (!acItems.length) { ac.innerHTML = '<button type="button" disabled><span class="nm">No NSE/BSE stock matches "' + esc(q) + '"</span></button>'; ac.hidden = false; return; }
+  acSel = Math.min(acSel, acItems.length - 1);
+  ac.innerHTML = acItems.map(function (k, i) {
+    var p = g(k, 'price'), d1 = g(k, 'd1');
+    return '<button type="button" role="option" data-k="' + esc(k) + '" class="' + (i === acSel ? 'sel' : '') + '"><span class="sy">' + hl(dispSym(k), q) + '</span><span class="nm">' + hl(nameOf(k), q) + (secOf(k) ? ' · ' + esc(secOf(k)) : '') + '</span>' +
+      (have[k] ? '<span class="have">★ in list</span>' : '<span class="px">' + (isn(p) ? PK.fmt.inr(p, p < 100 ? 2 : 0) : '') + ' <span class="' + (d1 > 0 ? 'up' : d1 < 0 ? 'dn' : '') + '">' + (isn(d1) ? fmtP(d1) : '') + '</span></span>') + '</button>';
+  }).join('');
+  ac.hidden = false;
+}
+$('addin').addEventListener('input', function () { acSel = 0; renderAC(); });
+$('addin').addEventListener('focus', renderAC);
+$('addin').addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowDown') { acSel = Math.min(acSel + 1, acItems.length - 1); renderAC(); e.preventDefault(); }
+  else if (e.key === 'ArrowUp') { acSel = Math.max(acSel - 1, 0); renderAC(); e.preventDefault(); }
+  else if (e.key === 'Enter') { e.preventDefault(); addFromInput(); }
+  else if (e.key === 'Escape') { $('ac').hidden = true; }
+});
+$('ac').addEventListener('mousedown', function (e) { e.preventDefault(); });
+$('ac').addEventListener('click', function (e) { var b = e.target.closest('[data-k]'); if (b) addSym(b.getAttribute('data-k'), b); });
+document.addEventListener('click', function (e) { if (!e.target.closest('.addwrap')) $('ac').hidden = true; });
+$('addbtn').addEventListener('click', addFromInput);
+function addFromInput() {
+  var v = $('addin').value;
+  var parts = v.split(/[,\s;]+/).filter(Boolean);
+  if (parts.length > 1) { var r = importSyms(parts, false); if (r.added) { $('addin').value = ''; $('ac').hidden = true; } return; }
+  var k = resolve(v) || acItems[acSel];
+  if (!k) { PK.haptic('error'); shake($('addin')); return; }
+  addSym(k, $('addbtn'));
+}
+function shake(el) { if (RM || !el.animate) return; el.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(6px)' }, { transform: 'translateX(0)' }], { duration: 260 }); }
+function burst(el) {
+  if (RM || !el) return;
+  var host = el.closest('.addbtn') ? el : $('addbtn');
+  for (var i = 0; i < 10; i++) {
+    var p = document.createElement('span'); p.className = 'burst';
+    var a = i / 10 * Math.PI * 2, r = 26 + Math.random() * 14;
+    p.style.setProperty('--dx', Math.cos(a) * r + 'px'); p.style.setProperty('--dy', Math.sin(a) * r + 'px');
+    p.style.background = ['#2FE3B5', '#6EE7B7', '#C8FFE9', '#E0A64A'][i % 4];
+    host.appendChild(p); setTimeout(function (n) { n.remove(); }.bind(null, p), 650);
+  }
+}
+var JUST = null;
+function addSym(k, srcEl) {
+  var l = cur();
+  if (l.items.some(function (x) { return x.s === k; })) { PK.haptic('warn'); toast('<span class="star">★</span> ' + esc(dispSym(k)) + ' is already in ' + esc(l.name)); flashRow(k); return; }
+  l.items.unshift({ s: k, t: new Date().toISOString().slice(0, 10), d: D.asof, p: g(k, 'price') });
+  save(); PK.haptic('success'); burst(srcEl);
+  $('addin').value = ''; $('ac').hidden = true;
+  JUST = k; renderAll();
+  toast('<span class="star">★</span> Added <b>' + esc(dispSym(k)) + '</b> to ' + esc(l.name), function () { removeSym(k, true); });
+}
+function removeSym(k, quiet) {
+  var l = cur(), i = -1;
+  l.items.forEach(function (x, j) { if (x.s === k) i = j; });
+  if (i < 0) return;
+  var item = l.items.splice(i, 1)[0]; save(); PK.haptic('tap'); renderAll();
+  if (!quiet) toast('Removed ' + esc(dispSym(k)), function () { l.items.splice(i, 0, item); save(); renderAll(); });
+}
+function flashRow(k) {
+  var el = document.querySelector('#wl-table [data-sym="' + CSS.escape(k) + '"]');
+  var tr = el && el.closest('tr'); if (!tr) return;
+  tr.classList.remove('flash'); void tr.offsetWidth; tr.classList.add('flash');
+  try { tr.scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' }); } catch (e) {}
+}
+
+/* ------------------------------------------------------------ import / export */
+function parseSyms(text) {
+  text = String(text || '').replace(/^﻿/, '');
+  var t = text.trim();
+  if (t.charAt(0) === '{') { try { var j = JSON.parse(t); if (j && Array.isArray(j.lists)) return { backup: j }; } catch (e) {} }
+  var lines = t.split(/\r?\n/).filter(function (x) { return x.trim() && x.trim().indexOf('###') !== 0; });
+  // CSV with header: find a symbol-like column
+  if (lines.length > 1 && /symbol|ticker|instrument|scrip|stock/i.test(lines[0])) {
+    var hdr = splitCSV(lines[0]).map(function (h) { return h.toLowerCase(); });
+    var ci = hdr.findIndex(function (h) { return /symbol|ticker|instrument|scrip|stock/.test(h); });
+    return { syms: lines.slice(1).map(function (l) { return splitCSV(l)[ci]; }) };
+  }
+  return { syms: t.split(/[\s,;\t|]+/).filter(Boolean).filter(function (x) { return x.indexOf('###') !== 0; }) };
+}
+function splitCSV(line) { var out = [], cur2 = '', q = false; for (var i = 0; i < line.length; i++) { var c = line[i]; if (c === '"') { q = !q; continue; } if (c === ',' && !q) { out.push(cur2.trim()); cur2 = ''; } else cur2 += c; } out.push(cur2.trim()); return out; }
+function importSyms(list, intoNew, name) {
+  var l = cur();
+  if (intoNew) { l = { id: uid(), name: name || 'Imported ' + new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }), items: [] }; S.lists.push(l); S.active = l.id; }
+  var have = {}; l.items.forEach(function (x) { have[x.s] = 1; });
+  var added = 0, dup = 0, bad = [];
+  list.forEach(function (raw) {
+    var k = resolve(raw);
+    if (!k) { if (String(raw).trim()) bad.push(String(raw).trim()); return; }
+    if (have[k]) { dup++; return; }
+    have[k] = 1; added++;
+    l.items.push({ s: k, t: new Date().toISOString().slice(0, 10), d: D.asof, p: g(k, 'price') });
+  });
+  save(); renderAll();
+  if (added) { PK.haptic('success'); toast('<span class="star">★</span> Added <b>' + added + '</b> stock' + (added > 1 ? 's' : '') + ' to ' + esc(l.name) + (dup ? ' · ' + dup + ' already there' : '') + (bad.length ? ' · ' + bad.length + ' not recognised' : '')); }
+  else PK.haptic('warn');
+  return { added: added, dup: dup, bad: bad };
+}
+function openModal(id) { $(id).hidden = false; PK.haptic('tap'); }
+function closeModals() { ['m-imp', 'm-exp'].forEach(function (id) { $(id).hidden = true; }); }
+document.addEventListener('click', function (e) { if (e.target.closest('[data-close]') || e.target.classList.contains('modal')) closeModals(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModals(); });
+$('impbtn').onclick = function () { $('impmsg').textContent = ''; openModal('m-imp'); $('impt').focus(); };
+$('expbtn').onclick = function () { $('expmsg').textContent = ''; openModal('m-exp'); };
+$('impf').onchange = function () {
+  var f = this.files && this.files[0]; if (!f) return;
+  var r = new FileReader(); r.onload = function () { $('impt').value = r.result; $('impnew').checked = true; $('impt').setAttribute('data-name', f.name.replace(/\.(txt|csv|json)$/i, '').slice(0, 40)); }; r.readAsText(f);
+};
+$('impgo').onclick = function () {
+  var p = parseSyms($('impt').value);
+  if (p.backup) {
+    var n = 0;
+    p.backup.lists.forEach(function (bl) {
+      var ex = S.lists.filter(function (l) { return l.name === bl.name; })[0];
+      if (!ex) { ex = { id: uid(), name: String(bl.name || 'Imported').slice(0, 40), items: [] }; S.lists.push(ex); }
+      var have = {}; ex.items.forEach(function (x) { have[x.s] = 1; });
+      (bl.items || []).forEach(function (x) { if (x && x.s && D.s[x.s] && !have[x.s]) { have[x.s] = 1; ex.items.push({ s: x.s, t: x.t, d: x.d, p: x.p }); n++; } });
+    });
+    save(); renderAll(); PK.haptic('success'); closeModals(); toast('Restored backup · ' + n + ' stocks merged into ' + p.backup.lists.length + ' list' + (p.backup.lists.length > 1 ? 's' : ''));
+    return;
+  }
+  if (!p.syms.length) { $('impmsg').textContent = 'Nothing to import.'; PK.haptic('warn'); return; }
+  var r = importSyms(p.syms, $('impnew').checked, $('impt').getAttribute('data-name'));
+  $('impmsg').innerHTML = r.added + ' added · ' + r.dup + ' already in the list' + (r.bad.length ? ' · not recognised: ' + esc(r.bad.slice(0, 12).join(', ')) + (r.bad.length > 12 ? '…' : '') : '');
+  if (r.added && !r.bad.length) { closeModals(); $('impt').value = ''; $('impt').removeAttribute('data-name'); }
+};
+function fileSafe(s) { return String(s).replace(/[^\w\-]+/g, '_').replace(/^_+|_+$/g, '') || 'watchlist'; }
+$('x-json').onclick = function () { PK.download('my_watchlists_' + D.asof + '.json', JSON.stringify({ app: 'pk-watchlist', v: 1, exported: new Date().toISOString(), lists: S.lists }, null, 1), 'application/json'); PK.haptic('success'); $('expmsg').textContent = 'Backup downloaded: ' + S.lists.length + ' lists.'; };
+$('x-csv').onclick = function () {
+  var rows = wlRows(), q = function (v) { v = v == null ? '' : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  var hdr = ['symbol', 'name', 'sector', 'price', 'ret_1d', 'ret_1w', 'ret_1m', 'ret_3m', 'ret_1y', 'since_added_pct', 'date_added', 'stage', 'weeks_in_stage', 'rs_rating', 'eps_rating', 'apex', 'badges'];
+  var lines = [hdr.join(',')].concat(rows.map(function (r) { return [r.s, r.name, r.sec, r.price, r.d1, r.w1, r.m1, r.m3, r.y1, r.since == null ? '' : r.since.toFixed(2), r.added, r.stage, r.wk, r.rr, r.eps, r.apex, r.badges].map(q).join(','); }));
+  PK.download(fileSafe(cur().name) + '_' + D.asof + '.csv', '﻿' + lines.join('\n'), 'text/csv;charset=utf-8'); PK.haptic('success'); $('expmsg').textContent = 'CSV downloaded: ' + rows.length + ' rows.';
+};
+$('x-tv').onclick = function () {
+  var L = PK.tvLists(cur().items.map(function (x) { return x.s.indexOf('BSE:') === 0 ? x.s : x.s; }), 30);
+  if (!L.all.length) { $('expmsg').textContent = 'This list is empty.'; PK.haptic('warn'); return; }
+  L.chunks.forEach(function (ch, i) { setTimeout(function () { PK.download(fileSafe(cur().name) + '_tradingview' + (L.chunks.length > 1 ? '_' + (i + 1) : '') + '.txt', ch.join(',')); }, i * 300); });
+  PK.copy(L.all.join(',')); PK.haptic('success');
+  $('expmsg').textContent = L.all.length + ' symbols in ' + L.chunks.length + ' file' + (L.chunks.length > 1 ? 's' : '') + ' of up to 30 (TradingView free limit); full list copied.';
+};
+$('x-copy').onclick = function () { PK.copy(cur().items.map(function (x) { return dispSym(x.s); }).join(',')).then(function (ok) { $('expmsg').textContent = ok ? 'Copied ' + cur().items.length + ' symbols.' : 'Copy blocked by the browser.'; }); PK.haptic('success'); };
+
+/* ------------------------------------------------------------ watchlist table */
+function latestEv(sym) { var e = evOf(sym); return e.length ? e[0] : null; }
+function wlRows() {
+  return cur().items.filter(function (x) { return D.s[x.s]; }).map(function (x) {
+    var k = x.s, p = g(k, 'price');
+    var since = isn(p) && isn(x.p) && x.p > 0 ? (p / x.p - 1) * 100 : null;
+    var bl = PK.badgeList(k) || [];
+    var e = latestEv(k);
+    return { s: k, name: nameOf(k), sec: secOf(k), price: p, d1: g(k, 'd1'), w1: g(k, 'w1'), m1: g(k, 'm1'), m3: g(k, 'm3'), y1: g(k, 'y1'),
+      since: since, added: x.t, stage: g(k, 'stage'), wk: g(k, 'wk'), pst: g(k, 'pst'), rr: g(k, 'rr'), eps: g(k, 'eps'), apex: g(k, 'apex'),
+      badges: bl.map(function (b) { return b.text || b.flag; }).join(' '), nb: bl.length, ev: e ? e[0] : null, evo: e,
+      ev7: evOf(k).filter(function (z) { return z[0] >= addDays(REF, -7); }).length };
+  });
+}
+var pc = function (v) { return isn(v) ? (v > 0 ? 'up' : v < 0 ? 'dn' : '') : 'dim'; };
+var fp = function (v) { return isn(v) ? fmtP(v) : '<span class="dim">–</span>'; };
+var COLS = [
+  { key: 's', label: 'Stock', fmt: function (v, r) { return '<div class="stk"><span><a class="sy" data-sym="' + esc(v) + '" href="' + link360(v) + '" title="Open Stock 360">' + esc(dispSym(v)) + '</a> ' + PK.badges(v, { max: 3 }) + '</span><span class="nm2" title="' + esc(r.name) + '">' + esc(r.name) + (r.sec ? ' · ' + esc(r.sec) : '') + '</span></div>'; }, csvVal: function (r) { return r.s; } },
+  { key: 'spark', label: '60D', sortable: false, csv: false, fmt: function (v, r) { var vals = sparkVals(r.s); return vals ? '<span class="pk-spark" data-pk-tip>' + PK.spark(vals, { w: 84, h: 26 }) + '</span>' : '<span class="dim">–</span>'; } },
+  { key: 'price', label: 'Price', num: true, fmt: function (v) { return isn(v) ? PK.fmt.inr(v, v < 100 ? 2 : 1) : '<span class="dim">–</span>'; } },
+  { key: 'd1', label: '1D', num: true, fmt: fp, cls: pc },
+  { key: 'w1', label: '1W', num: true, fmt: fp, cls: pc },
+  { key: 'm1', label: '1M', num: true, fmt: fp, cls: pc },
+  { key: 'm3', label: '3M', num: true, fmt: fp, cls: pc },
+  { key: 'y1', label: '1Y', num: true, fmt: fp, cls: pc },
+  { key: 'since', label: 'Since added', num: true, title: 'Change since the close on the day you added it', fmt: function (v, r) { return (isn(v) ? fmtP(v) : '<span class="dim">–</span>') + '<span class="sub">' + fdate(r.added) + '</span>'; }, cls: pc },
+  { key: 'stage', label: 'Stage', num: true, fmt: function (v, r) { return v ? '<span class="stg s' + v + '" title="' + (r.wk || '?') + ' weeks in Stage ' + v + (r.pst && r.pst !== v ? ' · was Stage ' + r.pst + ' last week' : '') + '">' + v + '</span> <span class="dim">' + (r.wk ? r.wk + 'w' : '') + '</span>' : '<span class="dim">–</span>'; } },
+  { key: 'rr', label: 'RS', num: true, title: 'RS Rating 1–99', cls: function (v) { return isn(v) ? (v >= 80 ? 'up' : v < 30 ? 'dn' : '') : 'dim'; } },
+  { key: 'eps', label: 'EPS', num: true, title: 'EPS Rating 1–99' },
+  { key: 'apex', label: 'APEX', num: true, title: 'APEX Score 1–99', cls: function (v) { return isn(v) && v >= 80 ? 'up' : ''; } },
+  { key: 'ev', label: 'Latest event', fmt: function (v, r) { var e = r.evo; return e ? '<a class="ev1" href="' + esc(evUrl(e[3])) + '" target="_blank" rel="noopener"><span class="dt">' + fdate(e[0]) + '</span><span class="srcb ' + e[1] + '">' + SRC[e[1]] + '</span> ' + esc(e[2]) + '</a>' : '<span class="dim">' + (EV ? 'none in 60 days' : '…') + '</span>'; }, csvVal: function (r) { return r.evo ? r.evo[0] + ' ' + r.evo[2] : ''; } },
+  { key: 'x', label: '', sortable: false, csv: false, fmt: function (v, r) { return '<button class="rm" data-rm="' + esc(r.s) + '" title="Remove ' + esc(dispSym(r.s)) + '" aria-label="Remove ' + esc(dispSym(r.s)) + '">×</button>'; } }
+];
+var TBL = null;
+function renderTable() {
+  var rows = wlRows(), el = $('wl-table');
+  if (!rows.length) {
+    if (TBL && TBL.destroy) { TBL.destroy(); TBL = null; }
+    var ideas = ['RELIANCE', 'HDFCBANK', 'TCS', 'BHARTIARTL', 'POLYCAB', 'DIXON', 'TRENT', 'BEL'].filter(function (k) { return D.s[k]; });
+    el.innerHTML = '<div class="empty"><span class="big">★</span><b>' + esc(cur().name) + ' is empty.</b><br>Type a symbol or company name above, or import a TradingView list.<div class="ideas">' +
+      ideas.map(function (k) { return '<button class="chip" data-idea="' + k + '">＋ ' + k + '</button>'; }).join('') + '</div></div>';
+    $('wl-verdict').textContent = 'Start a list: add a few stocks and this page tracks them every night.';
+    return;
+  }
+  needSpark(rows.map(function (r) { return r.s; })).then(function (loaded) { if (loaded && TBL) TBL.update(wlRows()); });
+  if (!TBL || !PK.table) {
+    if (PK.table) {
+      el.innerHTML = '';
+      TBL = PK.table(el, { columns: COLS, rows: rows, sortKey: null, search: true, pageSize: 100, csvName: fileSafe(cur().name), tvExport: true, symbolKey: 's', capKey: 's', countLabel: 'stocks',
+        placeholder: 'Filter this list…', empty: 'No stocks match.',
+        presets: [
+          { label: 'Stage 2', filter: function (r) { return r.stage === 2; } },
+          { label: 'Stage 3/4', filter: function (r) { return r.stage === 3 || r.stage === 4; } },
+          { label: 'RS ≥ 80', filter: function (r) { return r.rr >= 80; } },
+          { label: 'Weak RS < 30', filter: function (r) { return isn(r.rr) && r.rr < 30; } },
+          { label: 'Has badges', filter: function (r) { return r.nb > 0; } },
+          { label: 'Events this week', filter: function (r) { return r.ev7 > 0; } }
+        ] });
+    } else {
+      el.innerHTML = '<div class="scroll"><table class="pftbl"><thead><tr><th>Stock</th><th>Price</th><th>1D</th><th>1W</th><th>1M</th><th>Stage</th><th>RS</th><th></th></tr></thead><tbody>' + rows.map(function (r) {
+        return '<tr><td><a data-sym="' + esc(r.s) + '" href="' + link360(r.s) + '">' + esc(dispSym(r.s)) + '</a></td><td>' + PK.fmt.inr(r.price, 1) + '</td><td class="' + pc(r.d1) + '">' + fp(r.d1) + '</td><td class="' + pc(r.w1) + '">' + fp(r.w1) + '</td><td class="' + pc(r.m1) + '">' + fp(r.m1) + '</td><td>' + (r.stage || '–') + '</td><td>' + (r.rr || '–') + '</td><td><button class="rm" data-rm="' + esc(r.s) + '">×</button></td></tr>';
+      }).join('') + '</tbody></table></div>';
+    }
+  } else TBL.update(rows);
+  if (JUST) { var j = JUST; JUST = null; setTimeout(function () { flashRow(j); }, 30); }
+  // verdict
+  var n = rows.length, s2 = rows.filter(function (r) { return r.stage === 2; }).length, s34 = rows.filter(function (r) { return r.stage === 3 || r.stage === 4; }).length;
+  var w = rows.filter(function (r) { return isn(r.w1); }).sort(function (a, b) { return b.w1 - a.w1; });
+  var v = '<b>' + s2 + ' of ' + n + '</b> in Stage 2';
+  if (s34) v += ', <span class="dn">' + s34 + '</span> in Stage 3/4';
+  if (w.length) v += ' · best this week: <b>' + esc(dispSym(w[0].s)) + ' ' + fmtP(w[0].w1) + '</b>' + (w.length > 1 && w[w.length - 1].w1 < 0 ? ', worst: <span class="dn">' + esc(dispSym(w[w.length - 1].s)) + ' ' + fmtP(w[w.length - 1].w1) + '</span>' : '');
+  $('wl-verdict').innerHTML = v;
+}
+$('wl-table').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-rm]'); if (b) { e.preventDefault(); removeSym(b.getAttribute('data-rm')); return; }
+  var i = e.target.closest('[data-idea]'); if (i) addSym(i.getAttribute('data-idea'), i);
+});
+$('wl-src').innerHTML = 'Source: NSE/BSE end-of-day closes (' + fdate(D.asof) + '), chained daily so splits and bonuses do not distort returns · Stage, RS, EPS, APEX: Stage 2 scanner (' + fdate(D.s2asof) + ') · badges: NSE surveillance, ban, band and deal lists (' + fdate(D.badges_asof) + ') · events: this site\'s Insider, Orders, Earnings, Filings and Smart Money pages.';
+
+/* ------------------------------------------------------------ KPIs */
+function allMySyms() {
+  var set = {}; S.lists.forEach(function (l) { l.items.forEach(function (x) { if (D.s[x.s]) set[x.s] = 1; }); });
+  PF.rows.forEach(function (h) { if (h.k) set[h.k] = 1; });
+  return Object.keys(set);
+}
+function renderKPIs() {
+  var rows = wlRows(), n = rows.length;
+  var w = rows.map(function (r) { return r.w1; }).filter(isn);
+  var avgW = w.length ? w.reduce(function (a, b) { return a + b; }, 0) / w.length : null;
+  var s2 = rows.filter(function (r) { return r.stage === 2; }).length;
+  var my = allMySyms(), from = addDays(REF, -7);
+  var ev7 = 0; my.forEach(function (k) { ev7 += evOf(k).filter(function (e) { return e[0] >= from && e[1] !== 'mf'; }).length; });
+  var flagged = rows.filter(function (r) { return r.nb > 0; }).length;
+  var K = [
+    { l: 'Stocks in ' + cur().name, v: n, f: function (x) { return Math.round(x); }, s: S.lists.length + ' list' + (S.lists.length > 1 ? 's' : '') + ' saved here' },
+    { l: 'Average 1-week move', v: avgW, f: function (x) { return fmtP(x); }, c: pc(avgW), s: 'equal-weight, this list' },
+    { l: 'In Stage 2', v: s2, f: function (x) { return Math.round(x) + (n ? ' / ' + n : ''); }, s: n ? Math.round(s2 / n * 100) + '% of the list advancing' : 'add stocks to see' },
+    { l: 'Events this week', v: EV ? ev7 : null, f: function (x) { return Math.round(x); }, s: EV ? 'across all your lists & holdings' : 'loading…' },
+    { l: 'With risk badges', v: flagged, f: function (x) { return Math.round(x); }, c: flagged ? 'am' : '', s: 'surveillance, ban, deals, results due' }
+  ];
+  $('kpis').innerHTML = K.map(function (k, i) { return '<div class="kp" style="animation-delay:' + i * 45 + 'ms"><div class="l">' + esc(k.l) + '</div><div class="v ' + (k.c || '') + '" data-i="' + i + '">' + (isn(k.v) ? esc(k.f(k.v)) : '–') + '</div><div class="s">' + esc(k.s) + '</div></div>'; }).join('');
+  K.forEach(function (k, i) { if (isn(k.v)) PK.countUp(document.querySelector('.kp .v[data-i="' + i + '"]'), k.v, { fmt: k.f, dur: 800 }); });
+}
+
+/* ------------------------------------------------------------ portfolio check */
+var PF = { rows: [], bad: [] };
+function parseHoldings(text) {
+  text = String(text || '').replace(/^﻿/, '');
+  var lines = text.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+  var out = [], bad = [], si = 0, qi = 1, ai = 2, start = 0, csvMode = false;
+  if (lines.length && /symbol|instrument|stock|scrip|ticker/i.test(lines[0]) && /qty|quantity|shares|units/i.test(lines[0])) {
+    var h = splitCSV(lines[0]).map(function (x) { return x.toLowerCase(); });
+    si = h.findIndex(function (x) { return /symbol|instrument|stock|scrip|ticker/.test(x); });
+    qi = h.findIndex(function (x) { return /qty|quantity|shares|units/.test(x); });
+    ai = h.findIndex(function (x) { return /avg|average|buy price|cost/.test(x); });
+    start = 1; csvMode = true;
+  }
+  for (var i = start; i < lines.length; i++) {
+    var p = csvMode ? splitCSV(lines[i]) : lines[i].split(/[\t,;]+|\s+/).filter(Boolean);
+    var sym = p[si], qty = parseFloat(String(p[qi] || '').replace(/[₹,]/g, '')), avg = ai >= 0 ? parseFloat(String(p[ai] || '').replace(/[₹,]/g, '')) : NaN;
+    var k = resolve(sym);
+    if (!k || !isFinite(qty) || qty <= 0) { bad.push(lines[i].slice(0, 40)); continue; }
+    var ex = out.filter(function (o) { return o.k === k; })[0];
+    if (ex) { var tq = ex.qty + qty; ex.avg = isFinite(ex.avg) && isFinite(avg) ? (ex.avg * ex.qty + avg * qty) / tq : ex.avg; ex.qty = tq; }
+    else out.push({ k: k, qty: qty, avg: avg });
+  }
+  return { rows: out, bad: bad };
+}
+function runPortfolio(fromUser) {
+  var txt = $('pfin').value;
+  var r = parseHoldings(txt); PF = r;
+  if ($('pfremember').checked) lsSet(PFKEY, txt); else lsDel(PFKEY);
+  $('pfmsg').innerHTML = r.rows.length ? r.rows.length + ' holding' + (r.rows.length > 1 ? 's' : '') + ' read' + (r.bad.length ? ' · <span class="am">skipped ' + r.bad.length + ' line' + (r.bad.length > 1 ? 's' : '') + ' not recognised: ' + esc(r.bad.slice(0, 5).join(' | ')) + '</span>' : '') + ' · processed only in this browser.' : (txt.trim() ? '<span class="am">No holdings recognised. Use: symbol, quantity, average cost.</span>' : '');
+  if (fromUser) PK.haptic(r.rows.length ? 'success' : 'warn');
+  renderPortfolio(); renderKPIs(); renderWeek();
+}
+function renderPortfolio() {
+  var out = $('pfout');
+  if (!PF.rows.length) { out.innerHTML = ''; return; }
+  var H = PF.rows.map(function (h) {
+    var p = g(h.k, 'price'), val = isn(p) ? p * h.qty : null, cost = isFinite(h.avg) ? h.avg * h.qty : null;
+    return { k: h.k, qty: h.qty, avg: h.avg, price: p, val: val, cost: cost, pl: val != null && cost != null ? val - cost : null, plp: val != null && cost ? (val / cost - 1) * 100 : null,
+      d1: g(h.k, 'd1'), w1: g(h.k, 'w1'), stage: g(h.k, 'stage'), pst: g(h.k, 'pst'), rr: g(h.k, 'rr'), rrw: g(h.k, 'rrw'), sec: secOf(h.k), si: g(h.k, 'sec') };
+  });
+  var tot = H.reduce(function (a, h) { return a + (h.val || 0); }, 0);
+  var totCost = H.reduce(function (a, h) { return a + (h.cost || 0); }, 0);
+  var hasCost = H.some(function (h) { return h.cost != null; });
+  var wkPL = H.reduce(function (a, h) { return a + (h.val != null && isn(h.w1) ? h.val - h.val / (1 + h.w1 / 100) : 0); }, 0);
+  var dPL = H.reduce(function (a, h) { return a + (h.val != null && isn(h.d1) ? h.val - h.val / (1 + h.d1 / 100) : 0); }, 0);
+  H.forEach(function (h) { h.wt = tot ? (h.val || 0) / tot * 100 : 0; });
+  H.sort(function (a, b) { return (b.val || 0) - (a.val || 0); });
+  var plTot = hasCost ? tot - totCost : null;
+  // sectors
+  var secs = {}; H.forEach(function (h) { var s = h.sec || 'Unclassified'; secs[s] = (secs[s] || 0) + h.wt; });
+  var secArr = Object.keys(secs).map(function (s) { return [s, secs[s]]; }).sort(function (a, b) { return b[1] - a[1]; });
+  var top = H[0], top3 = H.slice(0, 3).reduce(function (a, h) { return a + h.wt; }, 0);
+  // flags
+  var vis = function (h) { return PK.capOK(h.k); };
+  var stage34 = H.filter(function (h) { return (h.stage === 3 || h.stage === 4) && vis(h); });
+  var weakSec = H.filter(function (h) { var ss = D.secstat[h.si]; return isn(h.rr) && h.rr < 40 && ss && ss[4] != null && ss[4] <= 33 && vis(h); });
+  var red = H.filter(function (h) { return (PK.badgeList(h.k) || []).length && vis(h); });
+  var changed = [];
+  var from = addDays(REF, -7);
+  H.forEach(function (h) {
+    if (!vis(h)) return;
+    var why = [];
+    if (h.pst && h.stage && h.pst !== h.stage) why.push('Stage ' + h.pst + ' → ' + h.stage);
+    if (isn(h.w1) && Math.abs(h.w1) >= 7) why.push('<span class="' + pc(h.w1) + '">' + fmtP(h.w1) + ' this week</span>');
+    if (isn(h.rr) && isn(h.rrw) && Math.abs(h.rr - h.rrw) >= 10) why.push('RS ' + h.rrw + ' → ' + h.rr);
+    var ev = evOf(h.k).filter(function (e) { return e[0] >= from && e[1] !== 'mf' && e[1] !== 's2'; });
+    if (ev.length) why.push(ev.length + ' event' + (ev.length > 1 ? 's' : '') + ': ' + esc(ev[0][2].slice(0, 70)));
+    if (why.length) changed.push([h, why]);
+  });
+  var vtxt;
+  if (top && top.wt > 25) vtxt = '<b>' + esc(dispSym(top.k)) + '</b> is <span class="am">' + top.wt.toFixed(0) + '%</span> of the portfolio: one stock drives the result.';
+  else if (secArr[0] && secArr[0][1] > 35) vtxt = '<span class="am">' + secArr[0][1].toFixed(0) + '%</span> sits in one sector, <b>' + esc(secArr[0][0]) + '</b>.';
+  else if (stage34.length) vtxt = '<b>' + stage34.length + '</b> of ' + H.length + ' holdings are in Stage 3/4 (topping or declining), ' + stage34.reduce(function (a, h) { return a + h.wt; }, 0).toFixed(0) + '% of value.';
+  else vtxt = 'Spread looks healthy: top 3 holdings are <b>' + top3.toFixed(0) + '%</b> of value and none are in Stage 3/4.';
+  var capnote = PK.capIsDefault() ? '' : '<div class="filtnote">Flag lists filtered to ' + esc(PK.capSummary()) + ' · <button type="button" data-capreset>reset</button> · totals use all holdings</div>';
+  function li(h, why) { return '<li><span><a href="' + link360(h.k) + '" style="color:var(--text);font-weight:650;text-decoration:none">' + esc(dispSym(h.k)) + '</a> ' + PK.badges(h.k, { max: 3 }) + ' <span class="dim">' + h.wt.toFixed(1) + '%</span></span><span class="why">' + why + '</span></li>'; }
+  function flagBox(title, list, why, none) { return '<div class="flag"><h4>' + title + ' <span class="dim">· ' + list.length + '</span></h4>' + (list.length ? '<ul>' + list.slice(0, 12).map(function (h) { return li(h, why(h)); }).join('') + '</ul>' : '<div class="dim" style="font-size:12.5px">' + none + '</div>') + '</div>'; }
+  var html = '<div class="grid g3 sec stagger" id="pfk">' +
+    kcard('Portfolio value', PK.fmt.inr(tot, 0), H.length + ' holdings') +
+    kcard('Total P&amp;L', hasCost ? (plTot >= 0 ? '+' : '−') + PK.fmt.inr(Math.abs(plTot), 0) : '–', hasCost && totCost ? fmtP((tot / totCost - 1) * 100) + ' on cost ' + PK.fmt.inr(totCost, 0) : 'add average cost to see', hasCost ? pc(plTot) : '') +
+    kcard('This week', (wkPL >= 0 ? '+' : '−') + PK.fmt.inr(Math.abs(wkPL), 0), 'today ' + (dPL >= 0 ? '+' : '−') + PK.fmt.inr(Math.abs(dPL), 0) + ' · ' + (tot ? fmtP(wkPL / (tot - wkPL) * 100) : '–') + ' for the week', pc(wkPL)) + '</div>' +
+    '<div class="box sec"><div class="k">Concentration</div><p class="verdict">' + vtxt + '</p>' +
+    '<div class="grid g2"><div><div class="lbl" style="margin-bottom:4px">By sector</div>' + secArr.slice(0, 10).map(function (s, i) { return hb(s[0], s[1], secArr[0][1], i, s[1] > 35); }).join('') + '</div>' +
+    '<div><div class="lbl" style="margin-bottom:4px">Largest holdings</div>' + H.slice(0, 10).map(function (h, i) { return hb(dispSym(h.k), h.wt, H[0].wt, i, h.wt > 25); }).join('') + '</div></div>' +
+    '<details class="how"><summary>How to read this</summary><p>Weights use tonight\'s closing price × your quantity. Sectors are this site\'s custom sub-sectors. Amber bars flag a stock above 25% or a sector above 35% of value.</p></details></div>' +
+    '<div class="box sec"><div class="k">Health check</div><p class="verdict">' + (stage34.length + weakSec.length + red.length ? '<b>' + (stage34.length + weakSec.length + red.length) + '</b> flags across your holdings' : 'No red flags on your holdings tonight') + '</p>' + capnote +
+    '<div class="grid g3">' +
+    flagBox('In Stage 3 / 4', stage34, function (h) { return '<span class="stg s' + h.stage + '">' + h.stage + '</span> ' + (h.stage === 4 ? 'declining' : 'topping') + ' · RS ' + (h.rr || '–'); }, 'None: no holding is topping or declining.') +
+    flagBox('Weak RS in weak sectors', weakSec, function (h) { return 'RS ' + h.rr + ' · ' + esc(h.sec) + ' (bottom third)'; }, 'None: no laggard sits in a lagging sector.') +
+    flagBox('Risk badges', red, function (h) { return esc((PK.badgeList(h.k) || []).map(function (b) { return b.text; }).join(', ')); }, 'None: no surveillance, ban or deal flags.') +
+    '</div><details class="how"><summary>How to read this</summary><p><b>Stage 3/4</b>: Weinstein stage on weekly closes; Stage 3 is a top forming, Stage 4 a downtrend. <b>Weak RS in weak sectors</b>: RS Rating below 40 in a sector whose median RS Rating ranks in the bottom third of all sectors. <b>Risk badges</b>: NSE ASM/GSM/ESM surveillance, F&amp;O ban, band changes, trade-to-trade, recent bulk/block deals, insider filings, results due.</p></details></div>' +
+    '<div class="box sec"><div class="k">What changed this week</div><p class="verdict">' + (changed.length ? '<b>' + changed.length + '</b> of your holdings had something happen in the last 7 days' : 'A quiet week: no stage changes, big moves or events') + '</p>' +
+    (changed.length ? '<div class="flag"><ul>' + changed.slice(0, 25).map(function (x) { return li(x[0], x[1].join(' · ')); }).join('') + '</ul></div>' : '') + '</div>' +
+    '<div class="box sec"><div class="k">Holdings</div><div class="scroll"><table class="pftbl"><thead><tr><th>Stock</th><th>Qty</th><th>Avg cost</th><th>Price</th><th>Value</th><th>Weight</th><th>P&amp;L</th><th>1D</th><th>1W</th><th>Stage</th><th>RS</th></tr></thead><tbody>' +
+    H.map(function (h) { return '<tr><td><a href="' + link360(h.k) + '" style="color:var(--text);font-weight:650;text-decoration:none">' + esc(dispSym(h.k)) + '</a> ' + PK.badges(h.k, { max: 2 }) + '<div class="dim" style="font-size:11.5px">' + esc(h.sec) + '</div></td><td>' + PK.fmt.num(h.qty, 0) + '</td><td>' + (isFinite(h.avg) ? PK.fmt.inr(h.avg, 1) : '–') + '</td><td>' + PK.fmt.inr(h.price, 1) + '</td><td>' + PK.fmt.inr(h.val, 0) + '</td><td>' + h.wt.toFixed(1) + '%</td><td class="' + pc(h.pl) + '">' + (h.pl != null ? (h.pl >= 0 ? '+' : '−') + PK.fmt.inr(Math.abs(h.pl), 0) + '<div style="font-size:11.5px">' + fmtP(h.plp) + '</div>' : '–') + '</td><td class="' + pc(h.d1) + '">' + fp(h.d1) + '</td><td class="' + pc(h.w1) + '">' + fp(h.w1) + '</td><td>' + (h.stage ? '<span class="stg s' + h.stage + '">' + h.stage + '</span>' : '–') + '</td><td>' + (h.rr || '–') + '</td></tr>'; }).join('') +
+    '</tbody></table></div><div class="row"><button class="btn sm" id="pf2wl">★ Add all to a watchlist</button><button class="btn sm" id="pfcsv">⬇ CSV</button></div>' +
+    '<div class="src">Prices: NSE/BSE close ' + fdate(D.asof) + ' · stage &amp; RS: Stage 2 scanner · nothing you enter leaves this browser.</div></div>';
+  out.innerHTML = html;
+  $('pf2wl').onclick = function () { importSyms(H.map(function (h) { return h.k; }), true, 'Portfolio'); };
+  $('pfcsv').onclick = function () { PK.download('portfolio_check_' + D.asof + '.csv', '﻿' + ['symbol,qty,avg_cost,price,value,weight_pct,pnl,pnl_pct,ret_1w,stage,rs'].concat(H.map(function (h) { return [h.k, h.qty, isFinite(h.avg) ? h.avg : '', h.price, h.val == null ? '' : h.val.toFixed(0), h.wt.toFixed(2), h.pl == null ? '' : h.pl.toFixed(0), h.plp == null ? '' : h.plp.toFixed(2), h.w1 == null ? '' : h.w1, h.stage || '', h.rr || ''].join(','); })).join('\n'), 'text/csv;charset=utf-8'); PK.haptic('success'); };
+}
+function kcard(l, v, s, c) { return '<div class="kp"><div class="l">' + l + '</div><div class="v ' + (c || '') + '">' + v + '</div><div class="s">' + s + '</div></div>'; }
+function hb(name, v, max, i, warn) { return '<div class="hb" data-pk-tip><span class="nm" title="' + esc(name) + '">' + esc(name) + '</span><span class="tr"><span class="f' + (warn ? ' warn' : '') + '" style="display:block;width:' + Math.max(2, v / (max || 1) * 100).toFixed(1) + '%;animation-delay:' + i * 45 + 'ms"></span></span><b style="text-align:right">' + v.toFixed(1) + '%</b></div>'; }
+document.addEventListener('click', function (e) { if (e.target.closest('[data-capreset]')) PK.capSet(null); });
+$('pfgo').onclick = function () { runPortfolio(true); };
+$('pfclear').onclick = function () { $('pfin').value = ''; lsDel(PFKEY); PF = { rows: [], bad: [] }; $('pfmsg').textContent = 'Cleared from this browser.'; renderPortfolio(); renderKPIs(); renderWeek(); PK.haptic('tap'); };
+$('pfsample').onclick = function () { $('pfin').value = ['RELIANCE, 40, 1290', 'HDFCBANK, 60, 1710', 'TCS, 12, 3900', 'POLYCAB, 8, 6100', 'DIXON, 3, 15500', 'BEL, 300, 330', 'IRCTC, 50, 820'].filter(function (l) { return resolve(l.split(',')[0]); }).join('\n'); runPortfolio(true); };
+$('pfremember').onchange = function () { if (!this.checked) lsDel(PFKEY); else if ($('pfin').value.trim()) lsSet(PFKEY, $('pfin').value); };
+$('pffile').onchange = function () { var f = this.files && this.files[0]; if (!f) return; var r = new FileReader(); r.onload = function () { $('pfin').value = r.result; runPortfolio(true); }; r.readAsText(f); };
+var savedPF = lsGet(PFKEY); if (savedPF) { $('pfin').value = savedPF; PF = parseHoldings(savedPF); }
+
+/* ------------------------------------------------------------ my week */
+var WK = { scope: 'all', src: 'all', tone: 'all' };
+function renderWeekScope() {
+  var sc = [['all', 'Everything I follow']].concat(S.lists.map(function (l) { return [l.id, l.name]; }));
+  if (PF.rows.length) sc.push(['pf', 'Portfolio']);
+  if (!sc.some(function (x) { return x[0] === WK.scope; })) WK.scope = 'all';
+  $('wk-scope').innerHTML = sc.map(function (x) { return '<button class="chip' + (WK.scope === x[0] ? ' on' : '') + '" data-v="' + esc(x[0]) + '">' + esc(x[1]) + '</button>'; }).join('');
+  $('wk-src').innerHTML = [['all', 'All']].concat(['res', 'ord', 'ins', 'deal', 's2', 'fil'].map(function (k) { return [k, SRC[k]]; })).map(function (x) { return '<button class="chip' + (WK.src === x[0] ? ' on' : '') + '" data-v="' + x[0] + '">' + x[1] + '</button>'; }).join('');
+  $('wk-tone').innerHTML = [['all', 'All'], ['1', 'Positive'], ['-1', 'Negative']].map(function (x) { return '<button class="chip' + (WK.tone === x[0] ? ' on' : '') + '" data-v="' + x[0] + '">' + x[1] + '</button>'; }).join('');
+}
+[['wk-scope', 'scope'], ['wk-src', 'src'], ['wk-tone', 'tone']].forEach(function (p) {
+  $(p[0]).addEventListener('click', function (e) { var b = e.target.closest('[data-v]'); if (!b) return; WK[p[1]] = b.getAttribute('data-v'); PK.haptic('select'); renderWeek(); });
+});
+function scopeSyms() {
+  if (WK.scope === 'all') return allMySyms();
+  if (WK.scope === 'pf') return PF.rows.map(function (h) { return h.k; });
+  var l = S.lists.filter(function (x) { return x.id === WK.scope; })[0];
+  return l ? l.items.map(function (x) { return x.s; }).filter(function (k) { return D.s[k]; }) : [];
+}
+function renderWeek() {
+  renderWeekScope();
+  var syms = scopeSyms(), from = addDays(REF, -7);
+  if (!syms.length) { $('wk-verdict').textContent = 'Add stocks to a list or paste your portfolio to get a weekly digest.'; $('wk-list').innerHTML = '<div class="empty"><span class="big">★</span>Nothing to follow yet.</div>'; $('wk-movers').innerHTML = ''; $('wk-cap').innerHTML = ''; return; }
+  if (!EV) { $('wk-verdict').textContent = 'Loading events…'; return; }
+  var hidden = 0;
+  var vis = syms.filter(function (k) { if (PK.capOK(k)) return true; hidden++; return false; });
+  $('wk-cap').innerHTML = PK.capIsDefault() ? '' : 'Filtered to ' + esc(PK.capSummary()) + ' · ' + hidden + ' of your stocks hidden · <button type="button" data-capreset>reset</button>';
+  var all = [];
+  vis.forEach(function (k) { evOf(k).forEach(function (e) { if (e[0] >= from && e[1] !== 'mf') all.push([k, e]); }); });
+  var n = all.length, pos = all.filter(function (x) { return x[1][4] > 0; }).length, neg = all.filter(function (x) { return x[1][4] < 0; }).length;
+  var list = all.filter(function (x) { return (WK.src === 'all' || x[1][1] === WK.src) && (WK.tone === 'all' || String(x[1][4]) === WK.tone); });
+  list.sort(function (a, b) { return a[1][0] < b[1][0] ? 1 : a[1][0] > b[1][0] ? -1 : (Math.abs(b[1][4]) - Math.abs(a[1][4])); });
+  var stocksHit = {}; all.forEach(function (x) { stocksHit[x[0]] = 1; });
+  $('wk-verdict').innerHTML = n ? '<b>' + n + ' event' + (n > 1 ? 's' : '') + '</b> on ' + Object.keys(stocksHit).length + ' of your ' + vis.length + ' stocks in the week to ' + fdate(REF) + ' · <span class="up">' + pos + ' positive</span>, <span class="dn">' + neg + ' negative</span>' : 'A quiet week: none of your ' + vis.length + ' stocks had a filing, deal, result or stage change in the 7 days to ' + fdate(REF) + '.';
+  // movers strip
+  var mv = vis.filter(function (k) { return isn(g(k, 'w1')); }).sort(function (a, b) { return g(b, 'w1') - g(a, 'w1'); });
+  var pick = mv.slice(0, 3).concat(mv.length > 3 ? mv.slice(-3).reverse().filter(function (k) { return g(k, 'w1') < 0 && mv.slice(0, 3).indexOf(k) < 0; }) : []);
+  $('wk-movers').innerHTML = pick.length ? '<div class="row"><span class="lbl">Price this week</span>' + pick.map(function (k) { var w = g(k, 'w1'); return '<a class="chip" style="text-decoration:none" href="' + link360(k) + '">' + esc(dispSym(k)) + ' <b class="' + pc(w) + '">' + fmtP(w) + '</b></a>'; }).join('') + '</div>' : '';
+  var h = '', last = null;
+  list.slice(0, 300).forEach(function (x, i) {
+    var k = x[0], e = x[1];
+    if (e[0] !== last) { last = e[0]; h += '<div class="day">' + new Date(e[0] + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short', timeZone: 'UTC' }) + '</div>'; }
+    h += '<div class="evr tone' + e[4] + '" style="animation-delay:' + Math.min(i, 20) * 30 + 'ms"><div class="s"><a href="' + link360(k) + '">' + esc(dispSym(k)) + '</a> ' + PK.badges(k, { max: 2 }) + '</div><div class="t"><a href="' + esc(evUrl(e[3])) + '" target="_blank" rel="noopener">' + esc(e[2]) + '</a></div><span class="srcb ' + e[1] + '">' + SRC[e[1]] + '</span></div>';
+  });
+  if (!list.length) h = '<div class="unavail">' + (n ? 'No events match these filters.' : 'Nothing happened to your stocks this week.') + '</div>';
+  // monthly MF block
+  var mf = [];
+  vis.forEach(function (k) { evOf(k).forEach(function (e) { if (e[1] === 'mf') mf.push([k, e]); }); });
+  if (mf.length && (WK.src === 'all')) {
+    mf.sort(function (a, b) { return Math.abs(b[1][5] || 0) - Math.abs(a[1][5] || 0); });
+    h += '<div class="day">Mutual funds · latest monthly disclosure (' + esc(D.mf_month || '') + ')</div>' + mf.slice(0, 30).map(function (x) { var e = x[1]; return '<div class="evr tone' + e[4] + '"><div class="s"><a href="' + link360(x[0]) + '">' + esc(dispSym(x[0])) + '</a></div><div class="t"><a href="' + esc(evUrl(e[3])) + '">' + esc(e[2]) + '</a></div><span class="srcb mf">MF</span></div>'; }).join('');
+  }
+  $('wk-list').innerHTML = h;
+  $('wk-srcline').innerHTML = 'Sources: Stage 2 scanner weekly history · NSE/BSE insider (PIT/SAST) and bulk/block deal filings via Insider &amp; Deals · order wins from Order Tracker and Filings Radar · results from Earnings Centre (NSE XBRL) · company filings from Filings Radar · MF holdings from AMC monthly disclosures via Smart Money · as of ' + fdate(REF) + (EV.failed ? ' · <span class="am">events file unavailable</span>' : '');
+}
+
+/* ------------------------------------------------------------ wiring */
+function renderAll() { renderLists(); renderTable(); renderKPIs(); renderWeekScope(); if (TAB && TAB.get && TAB.get() === 'week') renderWeek(); }
+var TAB = PK.tabs ? PK.tabs($('tabs'), { storeKey: 'pk_wl_tab', initial: 'watch', onChange: function (n) { if (n === 'week') renderWeek(); if (n === 'portfolio') renderPortfolio(); } }) : null;
+if (!TAB) { /* minimal fallback tabs */
+  $('tabs').addEventListener('click', function (e) { var b = e.target.closest('[data-tab]'); if (!b) return; Array.prototype.forEach.call($('tabs').children, function (x) { x.classList.toggle('on', x === b); }); Array.prototype.forEach.call(document.querySelectorAll('[data-panel]'), function (p) { p.hidden = p.getAttribute('data-panel') !== b.getAttribute('data-tab'); }); if (b.getAttribute('data-tab') === 'week') renderWeek(); });
+}
+document.addEventListener('pk:cap', function () { renderKPIs(); renderPortfolio(); renderWeek(); });
+renderAll();
+if (PF.rows.length) renderPortfolio();
+evReady.then(function () {
+  var mx = REF; Object.keys(EV.ev).forEach(function (k) { var e = EV.ev[k][0]; if (e && e[0] > mx && e[0] <= addDays(D.asof, 4)) mx = e[0]; });
+  REF = mx; // events can be a day or two newer than the last price date
+  if (TBL) TBL.update(wlRows()); renderKPIs(); renderWeek();
+});
+// public hook for the "Add to watchlist" helper when it runs on this page
+window.PKWL_REFRESH = function () { S = loadState(); renderAll(); };
+})();
+</script>
+</body>
+</html>

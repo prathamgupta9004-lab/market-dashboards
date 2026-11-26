@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scanner Lab · Pratham Gupta</title>
+<meta name="description" content="An open library of 30+ stock scans and 17 chart patterns for NSE stocks, with editable rules, delivery and record-volume lists, confluence, a two-year backtest of every scan and the traits of each year's biggest winners. By Pratham Gupta · Finance enthusiast &amp; creator.">
+<meta name="theme-color" content="#030806">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/kit.css?v=202611281537">
+<style>
+:root{--bg:#030806;--panel:rgba(10,23,19,.78);--card:#0A1713;--card2:#0E1F19;--line:#16302A;--line2:#21443A;
+--text:#EEF5F2;--muted:rgba(238,245,242,.62);--dim:rgba(238,245,242,.42);
+--acc:#2FE3B5;--acc2:#6EE7B7;--deep:#1E4D3D;--up:#2FE3B5;--dn:#FF5C6C;--amber:#E0A64A;--sage:#8EC3A9;
+--sky:#5AA9F0;--lav:#A78BFA;--slate:#8A9690;--teal:#3E6B5E;--font:Inter,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--text);font:14px/1.5 var(--font);font-feature-settings:"tnum" 1,"cv11" 1;background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 520px at 12% 108%,rgba(5,150,105,.32),transparent 70%),radial-gradient(700px 420px at 100% -10%,rgba(47,227,181,.10),transparent 70%),
+ linear-gradient(rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,linear-gradient(90deg,rgba(47,227,181,.035) 1px,transparent 1px) 0 0/72px 72px,var(--bg)}
+::selection{background:rgba(47,227,181,.3)}
+header{display:flex;align-items:center;gap:16px;padding:10px 24px;border-bottom:1px solid var(--line);background:rgba(3,8,6,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}
+.back{color:var(--muted);text-decoration:none;font-size:13px;border:1px solid var(--line2);border-radius:999px;padding:8px 13px;transition:all .2s;white-space:nowrap;min-height:40px;display:inline-flex;align-items:center}
+.back:hover{color:var(--acc);border-color:var(--acc)}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.me img{width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);object-fit:cover;flex:none}
+.me .t{font-weight:700;font-size:16px;letter-spacing:-.2px}.me .h{font-size:12px;color:var(--acc)}
+.capf:empty{display:none}.capf{margin-left:auto}.capf+nav.tb{margin-left:0}
+nav.tb{margin-left:auto;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+nav.tb::-webkit-scrollbar{display:none}
+nav.tb button{border:0;border-radius:999px;background:transparent;color:var(--muted);padding:8px 15px;min-height:40px;font:600 13px var(--font);cursor:pointer;white-space:nowrap;transition:all .18s}
+nav.tb button:hover{color:var(--text)}
+nav.tb button.on{background:linear-gradient(135deg,#2FE3B5,#10B981);color:#03140E;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+main{padding:22px 24px 48px;max-width:1360px;margin:0 auto}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:6px 0 18px;animation:rise .6s ease both}
+.hero .eb{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.hero h1{margin:6px 0 4px;font-size:clamp(26px,3.6vw,40px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#2FE3B5,#6EE7B7 60%,#C8FFE9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .asof{color:var(--muted);font-size:12.5px}.hero .asof b{color:var(--text)}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;background:var(--card)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 0 20px}
+.pk{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:14px 16px;animation:rise .6s cubic-bezier(.2,.8,.2,1) both;min-width:0}
+.pk::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(47,227,181,.16),transparent 70%)}
+.pk .l{font-size:11.5px;color:var(--muted)}
+.pk .v{font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk .s{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.up{color:var(--up)}.dn{color:var(--dn)}.am{color:var(--amber)}.mut{color:var(--muted)}.dimc{color:var(--dim)}
+.sec{margin-top:22px}
+.sec>h2{font-size:18px;letter-spacing:-.01em;margin:0 0 4px}
+.sec>.sub{color:var(--muted);font-size:13px;margin:0 0 12px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.box{background:linear-gradient(170deg,var(--card2),var(--card) 60%);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0;position:relative;
+ animation:rise .55s cubic-bezier(.2,.8,.2,1) both;transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s}
+.box.hov:hover{transform:translateY(-4px);border-color:rgba(47,227,181,.55);box-shadow:0 18px 40px -18px rgba(47,227,181,.35)}
+.box h3{margin:0 0 2px;font-size:15px;font-weight:650;letter-spacing:-.1px;line-height:1.35}
+.box .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.verdict{font-size:15px;font-weight:650;line-height:1.35;margin:0 0 8px}
+.verdict b{color:var(--acc)}
+.chart{height:300px;margin-top:6px;touch-action:pan-y}
+.chart.sm{height:220px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+.lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card);color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:8px 13px;min-height:40px;font:500 13px var(--font);cursor:pointer;transition:all .18s;white-space:nowrap}
+.chip:hover{color:var(--text);border-color:#2f5c4f;transform:translateY(-1px)}
+.chip.on{background:linear-gradient(135deg,#2FE3B5,#10B981);border-color:transparent;color:#03140E;font-weight:650;box-shadow:0 4px 16px rgba(47,227,181,.22)}
+details.how{margin-top:10px;border-top:1px dashed var(--line2);padding-top:8px;color:var(--muted);font-size:12.5px}
+details.how summary{cursor:pointer;color:var(--acc2);font-weight:600;min-height:40px;display:flex;align-items:center;list-style:none}
+details.how summary::before{content:"+";display:inline-block;width:16px;font-weight:700}
+details.how[open] summary::before{content:"−"}
+details.how p{margin:6px 0}
+.src{color:var(--dim);font-size:11.5px;margin-top:8px}
+.icard{cursor:pointer}
+.icard .nm{font-size:12.5px;color:var(--muted)}
+.icard .px{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.icard .rets{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px;font-size:12px}
+.icard .rets span{display:block;color:var(--dim);font-size:10.5px}
+.icard svg{display:block;width:100%;margin-top:6px}
+.mood{font-size:16px;font-weight:600;line-height:1.45}
+.state{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.dot{width:14px;height:14px;border-radius:50%;flex:none;box-shadow:0 0 0 6px rgba(47,227,181,.12)}
+.st-up{background:var(--acc)}.st-press{background:var(--amber);box-shadow:0 0 0 6px rgba(224,166,74,.14)}.st-rally{background:var(--sky);box-shadow:0 0 0 6px rgba(90,169,240,.14)}.st-corr{background:var(--dn);box-shadow:0 0 0 6px rgba(255,92,108,.14)}
+.tag{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line2);white-space:nowrap}
+.tag.up{color:var(--acc);border-color:rgba(47,227,181,.4)}.tag.press{color:var(--amber);border-color:rgba(224,166,74,.45)}.tag.rally{color:var(--sky);border-color:rgba(90,169,240,.45)}.tag.corr{color:var(--dn);border-color:rgba(255,92,108,.45)}
+.big{font-size:clamp(24px,3vw,32px);font-weight:750;letter-spacing:-.02em}
+table.mini{width:100%;border-collapse:collapse;font-size:13px}
+table.mini th,table.mini td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.mini th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+table.mini th:first-child,table.mini td:first-child{text-align:left}
+table.mini tbody tr:hover{background:rgba(47,227,181,.06)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.gauge{display:flex;justify-content:center}
+.gauge svg{width:100%;max-width:340px;height:auto}
+.legend2{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:4px 0}
+.legend2 i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.skel{height:220px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(100deg,var(--card) 30%,#12291F 50%,var(--card) 70%) 0 0/300% 100%;animation:shimmer 1.4s linear infinite}
+.skel.s{height:110px}
+.unavail{border:1px dashed var(--line2);border-radius:12px;padding:14px;color:var(--muted);font-size:13px;background:rgba(10,23,19,.5)}
+.sym b{font-weight:650}.sym .nm2{display:block;color:var(--dim);font-size:11.5px;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.stg{display:inline-block;min-width:24px;text-align:center;border-radius:6px;padding:1px 5px;font-size:11.5px;font-weight:700}
+.stg.s1{background:rgba(138,150,144,.18);color:#C9D6D0}.stg.s2{background:rgba(47,227,181,.16);color:var(--acc)}.stg.s3{background:rgba(224,166,74,.16);color:var(--amber)}.stg.s4{background:rgba(255,92,108,.16);color:var(--dn)}
+.ddl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ddl span{font-size:12px;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;color:var(--muted)}
+.ddl span b{color:var(--text)}
+.bars{display:grid;gap:6px}
+.hb{display:grid;grid-template-columns:120px 1fr 64px;gap:8px;align-items:center;font-size:12.5px}
+.hb .t{background:rgba(47,227,181,.06);height:14px;border-radius:999px;overflow:hidden;position:relative}
+.hb .f{height:100%;border-radius:999px;background:linear-gradient(90deg,#10B981,#2FE3B5)}
+.hb .f.neg{background:linear-gradient(90deg,#C93A4B,#FF5C6C)}
+footer.ft{margin-top:36px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer.ft b{color:var(--text);font-weight:600}
+[data-panel][hidden]{display:none!important}
+.stagger>*{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,227,181,.55)}70%{box-shadow:0 0 0 9px rgba(47,227,181,0)}100%{box-shadow:0 0 0 0 rgba(47,227,181,0)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.g5{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){header{flex-wrap:wrap;padding:8px 16px;gap:8px 10px}.back span{display:none}.back{padding:0 13px}.capf{margin-left:auto;flex:none}.me{flex:1 1 0;min-width:0}.me>div{min-width:0}.me .h{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.me img{width:32px;height:32px}nav.tb{margin-left:0;width:100%}nav.tb button{flex:1 0 auto;padding:8px 12px}
+ main{padding:16px 16px 40px}.g2,.g3{grid-template-columns:1fr}.g5{grid-template-columns:repeat(2,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .pk:last-child{grid-column:span 2}.pk .v{font-size:21px}.chart{height:260px}.hb{grid-template-columns:92px 1fr 58px}
+ .box{padding:14px}.verdict{font-size:14px}}
+@media (pointer:coarse),(max-width:760px){.pk-chip,.pk-btn,.pk-capbtn{min-height:40px;padding-top:8px;padding-bottom:8px}}
+@media (max-width:420px){.back{padding:6px 10px;font-size:12px}.me .t{font-size:15px}}
+
+.crit{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line2);border-radius:999px;padding:5px 12px;min-height:40px;font-size:13px;color:var(--muted)}
+.crit b{color:var(--text);font-weight:600}.crit.co{border-style:dashed}
+.crit input{width:72px;background:#08130F;border:1px solid var(--line2);border-radius:8px;color:var(--acc);font:600 13px var(--font);padding:6px 8px;min-height:32px}
+.crit input:focus{outline:none;border-color:var(--acc)}
+.cnt{display:inline-block;min-width:22px;padding:0 6px;border-radius:999px;background:rgba(47,227,181,.12);color:var(--acc);font-size:11.5px;font-weight:700;margin-left:4px;text-align:center}
+.chip.on .cnt{background:rgba(3,20,14,.18);color:#03140E}
+.scanlist,.pickl{margin-top:10px;max-height:340px;overflow:auto;padding:2px}
+.box h3{font-size:17px}.sub.mut{margin:2px 0 6px;font-size:13px}
+ol.rules{margin:8px 0 10px;padding-left:20px;color:var(--muted);font-size:13px}ol.rules li{margin:3px 0}
+.hits{display:flex;flex-wrap:wrap;gap:4px;max-width:420px}
+.hits i{font-style:normal;font-size:11px;border-radius:999px;padding:1px 8px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.hits i.p{color:var(--sky);border-color:rgba(90,169,240,.4)}.hits i.x{color:var(--amber);border-color:rgba(224,166,74,.45)}.hits i.s{color:var(--acc);border-color:rgba(47,227,181,.35)}
+.pk-table td .sub,.mini td .sub{display:block;color:var(--dim);font-size:11.5px;white-space:normal}
+#scanBt:empty{display:none}
+@media (max-width:760px){.crit input{width:60px}.scanlist{max-height:260px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="https://prathamgupta9004-lab.github.io/market-dashboards/" aria-label="All dashboards">←<span>&nbsp;All dashboards</span></a>
+  <div class="me"><img src="https://prathamgupta9004-lab.github.io/market-dashboards/assets/pratham.webp" alt="" onerror="this.remove()"><div><div class="t">Scanner Lab</div><div class="h">Pratham Gupta · @imprathamgupta</div></div></div>
+  <div id="capf" class="capf"></div>
+  <nav class="tb" id="tabs" aria-label="Sections">
+    <button data-tab="lib" class="on">Scan Library</button><button data-tab="pat">Patterns</button><button data-tab="vol">Volume &amp; Delivery</button><button data-tab="match">Scan Match</button><button data-tab="fwd">Forward Results</button><button data-tab="win">Past Winners</button>
+  </nav>
+</header>
+<main>
+<div class="hero">
+  <div><div class="eb">NSE · end of day · open rules</div>
+  <h1>Every scan in the open, <em>with its track record.</em></h1>
+  <div class="asof" id="asof">Loading…</div></div>
+  <span class="live"><i></i>Refreshed every weekday evening</span>
+</div>
+<div class="kpis" id="kpis"><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div><div class="skel s"></div></div>
+
+<!-- ============================== LIBRARY -->
+<section data-panel="lib">
+  <div class="box">
+    <div class="k">Scan Library</div>
+    <p class="verdict" id="libVerdict">Loading…</p>
+    <div class="row"><span class="lbl">Group</span><div class="chips" id="libGroups"></div></div>
+    <div class="chips scanlist" id="libList"></div>
+    <details class="how"><summary>How to read this</summary>
+      <p>Pick a scan. Its rules are shown as chips; every number in a chip can be edited and the list updates instantly in your browser. Rules compare today's end-of-day values. "Reset" restores the published defaults, which are also the rules used in Forward Results.</p>
+      <p>All scans share a universe filter: average daily turnover over 50 sessions of at least the amount below, a minimum price, and no ETFs. RS Rating is a 1–99 percentile of weighted 3/6/9/12-month returns. Stage comes from the Stage 2 scanner. Fundamentals are the latest quarter filed on NSE (point in time: a result counts only from the session after it was filed).</p>
+    </details>
+  </div>
+  <div class="box" id="scanCard" style="margin-top:14px">
+    <h3 id="scanName">–</h3>
+    <p class="sub mut" id="scanDesc"></p>
+    <div class="row"><span class="lbl">Rules</span><div class="chips" id="scanCrit"></div></div>
+    <div class="row"><span class="lbl">Universe</span><div class="chips" id="scanUni"></div><button class="pk-btn" id="scanReset" type="button">Reset</button></div>
+    <p class="verdict" id="scanVerdict"></p>
+    <div id="scanBt" class="ddl"></div>
+    <div id="scanTable" style="margin-top:10px"><div class="skel"></div></div>
+    <div class="src" id="scanSrc"></div>
+  </div>
+</section>
+
+<!-- ============================== PATTERNS -->
+<section data-panel="pat" hidden>
+  <div class="box">
+    <div class="k">Chart patterns · exact rules</div>
+    <p class="verdict" id="patVerdict">Loading…</p>
+    <div class="chips" id="patList"></div>
+    <details class="how"><summary>How to read this</summary>
+      <p>Each pattern is detected with the rules listed on its card, using split- and bonus-adjusted daily OHLC from NSE's full bhavcopy. Swing points need 5 bars on each side, so they are confirmed 5 sessions late; nothing uses future prices. The sparkline is the last 90 closes. "Last 5 sessions" counts stocks that showed the pattern on any of the last five days.</p>
+    </details>
+  </div>
+  <div class="box" style="margin-top:14px">
+    <h3 id="patName">–</h3>
+    <ol class="rules" id="patRules"></ol>
+    <p class="verdict" id="patV2"></p>
+    <div id="patTable"><div class="skel"></div></div>
+    <div class="src">Source: NSE sec_bhavdata_full (OHLC, quantity, delivery), adjusted with SectorDashboard's corporate-action factors · <span class="asofx"></span></div>
+  </div>
+</section>
+
+<!-- ============================== VOLUME -->
+<section data-panel="vol" hidden>
+  <div class="grid g2">
+    <div class="box">
+      <div class="k">Market delivery</div>
+      <p class="verdict" id="dlvVerdict">Loading…</p>
+      <div class="chart sm" id="dlvChart"></div>
+      <details class="how"><summary>How to read this</summary><p>Median delivery % (shares taken into demat ÷ shares traded) across the liquid universe each session. Rising delivery means more buyers are holding rather than trading intraday.</p></details>
+      <div class="src">Source: NSE full bhavcopy DELIV_PER · <span class="asofx"></span></div>
+    </div>
+    <div class="box">
+      <div class="k">Record volume · last 20 sessions</div>
+      <p class="verdict" id="hvVerdict">Loading…</p>
+      <div id="hvBars"></div>
+      <details class="how"><summary>How to read this</summary><p><b>HVE</b>: highest volume ever in the vault's history (since Jan 2021; only for stocks listed before Apr 2022). <b>HVY</b>: highest in a year (252 sessions). <b>HVQ</b>: highest in a quarter (63 sessions). Each stock shows its biggest event of the last 20 sessions.</p></details>
+    </div>
+  </div>
+  <div class="box" style="margin-top:14px">
+    <div class="row"><div class="chips" id="volTabs">
+      <button class="chip on" data-v="deliv">Delivery vs average</button><button class="chip" data-v="hdb">High-delivery breakouts</button><button class="chip" data-v="acc">Accumulation</button><button class="chip" data-v="dis">Distribution</button><button class="chip" data-v="hv">HVE / HVY / HVQ</button>
+    </div></div>
+    <p class="verdict" id="volVerdict"></p>
+    <div id="volTable"><div class="skel"></div></div>
+    <details class="how"><summary>How to read this</summary><p id="volHow"></p></details>
+    <div class="src">Source: NSE full bhavcopy (quantity, delivery quantity, delivery %) · <span class="asofx"></span></div>
+  </div>
+</section>
+
+<!-- ============================== MATCH -->
+<section data-panel="match" hidden>
+  <div class="box">
+    <div class="k">Scan Match · confluence</div>
+    <p class="verdict" id="mVerdict">Loading…</p>
+    <div class="row"><span class="lbl">Combine</span><div class="chips" id="mMode"><button class="chip on" data-v="any">Count hits</button><button class="chip" data-v="and">AND (all picked)</button><button class="chip" data-v="or">OR (any picked)</button></div>
+      <button class="pk-btn" type="button" id="mClear">Clear picks</button></div>
+    <div class="row"><span class="lbl">Min hits</span><div class="chips" id="mMin"><button class="chip" data-v="1">1+</button><button class="chip on" data-v="3">3+</button><button class="chip" data-v="5">5+</button><button class="chip" data-v="8">8+</button></div></div>
+    <div class="chips pickl" id="mPicks"></div>
+    <details class="how"><summary>How to read this</summary><p>For every stock: how many library scans (default rules), patterns and outside lists it is on today. Outside lists: the Stage 2 list, PEAD candidates (score 60+), promoter market buying in the last 30 days (InsiderDeals) and large order wins in the last 30 days (Order Tracker). "First seen" is the start of the longest current streak; "streak" counts consecutive sessions. Pick scans below and switch to AND or OR to build your own combination.</p></details>
+  </div>
+  <div class="box" style="margin-top:14px"><div id="mTable"><div class="skel"></div></div>
+    <div class="src">Sources: this page's scans, Stage2Dashboard, PEADDashboard, InsiderDeals, OrderTracker · <span class="asofx"></span></div></div>
+</section>
+
+<!-- ============================== FORWARD -->
+<section data-panel="fwd" hidden>
+  <div class="box">
+    <div class="k">Backtest · what happened next</div>
+    <p class="verdict" id="fVerdict">Loading…</p>
+    <div class="row"><span class="lbl">Horizon</span><div class="chips" id="fH"><button class="chip" data-v="5">5 sessions</button><button class="chip on" data-v="20">20 sessions</button><button class="chip" data-v="60">60 sessions</button></div></div>
+    <div id="fBars"></div>
+    <details class="how"><summary>How to read this</summary><p id="fHow"></p></details>
+  </div>
+  <div class="box" style="margin-top:14px"><div id="fTable"><div class="skel"></div></div></div>
+  <div class="box" style="margin-top:14px" id="fDetail" hidden>
+    <h3 id="fdName"></h3><p class="verdict" id="fdV"></p>
+    <div class="grid g2"><div><div class="k">20-session returns</div><div id="fdHist"></div></div><div><div class="k">Average 20-session return by signal month</div><div id="fdMon"></div></div></div>
+    <div class="k" style="margin-top:10px">Latest signals</div><div id="fdRecent" class="ddl"></div>
+  </div>
+  <div class="box" style="margin-top:14px">
+    <div class="k">Live log</div>
+    <p class="verdict" id="lVerdict"></p>
+    <div id="lTable"></div>
+    <div class="src">Signals recorded each night since launch; returns from the signal-day close to the latest close, versus the Nifty 500. · <span class="asofx"></span></div>
+  </div>
+</section>
+
+<!-- ============================== WINNERS -->
+<section data-panel="win" hidden>
+  <div class="box">
+    <div class="k">Past Winners</div>
+    <p class="verdict" id="wVerdict">Loading…</p>
+    <div class="row"><span class="lbl">Year</span><div class="chips" id="wYears"></div></div>
+    <div class="grid g4" id="wKpis"></div>
+    <details class="how"><summary>How to read this</summary><p>Each calendar year's 100 biggest runs: the largest gain from a low to a later high inside the year (adjusted closes), among stocks priced ₹20+ with ₹1 Cr+ median daily turnover at the low. Traits are measured at the low, point in time: Weinstein stage and RS Rating (Stage 2 weekly history), latest EPS and sales growth already filed on NSE, up-volume days (up days on above-average volume in the prior 50 sessions), distance from the 52-week high, and the sector's rank by 6-month return (1 = strongest).</p></details>
+  </div>
+  <div class="box" style="margin-top:14px"><div id="wTable"><div class="skel"></div></div>
+  <div class="src">Sources: SectorDashboard adjusted NSE closes since 2021, Stage2Dashboard weekly history, EarningsCentre quarterly results · <span class="asofx"></span></div></div>
+</section>
+
+<footer class="ft"><span><b>Pratham Gupta · Finance enthusiast &amp; creator</b> &nbsp;|&nbsp; For educational purposes only · Not investment advice</span><span id="srcLine">Source: NSE full bhavcopy with delivery (sec_bhavdata_full), NSE quarterly results (XBRL) via EarningsCentre · Stage &amp; RS history from the Stage 2 scanner</span></footer>
+</main>
+
+<script src="../assets/universe.js?v=202611281537"></script>
+<script src="../assets/badges.js?v=202611281537"></script>
+<script src="../assets/kit.js?v=202611281537"></script>
+<script src="data.js?v=202611281537"></script>
+<script>
+(function () {
+'use strict';
+var PK = window.PK = window.PK || {};
+function esc(s) { return s == null ? '' : String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function num(v) { return typeof v === 'number' && isFinite(v); }
+function $(id) { return document.getElementById(id); }
+PK.haptic = PK.haptic || function () {};
+PK.press = PK.press || function () {};
+PK.badges = PK.badges || function () { return ''; };
+PK.countUp = PK.countUp || function (el, v, o) { el.textContent = (o && o.fmt) ? o.fmt(v) : v; };
+PK.capOK = PK.capOK || function () { return true; };
+PK.capIsDefault = PK.capIsDefault || function () { return true; };
+PK.capSummary = PK.capSummary || function () { return 'All'; };
+PK.spark = PK.spark || function () { return ''; };
+PK.tip = PK.tip || { show: function () {}, hide: function () {} };
+PK.svgBars = PK.svgBars || function (el, items, o) {
+  o = o || {}; var mx = Math.max.apply(null, items.map(function (i) { return Math.abs(+i.value || 0); }).concat([1]));
+  el.innerHTML = '<div class="bars">' + items.map(function (it) { var v = +it.value || 0;
+    return '<div class="hb"><span class="mut">' + esc(it.label) + '</span><div class="t"><div class="f' + (v < 0 ? ' neg' : '') + '" style="width:' + (Math.abs(v) / mx * 100) + '%"></div></div><b>' + esc(o.fmt ? o.fmt(v, it) : v) + '</b></div>'; }).join('') + '</div>';
+  return { update: function (n) { PK.svgBars(el, n, o); } };
+};
+PK.table = PK.table || function (el, cfg) {
+  function paint(rows) {
+    rows = rows.filter(function (r) { return !cfg.capKey || PK.capOK(r[cfg.capKey]); });
+    el.innerHTML = '<div class="scroll"><table class="mini"><thead><tr>' + cfg.columns.map(function (c) { return '<th>' + (c.label || c.key) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      rows.slice(0, 100).map(function (r) { return '<tr>' + cfg.columns.map(function (c) { var x = r[c.key]; return '<td>' + (c.fmt ? c.fmt(x, r) : esc(x == null ? '–' : x)) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+  }
+  var cur = cfg.rows || []; paint(cur);
+  return { update: function (r) { cur = r; paint(r); }, destroy: function () {} };
+};
+PK.tabs = PK.tabs || function (el, o) {
+  var btns = [].slice.call(el.querySelectorAll('[data-tab]'));
+  function set(n) { btns.forEach(function (b) { b.classList.toggle('on', b.dataset.tab === n); });
+    [].forEach.call(document.querySelectorAll('[data-panel]'), function (p) { p.hidden = p.dataset.panel !== n; }); if (o.onChange) o.onChange(n); }
+  el.addEventListener('click', function (e) { var b = e.target.closest('[data-tab]'); if (b) set(b.dataset.tab); });
+  var start = (/tab=(\w+)/.exec(location.hash) || [])[1];
+  set(btns.some(function (b) { return b.dataset.tab === start; }) ? start : btns[0].dataset.tab);
+  return { set: set };
+};
+
+var SL = window.SL;
+if (!SL) { $('asof').textContent = 'Data file missing. Run ScannerLab/run.bat.'; return; }
+var RM = false; try { RM = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+var D = function (s) { if (!s) return '–'; var d = new Date(s + 'T00:00:00'); return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); };
+var Ds = function (s) { if (!s) return '–'; var d = new Date(s + 'T00:00:00'); return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: '2-digit' }); };
+var pct = function (v, d) { return num(v) ? (v > 0 ? '+' : '') + v.toFixed(d == null ? 1 : d) + '%' : '–'; };
+var fx = function (v, d) { return num(v) ? v.toLocaleString('en-IN', { maximumFractionDigits: d == null ? 1 : d }) : '–'; };
+var cls = function (v) { return num(v) ? (v > 0 ? 'up' : v < 0 ? 'dn' : '') : ''; };
+var KF = {
+  pct: function (v) { return pct(v); }, pct0: function (v) { return num(v) ? v.toFixed(1) + '%' : '–'; },
+  pp: function (v) { return num(v) ? (v > 0 ? '+' : '') + v.toFixed(1) + ' pts' : '–'; }, x: function (v) { return num(v) ? v.toFixed(2) + '×' : '–'; },
+  inr: function (v) { return num(v) ? '₹' + fx(v, v < 100 ? 2 : 1) : '–'; }, cr: function (v) { return num(v) ? '₹' + fx(v, v < 10 ? 2 : 0) + ' Cr' : '–'; },
+  int: function (v) { return num(v) ? String(Math.round(v)) : '–'; }, flag: function (v) { return v === 1 ? '✓' : v === 0 ? '✗' : '–'; }
+};
+function mfmt(m) { var k = (SL.metrics[m] || [m, 'num'])[1]; return KF[k] || function (v) { return fx(v, 2); }; }
+function mlab(m) { return (SL.metrics[m] || [m])[0]; }
+function stg(v) { return num(v) ? '<span class="stg s' + v + '">' + v + '</span>' : '–'; }
+function symCell(v, r) { return '<span class="sym"><b>' + esc(v) + '</b>' + PK.badges(v, { max: 2 }) + '<span class="nm2">' + esc(r.n || '') + '</span></span>'; }
+function capNote() { return PK.capIsDefault() ? '' : ' · filtered to ' + esc(PK.capSummary()); }
+function how(text) { return '<details class="how"><summary>How to read this</summary><p>' + text + '</p></details>'; }
+[].forEach.call(document.querySelectorAll('.asofx'), function (e) { e.textContent = 'as of ' + D(SL.asof); });
+
+/* ------------------------------------------------ hero */
+$('asof').innerHTML = 'Data as of <b>' + D(SL.asof) + '</b> close · built ' + esc(SL.built) + ' IST · price history ' + D(SL.from) + ' → ' + D(SL.asof) + ' (' + SL.sessions + ' sessions of NSE bhavcopy with delivery)';
+var K = SL.kpi || {};
+var kp = [
+  { l: 'Stocks in the scan universe', v: K.universe, s: '₹' + SL.liq + ' Cr+ avg turnover, ₹' + SL.minpx + '+ price' },
+  { l: 'Open scans', v: K.scans, s: (K.active || 0) + ' have stocks today' },
+  { l: 'Chart patterns', v: K.patterns, s: 'rules published on each card' },
+  { l: '52-week-high breakouts today', v: K.b52, s: 'on 1.5×+ normal volume' },
+  { l: 'History tested', v: SL.sessions, s: 'sessions since ' + Ds(SL.from) }
+];
+$('kpis').innerHTML = kp.map(function (k, i) { return '<div class="pk" style="animation-delay:' + i * 45 + 'ms"><div class="l">' + esc(k.l) + '</div><div class="v" data-i="' + i + '">–</div><div class="s">' + esc(k.s) + '</div></div>'; }).join('');
+kp.forEach(function (k, i) { var el = document.querySelector('.kpis .v[data-i="' + i + '"]'); if (num(k.v)) el.textContent = Math.round(k.v).toLocaleString('en-IN'); });
+kp.forEach(function (k, i) { if (num(k.v) && !RM) PK.countUp(document.querySelector('.kpis .v[data-i="' + i + '"]'), k.v, { fmt: function (x) { return Math.round(x).toLocaleString('en-IN'); } }); });
+
+/* ------------------------------------------------ snapshot rows */
+var COLS = SL.snap.cols, CI = {}; COLS.forEach(function (c, i) { CI[c] = i; });
+var ROWS = SL.snap.rows.map(function (a) { var o = {}; for (var i = 0; i < COLS.length; i++) o[COLS[i]] = a[i]; return o; });
+var BYS = {}; ROWS.forEach(function (r) { BYS[r.s] = r; });
+
+/* ------------------------------------------------ lazy loaders */
+var loaded = {};
+function load(file, glob) {
+  if (loaded[file]) return loaded[file];
+  loaded[file] = new Promise(function (res) {
+    if (window[glob]) return res(window[glob]);
+    var s = document.createElement('script'); s.src = file + '?v=' + encodeURIComponent(SL.built || '');
+    s.onload = function () { res(window[glob] || null); }; s.onerror = function () { res(null); }; document.head.appendChild(s);
+  });
+  return loaded[file];
+}
+function unavailable(el, msg) { el.innerHTML = '<div class="unavail">' + esc(msg || 'Source unavailable for now. It will fill in after the next successful nightly build.') + '</div>'; }
+
+/* ================================================ SCAN LIBRARY */
+var groups = []; SL.scans.forEach(function (s) { if (groups.indexOf(s.g) < 0) groups.push(s.g); });
+var curGroup = 'All', curScan = null, edits = {}, uni = { liq: SL.liq, minpx: SL.minpx }, scanTbl = null;
+try { var sv = JSON.parse(localStorage.getItem('sl_edits') || '{}'); if (sv && typeof sv === 'object') edits = sv; } catch (e) {}
+function saveEdits() { try { localStorage.setItem('sl_edits', JSON.stringify(edits)); } catch (e) {} }
+$('libGroups').innerHTML = ['All'].concat(groups).map(function (g, i) { return '<button class="chip' + (i ? '' : ' on') + '" data-v="' + esc(g) + '">' + esc(g) + '</button>'; }).join('');
+function critOf(s) { return s.c.map(function (c, i) { var e = edits[s.id] && edits[s.id][i]; return [c[0], c[1], e != null ? e : c[2]]; }); }
+function passes(r, crit) {
+  if (!(r.to50 >= uni.liq) || !(r.price >= uni.minpx)) return false;
+  for (var i = 0; i < crit.length; i++) {
+    var c = crit[i], a = r[c[0]], b = typeof c[2] === 'string' ? r[c[2].slice(1)] : c[2];
+    if (!num(a) || !num(b)) return false;
+    switch (c[1]) { case '>=': if (!(a >= b)) return false; break; case '<=': if (!(a <= b)) return false; break;
+      case '>': if (!(a > b)) return false; break; case '<': if (!(a < b)) return false; break; case '==': if (a !== b) return false; }
+  }
+  return true;
+}
+function countScan(s) { if (s.etf) return (SL.etf || []).slice(0, 10).length; var c = critOf(s), n = 0; ROWS.forEach(function (r) { if (passes(r, c) && PK.capOK(r.s)) n++; }); return n; }
+function renderList() {
+  var list = SL.scans.filter(function (s) { return curGroup === 'All' || s.g === curGroup; });
+  $('libList').innerHTML = list.map(function (s) {
+    return '<button class="chip scanchip' + (curScan && s.id === curScan.id ? ' on' : '') + '" data-id="' + s.id + '">' + esc(s.n) + ' <span class="cnt">' + countScan(s) + '</span></button>'; }).join('');
+  var counts = SL.scans.map(function (s) { return [s, countScan(s)]; }).sort(function (a, b) { return b[1] - a[1]; });
+  var top = counts[0], zero = counts.filter(function (x) { return !x[1]; }).length;
+  $('libVerdict').innerHTML = '<b>' + esc(top[0].n) + '</b> is the busiest scan today with ' + top[1] + ' stocks' + (zero ? '; ' + zero + ' scan' + (zero > 1 ? 's are' : ' is') + ' empty' : '') + capNote() + '.';
+}
+function opLabel(op) { return { '>=': '≥', '<=': '≤', '>': '>', '<': '<', '==': '=' }[op] || op; }
+function renderScan() {
+  var s = curScan; if (!s) return;
+  $('scanName').textContent = s.n; $('scanDesc').textContent = s.d;
+  if (s.etf) { $('scanCrit').innerHTML = '<span class="mut">Ranking: (6-month Sharpe + 12-month Sharpe) ÷ 2, where Sharpe = return ÷ (daily volatility × √days). ETFs need ₹0.5 Cr+ average turnover.</span>'; $('scanUni').innerHTML = ''; }
+  else {
+    $('scanCrit').innerHTML = critOf(s).map(function (c, i) {
+      var isRef = typeof c[2] === 'string', isFlag = (SL.metrics[c[0]] || [])[1] === 'flag';
+      var val = isRef ? '<b>' + esc(mlab(c[2].slice(1))) + '</b>' : isFlag ? '<b>' + (c[2] === 1 ? 'yes' : 'no') + '</b>' :
+        '<input class="cin" type="number" inputmode="decimal" step="any" data-i="' + i + '" value="' + c[2] + '" aria-label="' + esc(mlab(c[0])) + ' threshold">';
+      return '<span class="crit' + ((SL.current_only || []).indexOf(c[0]) >= 0 ? ' co' : '') + '">' + esc(mlab(c[0])) + ' ' + (isFlag ? '' : opLabel(c[1]) + ' ') + val + '</span>';
+    }).join('');
+    $('scanUni').innerHTML = '<span class="crit">Avg turnover ≥ ₹<input class="uin" type="number" step="any" data-k="liq" value="' + uni.liq + '"> Cr</span><span class="crit">Price ≥ ₹<input class="uin" type="number" step="any" data-k="minpx" value="' + uni.minpx + '"></span>';
+  }
+  renderScanTable();
+  load('forward.js', 'SLF').then(function (F) {
+    var el = $('scanBt'); if (!F) { el.innerHTML = ''; return; }
+    var r = (F.rows || []).filter(function (x) { return x.k === 's' && x.id === s.id; })[0];
+    if (!r) { el.innerHTML = ''; return; }
+    if (r.na) { el.innerHTML = '<span>' + esc(r.na) + '</span>'; return; }
+    var h = r.h20; if (!h) { el.innerHTML = '<span>Too few signals to test</span>'; return; }
+    el.innerHTML = '<span>Backtest (default rules): <b>' + r.n.toLocaleString('en-IN') + '</b> signals since ' + Ds(r.first) + '</span><span>20-session win rate <b>' + h.win + '%</b></span><span>median <b class="' + cls(h.med) + '">' + pct(h.med) + '</b></span><span>vs Nifty 500 <b class="' + cls(h.xs) + '">' + pct(h.xs) + '</b></span><span>worst 60-session drawdown <b class="dn">' + pct(r.mae_worst) + '</b></span>';
+  });
+}
+function renderScanTable() {
+  var s = curScan, rows, cols;
+  if (s.etf) {
+    rows = SL.etf || [];
+    cols = [{ key: 'rk', label: '#', num: true }, { key: 's', label: 'ETF', fmt: function (v, r) { return '<span class="sym"><b>' + esc(v) + '</b><span class="nm2">' + esc(r.n) + '</span></span>'; } },
+      { key: 'sc', label: 'Sharpe mom.', num: true, fmt: function (v) { return fx(v, 2); } }, { key: 's6', label: '6M Sharpe', num: true, fmt: function (v) { return fx(v, 2); } },
+      { key: 's12', label: '12M Sharpe', num: true, fmt: function (v) { return fx(v, 2); } }, { key: 'r6', label: '6M', num: true, fmt: pct, cls: function (v) { return cls(v); } },
+      { key: 'r12', label: '1Y', num: true, fmt: pct, cls: function (v) { return cls(v); } }, { key: 'vol', label: 'Volatility', num: true, fmt: function (v) { return fx(v, 1) + '%'; } },
+      { key: 'to', label: 'Turnover', num: true, fmt: KF.cr }];
+    $('scanVerdict').innerHTML = rows.length ? '<b>' + esc(rows[0].s) + '</b> leads ETF momentum, with a 6-month return of ' + pct(rows[0].r6) + ' for ' + fx(rows[0].vol, 1) + '% volatility.' : 'No ETF passes the liquidity rule today.';
+    if (scanTbl && scanTbl.destroy) scanTbl.destroy();
+    scanTbl = PK.table($('scanTable'), { columns: cols, rows: rows, sortKey: 'rk', sortDir: 'asc', csvName: 'scanlab_etf', symbolKey: 's', countLabel: 'ETFs' });
+    $('scanSrc').textContent = 'Source: NSE bhavcopy closes (adjusted) · ETFs identified by symbol (BEES/ETF/IETF) · as of ' + D(SL.asof);
+    return;
+  }
+  var crit = critOf(s);
+  rows = ROWS.filter(function (r) { return passes(r, crit); });
+  var extra = []; crit.forEach(function (c) { if (extra.indexOf(c[0]) < 0 && ['price', 'brk52', 'brk26', 'brk5y'].indexOf(c[0]) < 0 && typeof c[2] !== 'string') extra.push(c[0]); });
+  (s.cols || []).forEach(function (c) { if (extra.indexOf(c) < 0) extra.push(c); });
+  extra = extra.slice(0, 7);
+  cols = [{ key: 's', label: 'Stock', fmt: symCell }, { key: 'sec', label: 'Sector', cls: 'dim' }, { key: 'price', label: 'Price', num: true, fmt: KF.inr },
+    { key: 'chg1', label: '1D', num: true, fmt: pct, cls: function (v) { return cls(v); } }, { key: 'st', label: 'Stage', num: true, align: 'c', fmt: stg }];
+  extra.forEach(function (m) { if (m === 'st') return; cols.push({ key: m, label: esc(mlab(m)), num: true, fmt: mfmt(m), cls: /pct|pp/.test((SL.metrics[m] || [])[1] || '') ? function (v) { return cls(v); } : null }); });
+  var visr = rows.filter(function (r) { return PK.capOK(r.s); }), n = visr.length;
+  var best = visr.slice().sort(function (a, b) { return (b.rr || 0) - (a.rr || 0); })[0];
+  $('scanVerdict').innerHTML = n ? '<b>' + n + '</b> stock' + (n > 1 ? 's pass' : ' passes') + ' today' + capNote() + (best ? '; the strongest by RS is <b>' + esc(best.s) + '</b> (RS ' + best.rr + ')' : '') + '.' : 'No stock passes these rules today' + capNote() + '. Loosen a number above to widen the net.';
+  if (scanTbl && scanTbl.destroy) scanTbl.destroy();
+  scanTbl = PK.table($('scanTable'), { columns: cols, rows: rows, sortKey: 'rr' in (rows[0] || {}) ? 'rr' : null, sortDir: 'desc', csvName: 'scanlab_' + s.id, symbolKey: 's', capKey: 's', countLabel: 'stocks', tvExport: true,
+    presets: [{ label: 'Stage 2 only', filter: function (r) { return r.st === 2; } }, { label: 'RS 80+', filter: function (r) { return r.rr >= 80; } }] });
+  $('scanSrc').textContent = 'Source: NSE full bhavcopy (adjusted OHLC, volume, delivery), NSE quarterly results via EarningsCentre' + ((s.c || []).some(function (c) { return (SL.current_only || []).indexOf(c[0]) >= 0; }) ? ', Screener export (today only)' : '') + ' · as of ' + D(SL.asof);
+  renderList();
+}
+$('libGroups').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select');
+  [].forEach.call(this.children, function (x) { x.classList.toggle('on', x === b); }); curGroup = b.dataset.v; renderList(); });
+$('libList').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select');
+  curScan = SL.scans.filter(function (s) { return s.id === b.dataset.id; })[0]; renderList(); renderScan();
+  try { localStorage.setItem('sl_scan', curScan.id); } catch (x) {} });
+var tmr = null;
+$('scanCard').addEventListener('input', function (e) {
+  var t = e.target; if (!t.matches('input')) return;
+  var v = parseFloat(t.value); if (!isFinite(v)) return;
+  if (t.classList.contains('cin')) { edits[curScan.id] = edits[curScan.id] || {}; edits[curScan.id][t.dataset.i] = v; saveEdits(); }
+  else uni[t.dataset.k] = v;
+  clearTimeout(tmr); tmr = setTimeout(renderScanTable, 180);
+});
+$('scanReset').addEventListener('click', function () { PK.haptic('tap'); delete edits[curScan.id]; saveEdits(); uni = { liq: SL.liq, minpx: SL.minpx }; renderScan(); });
+var startScan = null; try { startScan = localStorage.getItem('sl_scan'); } catch (e) {}
+curScan = SL.scans.filter(function (s) { return s.id === startScan; })[0] || SL.scans[0];
+renderList(); renderScan();
+
+/* ================================================ PATTERNS */
+var P = null, curPat = null, patTbl = null;
+function detTxt(id, d) {
+  if (!d) return '–';
+  if (id === 'vcp' || id === 'vcpb') return 'Pivot ₹' + fx(d.pivot, 2) + (num(d.dist) ? ' (' + pct(d.dist) + ')' : '') + '<span class="sub">' + d.contr.map(function (c) { return Ds(c[0]) + '→' + Ds(c[1]) + ' −' + c[2] + '%'; }).join(' · ') + '</span>';
+  if (id === 'flag') return 'Pole +' + d.pole + '% from ' + Ds(d.pole_from) + '<span class="sub">top ' + Ds(d.top) + ' ₹' + fx(d.top_px, 2) + ', flag −' + d.depth + '%</span>';
+  if (id === 'flagb') return 'Pole +' + d.pole + '%, broke top ₹' + fx(d.top_px, 2) + ' (' + Ds(d.top) + ')';
+  if (id === 'darvas') return 'Box ₹' + fx(d.box_lo, 2) + '–' + fx(d.box_hi, 2) + ' (' + d.range + '%)';
+  if (id === 'predarvas') return 'Box high ₹' + fx(d.box_hi, 2) + ' (' + pct(d.dist) + ')';
+  if (id === 'gapup') return 'Gap ' + pct(d.gap);
+  if (id === 'gapfill') return 'Gap of ' + Ds(d.gap_day) + ' filled at ₹' + fx(d.level, 2) + (d.held ? ', closed back above' : ', closed below');
+  return '–';
+}
+function renderPatList() {
+  $('patList').innerHTML = P.patterns.map(function (p) { return '<button class="chip' + (curPat && p.id === curPat.id ? ' on' : '') + '" data-id="' + p.id + '">' + esc(p.n) + ' <span class="cnt">' + p.rows.filter(function (r) { return PK.capOK(r.s); }).length + '</span></button>'; }).join('');
+  var b = P.patterns.slice().sort(function (a, c) { return c.rows.length - a.rows.length; });
+  var vcp = P.patterns.filter(function (p) { return p.id === 'vcp'; })[0];
+  $('patVerdict').innerHTML = '<b>' + esc(b[0].n) + '</b> is the most common pattern today (' + b[0].rows.length + ' stocks)' + (vcp ? '; ' + vcp.rows.length + ' stocks are in a VCP setup' : '') + capNote() + '.';
+}
+function renderPat() {
+  var p = curPat; $('patName').textContent = p.n;
+  $('patRules').innerHTML = p.rules.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('');
+  var rows = p.rows.filter(function (r) { return PK.capOK(r.s); });
+  $('patV2').innerHTML = rows.length ? '<b>' + rows.length + '</b> stock' + (rows.length > 1 ? 's show' : ' shows') + ' this today; ' + p.wk + ' did on at least one of the last 5 sessions' + capNote() + '.' : 'No stock shows this pattern today (' + p.wk + ' in the last 5 sessions)' + capNote() + '.';
+  var cols = [{ key: 's', label: 'Stock', fmt: symCell }, { key: 'sp', label: '90 days', csv: false, sortable: false, fmt: function (v, r) { return PK.spark(P.spark[r.s] || [], { w: 90, h: 26 }); } },
+    { key: 'px', label: 'Price', num: true, fmt: KF.inr }, { key: 'ch', label: '1D', num: true, fmt: pct, cls: function (v) { return cls(v); } },
+    { key: 'st', label: 'Stage', num: true, align: 'c', fmt: stg }, { key: 'rr', label: 'RS', num: true }, { key: 'vr', label: 'Vol ÷ avg', num: true, fmt: KF.x },
+    { key: 'dp', label: 'Delivery', num: true, fmt: KF.pct0 }, { key: 'hi', label: 'From 52W high', num: true, fmt: pct },
+    { key: 'd', label: 'Detail', sortable: false, csvVal: function (r) { return r.d ? JSON.stringify(r.d) : ''; }, fmt: function (v) { return detTxt(p.id, v); } }];
+  if (patTbl && patTbl.destroy) patTbl.destroy();
+  patTbl = PK.table($('patTable'), { columns: cols, rows: p.rows, sortKey: 'rr', sortDir: 'desc', csvName: 'scanlab_' + p.id, symbolKey: 's', capKey: 's', countLabel: 'stocks' });
+}
+function initPat() {
+  if (P) return;
+  load('patterns.js', 'SLP').then(function (x) {
+    if (!x) { unavailable($('patTable')); $('patVerdict').textContent = 'Pattern data unavailable.'; return; }
+    P = x; curPat = P.patterns[0]; renderPatList(); renderPat();
+    $('patList').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select');
+      curPat = P.patterns.filter(function (p) { return p.id === b.dataset.id; })[0]; renderPatList(); renderPat(); });
+  });
+}
+
+/* ================================================ VOLUME & DELIVERY */
+var VV = null, volTbl = null, volMode = 'deliv';
+var VHOW = {
+  deliv: 'Delivery % today against its own 20- and 50-session average. A ratio of 1.5× means 50% more of today\'s traded shares went into demat accounts than usual. "Delivery qty ÷ avg" compares the number of delivered shares.',
+  hdb: 'A 52-week-high, 26-week-high or 20-session box breakout in the last 5 sessions where delivery % was at least 1.25× its 50-day average and delivered quantity at least 2× its average: the breakout was bought for holding, not intraday.',
+  acc: 'Over the last 20 sessions: accumulation days are up days on above-average volume with above-average delivery %; distribution days are down days with both above average. Net = accumulation − distribution days (shown when 3+). Score = Σ sign(day) × volume ratio × delivery ratio.',
+  dis: 'Same counts as Accumulation, filtered to stocks where distribution days outnumber accumulation days by 3 or more.',
+  hv: 'HVE = highest volume in the vault\'s history (since Jan 2021, only for stocks listed before Apr 2022), HVY = highest in 252 sessions, HVQ = highest in 63 sessions. One row per stock: its biggest event in the last 20 sessions, the move that day and the move since.'
+};
+function renderVol() {
+  var rows, cols, base = [{ key: 's', label: 'Stock', fmt: symCell }, { key: 'px', label: 'Price', num: true, fmt: KF.inr }, { key: 'ch', label: '1D', num: true, fmt: pct, cls: function (v) { return cls(v); } }, { key: 'rr', label: 'RS', num: true }];
+  var sortKey = 'r50', presets = [];
+  if (volMode === 'deliv') { rows = VV.deliv; cols = base.concat([{ key: 'dp', label: 'Delivery', num: true, fmt: KF.pct0 }, { key: 'dp20', label: '20D avg', num: true, fmt: KF.pct0 }, { key: 'dp50', label: '50D avg', num: true, fmt: KF.pct0 },
+      { key: 'r20', label: '÷ 20D', num: true, fmt: KF.x }, { key: 'r50', label: '÷ 50D', num: true, fmt: KF.x }, { key: 'dq', label: 'Deliv. qty ÷ avg', num: true, fmt: KF.x }, { key: 'vr', label: 'Vol ÷ avg', num: true, fmt: KF.x }]);
+    presets = [{ label: 'Delivery spike 1.5×+', filter: function (r) { return r.r50 >= 1.5; } }, { label: 'Spike on an up day', filter: function (r) { return r.r50 >= 1.3 && r.ch > 0 && r.dq >= 2; } }, { label: 'Delivery 70%+', filter: function (r) { return r.dp >= 70; } }]; }
+  else if (volMode === 'hdb') { rows = VV.hdb; sortKey = 'dq'; cols = base.concat([{ key: 'kind', label: 'Breakout' }, { key: 'd', label: 'Date', fmt: Ds }, { key: 'dp', label: 'Delivery', num: true, fmt: KF.pct0 }, { key: 'dp50', label: '50D avg', num: true, fmt: KF.pct0 }, { key: 'dq', label: 'Deliv. qty ÷ avg', num: true, fmt: KF.x }, { key: 'vr', label: 'Vol ÷ avg', num: true, fmt: KF.x }, { key: 'since', label: 'Since', num: true, fmt: pct, cls: function (v) { return cls(v); } }]); }
+  else if (volMode === 'acc' || volMode === 'dis') { rows = VV.ad.filter(function (r) { return r.side === (volMode === 'acc' ? 'A' : 'D'); }); sortKey = 'score';
+    cols = base.concat([{ key: 'acc', label: 'Acc. days', num: true }, { key: 'dis', label: 'Dist. days', num: true }, { key: 'net', label: 'Net', num: true, cls: function (v) { return cls(v); } }, { key: 'score', label: 'Score', num: true, fmt: function (v) { return fx(v, 1); } }, { key: 'r20', label: '1M', num: true, fmt: pct, cls: function (v) { return cls(v); } }, { key: 'dp20', label: 'Delivery 20D', num: true, fmt: KF.pct0 }]); }
+  else { rows = VV.hv; sortKey = 'vr'; cols = base.concat([{ key: 'ev', label: 'Event', fmt: function (v) { return '<span class="tag ' + (v === 'HVE' ? 'up' : v === 'HVY' ? 'rally' : 'press') + '">' + v + '</span>'; } }, { key: 'd', label: 'Date', fmt: Ds }, { key: 'dch', label: 'That day', num: true, fmt: pct, cls: function (v) { return cls(v); } }, { key: 'vr', label: 'Vol ÷ avg', num: true, fmt: KF.x }, { key: 'dp', label: 'Delivery', num: true, fmt: KF.pct0 }, { key: 'since', label: 'Since', num: true, fmt: pct, cls: function (v) { return cls(v); } }]);
+    presets = [{ label: 'HVE', filter: function (r) { return r.ev === 'HVE'; } }, { label: 'HVY', filter: function (r) { return r.ev === 'HVY'; } }, { label: 'On an up day', filter: function (r) { return r.dch > 0; } }]; }
+  if (sortKey === 'score' && volMode === 'dis') { rows = rows.slice().sort(function (a, b) { return a.score - b.score; }); }
+  var vis = rows.filter(function (r) { return PK.capOK(r.s); });
+  var V2 = {
+    deliv: function () { var sp = vis.filter(function (r) { return r.r50 >= 1.5; }).length; return '<b>' + sp + '</b> stocks have delivery % at least 1.5× their 50-day average today' + capNote() + '.'; },
+    hdb: function () { return vis.length ? '<b>' + vis.length + '</b> breakout' + (vis.length > 1 ? 's' : '') + ' in the last 5 sessions came with heavy delivery' + capNote() + '.' : 'No breakout in the last 5 sessions came with heavy delivery' + capNote() + '.'; },
+    acc: function () { return '<b>' + vis.length + '</b> stocks show net accumulation (3+ more heavy up days than heavy down days in 20 sessions)' + capNote() + '.'; },
+    dis: function () { return '<b>' + vis.length + '</b> stocks show net distribution over 20 sessions' + capNote() + '.'; },
+    hv: function () { var e = vis.filter(function (r) { return r.ev === 'HVE'; }).length; return '<b>' + vis.length + '</b> stocks set a record-volume event in the last 20 sessions, ' + e + ' of them the highest volume ever' + capNote() + '.'; }
+  };
+  $('volVerdict').innerHTML = V2[volMode](); $('volHow').textContent = VHOW[volMode];
+  if (volTbl && volTbl.destroy) volTbl.destroy();
+  volTbl = PK.table($('volTable'), { columns: cols, rows: rows, sortKey: volMode === 'dis' ? null : sortKey, sortDir: 'desc', csvName: 'scanlab_' + volMode, symbolKey: 's', capKey: 's', countLabel: 'stocks', presets: presets });
+}
+function renderVolSide() {
+  var tr = VV.trend || [], last = tr.length ? tr[tr.length - 1][1] : null, m1 = tr.length > 21 ? tr[tr.length - 22][1] : null;
+  $('dlvVerdict').innerHTML = num(last) ? 'Median delivery is <b>' + last.toFixed(1) + '%</b> today, ' + (num(m1) ? (last >= m1 ? 'up' : 'down') + ' from ' + m1.toFixed(1) + '% a month ago' : '') + '.' : 'Delivery trend unavailable.';
+  if (PK.chart && PK.lineSeries) PK.chart($('dlvChart'), { height: 220 }).then(function (c) {
+    var s = PK.lineSeries(c, tr.filter(function (x) { return num(x[1]); }).map(function (x) { return { time: x[0], value: x[1] }; }), { area: true, title: 'Median delivery %' });
+    if (PK.legend) PK.legend($('dlvChart'), c, [{ series: s, label: 'Median delivery %', color: '#2FE3B5' }], function (v) { return fx(v, 1) + '%'; });
+    c.timeScale().fitContent();
+  }).catch(function () { unavailable($('dlvChart'), 'Chart library unavailable.'); });
+  var vis = VV.hv.filter(function (r) { return PK.capOK(r.s); });
+  var ct = { HVE: 0, HVY: 0, HVQ: 0 }; vis.forEach(function (r) { ct[r.ev]++; });
+  $('hvVerdict').innerHTML = '<b>' + ct.HVY + '</b> stocks hit a 1-year volume record in the last 20 sessions and <b>' + ct.HVE + '</b> an all-time one' + capNote() + '.';
+  PK.svgBars($('hvBars'), [{ label: 'HVE · ever', value: ct.HVE }, { label: 'HVY · 1 year', value: ct.HVY }, { label: 'HVQ · 1 quarter', value: ct.HVQ }], { fmt: function (v) { return String(v); }, valueLabel: 'Stocks', onClick: function (it) { volMode = 'hv'; setChip('volTabs', 'hv'); renderVol(); } });
+}
+function setChip(id, v) { [].forEach.call($(id).children, function (x) { x.classList.toggle('on', x.dataset.v === v); }); }
+function initVol() {
+  if (VV) return;
+  load('volume.js', 'SLV').then(function (x) {
+    if (!x) { unavailable($('volTable')); $('volVerdict').textContent = 'Volume data unavailable.'; return; }
+    VV = x; renderVol(); renderVolSide();
+    $('volTabs').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select'); volMode = b.dataset.v; setChip('volTabs', volMode); renderVol(); });
+  });
+}
+
+/* ================================================ SCAN MATCH */
+var MM = null, mTbl = null, mMode = 'any', mMin = 3, picks = [];
+function hitKeys(r) { return Object.keys(r.h).concat(Object.keys(r.x)); }
+function renderMatch() {
+  var cnt = {}; MM.rows.forEach(function (r) { if (!PK.capOK(r.s)) return; hitKeys(r).forEach(function (k) { cnt[k] = (cnt[k] || 0) + 1; }); });
+  var keys = Object.keys(MM.labels).filter(function (k) { return cnt[k]; }).sort(function (a, b) { return a.charAt(0) === b.charAt(0) ? cnt[b] - cnt[a] : ('xsp'.indexOf(a.charAt(0)) - 'xsp'.indexOf(b.charAt(0))); });
+  $('mPicks').innerHTML = keys.map(function (k) { return '<button class="chip' + (picks.indexOf(k) >= 0 ? ' on' : '') + '" data-k="' + k + '">' + esc(MM.labels[k]) + ' <span class="cnt">' + cnt[k] + '</span></button>'; }).join('');
+  var rows = MM.rows.filter(function (r) {
+    var ks = hitKeys(r);
+    if (mMode === 'and' && picks.length) return picks.every(function (p) { return ks.indexOf(p) >= 0; });
+    if (mMode === 'or' && picks.length) return picks.some(function (p) { return ks.indexOf(p) >= 0; });
+    return r.k >= mMin;
+  });
+  var vis = rows.filter(function (r) { return PK.capOK(r.s); });
+  var top = vis[0];
+  $('mVerdict').innerHTML = (mMode !== 'any' && picks.length ? '<b>' + vis.length + '</b> stocks match your ' + (mMode === 'and' ? 'AND' : 'OR') + ' combination of ' + picks.length + ' list' + (picks.length > 1 ? 's' : '') : '<b>' + vis.length + '</b> stocks are on ' + mMin + '+ scans, patterns or lists today') +
+    (top ? '; <b>' + esc(top.s) + '</b> leads with ' + top.k + ' hits' : '') + capNote() + '.';
+  var cols = [{ key: 's', label: 'Stock', fmt: symCell }, { key: 'sec', label: 'Sector', cls: 'dim' }, { key: 'px', label: 'Price', num: true, fmt: KF.inr },
+    { key: 'ch', label: '1D', num: true, fmt: pct, cls: function (v) { return cls(v); } }, { key: 'rr', label: 'RS', num: true }, { key: 'k', label: 'Hits', num: true },
+    { key: 'first', label: 'First seen', fmt: Ds }, { key: 'streak', label: 'Streak', num: true, title: 'Longest current run of consecutive sessions on any scan or pattern' },
+    { key: 'hl', label: 'On', sortable: false, csvVal: function (r) { return hitKeys(r).map(function (k) { return MM.labels[k]; }).join('; '); },
+      fmt: function (v, r) { return '<span class="hits">' + hitKeys(r).map(function (k) { var h = r.h[k]; return '<i class="' + k.charAt(0) + '" title="' + esc(MM.labels[k] + (h ? ' · since ' + h[0] + ' (' + h[1] + ' sessions)' : '')) + '">' + esc(MM.labels[k]) + '</i>'; }).join('') + '</span>'; } }];
+  if (mTbl && mTbl.destroy) mTbl.destroy();
+  mTbl = PK.table($('mTable'), { columns: cols, rows: rows, sortKey: 'k', sortDir: 'desc', csvName: 'scanlab_match', symbolKey: 's', capKey: 's', countLabel: 'stocks' });
+}
+function initMatch() {
+  if (MM) return;
+  load('match.js', 'SLM').then(function (x) {
+    if (!x) { unavailable($('mTable')); $('mVerdict').textContent = 'Match data unavailable.'; return; }
+    MM = x; renderMatch();
+    $('mPicks').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select'); var k = b.dataset.k, i = picks.indexOf(k);
+      if (i >= 0) picks.splice(i, 1); else picks.push(k); if (mMode === 'any' && picks.length) { mMode = 'and'; setChip('mMode', 'and'); } renderMatch(); });
+    $('mMode').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select'); mMode = b.dataset.v; setChip('mMode', mMode); renderMatch(); });
+    $('mMin').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select'); mMin = +b.dataset.v; setChip('mMin', b.dataset.v); if (mMode !== 'any') { mMode = 'any'; setChip('mMode', 'any'); } renderMatch(); });
+    $('mClear').addEventListener('click', function () { picks = []; mMode = 'any'; setChip('mMode', 'any'); renderMatch(); });
+  });
+}
+
+/* ================================================ FORWARD RESULTS */
+var FF = null, fH = 20, fTbl = null, lTbl = null;
+function renderFwd() {
+  var hk = 'h' + fH, base = FF.base[hk] || {};
+  var ok = FF.rows.filter(function (r) { return r[hk] && r[hk].n >= 30; });
+  var srt = ok.slice().sort(function (a, b) { return b[hk].xs - a[hk].xs; });
+  var beat = ok.filter(function (r) { return r[hk].xs > 0; }).length;
+  $('fVerdict').innerHTML = srt.length ? '<b>' + esc(srt[0].name) + '</b> has the best record over ' + fH + ' sessions (' + pct(srt[0][hk].xs, 2) + ' a signal vs the Nifty 500); ' + beat + ' of ' + ok.length + ' scans and patterns beat the index on average. Any stock in the universe averaged ' + pct(base.xs, 2) + '.' : 'Not enough history yet.';
+  $('fHow').innerHTML = 'Every scan and pattern was replayed day by day over ' + FF.sessions + ' sessions (' + D(FF.from) + ' to ' + D(FF.to) + ') with its default rules, using only data available on each day. A signal is a day the stock newly qualifies (not on the list in the previous 5 sessions). Return = close ' + fH + ' sessions later ÷ signal-day close, before costs. "vs Nifty 500" subtracts the index move over the same days. Worst drawdown = the lowest low in the next 60 sessions versus the signal close. The base rate is every stock-day in the universe. Past results do not predict future ones; overlapping signals in a falling or rising market are not independent.';
+  PK.svgBars($('fBars'), srt.slice(0, 12).concat(srt.length > 16 ? srt.slice(-4) : []).map(function (r) { return { label: r.name, value: r[hk].xs, tip: '<b>' + esc(r.name) + '</b><br>' + r[hk].n + ' signals · win ' + r[hk].win + '% · median ' + pct(r[hk].med) + '<br>vs Nifty 500 ' + pct(r[hk].xs, 2), r: r }; }),
+    { fmt: function (v) { return pct(v, 2); }, valueLabel: 'Avg vs Nifty 500', onClick: function (it) { detail(it.r); } });
+  var rows = FF.rows.map(function (r) { var h = r[hk] || {}; return { id: r.id, k: r.k, name: r.name, g: r.g, cnt: r.na ? null : r.n, hn: h.n, win: h.win, mean: h.mean, med: h.med, xs: h.xs, xwin: h.xwin, mae: r.mae_med, worst: r.mae_worst, na: r.na, _r: r }; });
+  var cols = [{ key: 'name', label: 'Scan / pattern', fmt: function (v, r) { return '<b>' + esc(nameOf(r._r)) + '</b><span class="sub">' + (r.k === 'p' ? 'Pattern · ' : 'Scan · ') + esc(r.g) + '</span>'; }, csvVal: function (r) { return nameOf(r._r); } },
+    { key: 'cnt', label: 'Signals', num: true, fmt: function (v, r) { return r.na ? '<span class="dim">n/a</span>' : fx(v, 0); } },
+    { key: 'win', label: 'Win %', num: true, fmt: function (v) { return num(v) ? v.toFixed(0) + '%' : '–'; } },
+    { key: 'mean', label: 'Mean', num: true, fmt: pct, cls: function (v) { return cls(v); } }, { key: 'med', label: 'Median', num: true, fmt: pct, cls: function (v) { return cls(v); } },
+    { key: 'xs', label: 'vs Nifty 500', num: true, fmt: function (v) { return pct(v, 2); }, cls: function (v) { return cls(v); } },
+    { key: 'xwin', label: 'Beat index %', num: true, fmt: function (v) { return num(v) ? v.toFixed(0) + '%' : '–'; } },
+    { key: 'mae', label: 'Median drawdown', num: true, fmt: pct }, { key: 'worst', label: 'Worst drawdown', num: true, fmt: pct, cls: function () { return 'dn'; } }];
+  if (fTbl && fTbl.destroy) fTbl.destroy();
+  fTbl = PK.table($('fTable'), { columns: cols, rows: rows, sortKey: 'xs', sortDir: 'desc', csvName: 'scanlab_backtest_' + fH, tvExport: false, search: true, countLabel: 'scans', placeholder: 'Search scans…',
+    presets: [{ label: 'Scans', filter: function (r) { return r.k === 's'; } }, { label: 'Patterns', filter: function (r) { return r.k === 'p'; } }, { label: '100+ signals', filter: function (r) { return r.hn >= 100; } }],
+    rowClick: function (r) { detail(r._r); } });
+}
+function nameOf(r) { return r.name || r.id; }
+function detail(r) {
+  $('fDetail').hidden = false; $('fdName').textContent = nameOf(r);
+  if (r.na) { $('fdV').textContent = r.na; $('fdHist').innerHTML = ''; $('fdMon').innerHTML = ''; $('fdRecent').innerHTML = ''; return; }
+  var h = r.h20 || {};
+  $('fdV').innerHTML = (r.n || 0).toLocaleString('en-IN') + ' signals since ' + Ds(r.first) + '. After 20 sessions, <b>' + (h.win || 0) + '%</b> were higher; the median move was <b class="' + cls(h.med) + '">' + pct(h.med) + '</b> and the worst 60-session drawdown <b class="dn">' + pct(r.mae_worst) + '</b>.';
+  var bins = FF.bins;
+  PK.svgBars($('fdHist'), (r.hist || []).map(function (v, i) { return { label: (bins[i] >= 0 ? '+' : '') + bins[i] + '…' + bins[i + 1] + '%', value: v, color: bins[i] < 0 ? '#FF5C6C' : null }; }), { vertical: true, height: 180, fmt: function (v) { return v + ' signals'; }, values: false, valueLabel: 'Signals' });
+  PK.svgBars($('fdMon'), (r.mon || []).slice(-18).map(function (m) { return { label: m[0], value: m[2] || 0, tip: '<b>' + m[0] + '</b><br>' + m[1] + ' signals · avg ' + pct(m[2]) }; }), { vertical: true, height: 180, fmt: function (v) { return pct(v); }, values: false });
+  $('fdRecent').innerHTML = (r.recent || []).map(function (x) { return '<span><b>' + esc(x[1]) + '</b> ' + Ds(x[0]) + (num(x[2]) ? ' · <b class="' + cls(x[2]) + '">' + pct(x[2]) + '</b>' : ' · open') + '</span>'; }).join('');
+  if (!RM) $('fDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function renderLive() {
+  var lab = {}; FF.rows.forEach(function (r) { lab[r.k + ':' + r.id] = nameOf(r); });
+  var rows = FF.live.map(function (x) { return { d: x[0], key: x[1], scan: lab[x[1]] || x[1], s: x[2], r: x[3], xs: x[4], age: x[5], n: (BYS[x[2]] || {}).n || '' }; });
+  var vis = rows.filter(function (r) { return PK.capOK(r.s); });
+  var aged = vis.filter(function (r) { return r.age > 0; }), beat = aged.filter(function (r) { return r.xs > 0; }).length;
+  $('lVerdict').innerHTML = FF.live_n ? 'Since launch on <b>' + D(FF.launch) + '</b>: ' + FF.live_n.toLocaleString('en-IN') + ' live signals; ' + (aged.length ? Math.round(beat / aged.length * 100) + '% of those at least a session old are ahead of the Nifty 500 so far' : 'returns start counting from the next session') + capNote() + '.' : 'The live log started on ' + D(FF.launch) + '; signals appear here from the next session.';
+  if (lTbl && lTbl.destroy) lTbl.destroy();
+  lTbl = PK.table($('lTable'), { columns: [{ key: 'd', label: 'Signal date', fmt: Ds }, { key: 'scan', label: 'Scan / pattern' }, { key: 's', label: 'Stock', fmt: symCell },
+    { key: 'age', label: 'Sessions', num: true }, { key: 'r', label: 'Return', num: true, fmt: pct, cls: function (v) { return cls(v); } }, { key: 'xs', label: 'vs Nifty 500', num: true, fmt: pct, cls: function (v) { return cls(v); } }],
+    rows: rows, sortKey: 'd', sortDir: 'desc', csvName: 'scanlab_live', symbolKey: 's', capKey: 's', countLabel: 'signals', pageSize: 50 });
+}
+function initFwd() {
+  if (FF) return;
+  load('forward.js', 'SLF').then(function (x) {
+    if (!x) { unavailable($('fTable')); $('fVerdict').textContent = 'Backtest data unavailable.'; return; }
+    FF = x;
+    renderFwd(); renderLive();
+    $('fH').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select'); fH = +b.dataset.v; setChip('fH', b.dataset.v); renderFwd(); });
+  });
+}
+
+/* ================================================ PAST WINNERS */
+var WW = null, wYear = null, wTbl = null;
+function renderWin() {
+  var y = WW.years.filter(function (x) { return x.y === wYear; })[0]; if (!y) return;
+  var s = y.sum;
+  $('wVerdict').innerHTML = 'In <b>' + y.y + (s.ytd ? ' (year to date)' : '') + '</b>, the top 100 runs had a median gain of <b>' + fx(s.g, 0) + '%</b> over ' + fx(s.days, 0) + ' sessions. At the start, ' + (s.st2 != null ? s.st2 + '% were already in Stage 2, ' + s.st1 + '% in Stage 1 and ' + s.st4 + '% in Stage 4' : 'stage history was not available') + '; median RS was ' + fx(s.rr, 0) + '.';
+  var k = [{ l: 'Median gain', v: pct(s.g, 0) }, { l: 'RS 70+ at the start', v: s.rr70 != null ? s.rr70 + '%' : '–' }, { l: 'EPS growth 25%+ before the run', v: s.eg25 != null ? s.eg25 + '%' : '–' },
+    { l: 'Sector in the top 20 at the start', v: s.ir_top != null ? s.ir_top + '%' : '–' }];
+  $('wKpis').innerHTML = k.map(function (x, i) { return '<div class="pk" style="animation-delay:' + i * 45 + 'ms"><div class="l">' + esc(x.l) + '</div><div class="v">' + esc(x.v) + '</div></div>'; }).join('');
+  var cols = [{ key: 's', label: 'Stock', fmt: symCell }, { key: 'sec', label: 'Sector', cls: 'dim' }, { key: 'g', label: 'Max gain', num: true, fmt: function (v) { return pct(v, 0); }, cls: function () { return 'up'; } },
+    { key: 'lo', label: 'Low', fmt: Ds }, { key: 'pk', label: 'Peak', fmt: Ds }, { key: 'days', label: 'Sessions', num: true },
+    { key: 'st', label: 'Stage at low', num: true, align: 'c', fmt: stg }, { key: 'rr', label: 'RS at low', num: true }, { key: 'hi', label: 'From 52W high', num: true, fmt: function (v) { return pct(v, 0); } },
+    { key: 'eg', label: 'EPS YoY', num: true, fmt: function (v) { return pct(v, 0); }, cls: function (v) { return cls(v); } }, { key: 'sg', label: 'Sales YoY', num: true, fmt: function (v) { return pct(v, 0); }, cls: function (v) { return cls(v); } },
+    { key: 'uv', label: 'Up-vol days', num: true, title: 'Up days on above-average volume in the 50 sessions before the low' }, { key: 'ir', label: 'Sector rank', num: true, fmt: function (v, r) { return num(v) ? v + '<span class="sub">of ' + r.irn + '</span>' : '–'; } }];
+  if (wTbl && wTbl.destroy) wTbl.destroy();
+  wTbl = PK.table($('wTable'), { columns: cols, rows: y.rows, sortKey: 'g', sortDir: 'desc', csvName: 'scanlab_winners_' + y.y, symbolKey: 's', capKey: 's', countLabel: 'stocks',
+    presets: [{ label: 'Stage 2 at the start', filter: function (r) { return r.st === 2; } }, { label: 'RS 80+ at the start', filter: function (r) { return r.rr >= 80; } }, { label: 'EPS 25%+', filter: function (r) { return r.eg >= 25; } }] });
+}
+function initWin() {
+  if (WW) return;
+  load('winners.js', 'SLW').then(function (x) {
+    if (!x || !x.years || !x.years.length) { unavailable($('wTable')); $('wVerdict').textContent = 'Past Winners data unavailable.'; return; }
+    WW = x; wYear = WW.years[WW.years.length - 1].y;
+    if (WW.years.length > 1 && WW.years[WW.years.length - 1].sum.ytd) wYear = WW.years[WW.years.length - 2].y;
+    $('wYears').innerHTML = WW.years.map(function (y) { return '<button class="chip' + (y.y === wYear ? ' on' : '') + '" data-v="' + y.y + '">' + y.y + (y.sum.ytd ? ' YTD' : '') + '</button>'; }).join('');
+    $('wYears').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; PK.haptic('select'); wYear = +b.dataset.v; setChip('wYears', b.dataset.v); renderWin(); });
+    renderWin();
+  });
+}
+
+/* ================================================ tabs, cap filter */
+var INIT = { pat: initPat, vol: initVol, match: initMatch, fwd: initFwd, win: initWin };
+PK.tabs($('tabs'), { storeKey: 'sl_tab', onChange: function (n) { if (INIT[n]) INIT[n](); } });
+if (PK.capFilter) PK.capFilter($('capf'), {});
+document.addEventListener('pk:cap', function () {
+  renderList(); if (curScan && !curScan.etf) renderScanTable();
+  if (P) { renderPatList(); renderPat(); } if (VV) { renderVol(); renderVolSide(); } if (MM) renderMatch(); if (FF) renderLive();
+});
+PK.press(document);
+// warm the backtest file in the background for the library's track-record line
+setTimeout(function () { load('forward.js', 'SLF'); }, 1200);
+})();
+
+</script>
+</body>
+</html>
